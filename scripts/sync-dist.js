@@ -36,31 +36,73 @@ try {
       const files = fs.readdirSync(appServerDir);
       for (const file of files) {
         if (file.endsWith('.html')) {
-          fs.copyFileSync(
-            path.join(appServerDir, file),
-            path.join(distDir, file)
-          );
+          const srcFile = path.join(appServerDir, file);
+          const destFile = path.join(distDir, file);
+          fs.copyFileSync(srcFile, destFile);
+
+          // Also create matching folder/index.html (e.g. /shop -> /shop/index.html)
+          const baseName = file.replace(/\.html$/, '');
+          if (baseName !== 'index' && !baseName.startsWith('_')) {
+            const folderPath = path.join(distDir, baseName);
+            if (!fs.existsSync(folderPath)) {
+              fs.mkdirSync(folderPath, { recursive: true });
+            }
+            fs.copyFileSync(srcFile, path.join(folderPath, 'index.html'));
+          }
         }
+      }
+
+      // Pre-create category subroutes with index.html for direct 200 responses
+      const shopHtml = path.join(distDir, 'shop.html');
+      if (fs.existsSync(shopHtml)) {
+        const categories = ['bedsheets', 'pillows', 'duvets'];
+        for (const cat of categories) {
+          const catFolder = path.join(distDir, 'shop', cat);
+          fs.mkdirSync(catFolder, { recursive: true });
+          fs.copyFileSync(shopHtml, path.join(catFolder, 'index.html'));
+        }
+      }
+
+      // Also ensure product/ has index.html
+      const productFolder = path.join(distDir, 'product');
+      if (!fs.existsSync(productFolder)) {
+        fs.mkdirSync(productFolder, { recursive: true });
+      }
+      if (fs.existsSync(shopHtml)) {
+        fs.copyFileSync(shopHtml, path.join(productFolder, 'index.html'));
       }
     }
 
-    // 6. Generate production .htaccess with clean URL rewrites for Hostinger / LiteSpeed / Apache
+    // 6. Generate bulletproof production .htaccess without infinite redirect loops
     const htaccessContent = `<IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # 1. Prevent recursion: if already redirected internally, stop processing
+  RewriteCond %{ENV:REDIRECT_STATUS} 200
+  RewriteRule ^ - [L]
+
+  # 2. Do not rewrite existing files or folders (CSS, JS, images, directories)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # 3. Match exact .html files if requested without extension
   RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.*)$ $1.html [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)$ $1.html [L]
+
+  # 4. Match folder/index.html if available
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.+)$ $1/index.html [L]
+
+  # 5. Fallback for all other routes to index.html (SPA Fallback)
+  RewriteCond %{REQUEST_URI} !^/index\\.html$
   RewriteRule . /index.html [L]
 </IfModule>
 `;
     fs.writeFileSync(path.join(distDir, '.htaccess'), htaccessContent, 'utf8');
 
-    console.log('✓ Successfully prepared complete dist directory with root index.html, static assets, and .htaccess.');
+    console.log('✓ Successfully prepared complete dist directory with static subroutes, root index.html, and bulletproof .htaccess.');
   }
 } catch (err) {
   console.warn('Note on dist sync:', err.message);
