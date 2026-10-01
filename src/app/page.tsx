@@ -33,23 +33,25 @@ export default function HomePage() {
       <section className="relative w-full -mt-28 min-h-[92vh] flex items-end pb-16 overflow-hidden bg-surface-container-low">
         {/* Background Editorial Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-          {cms.hero.imageUrl?.startsWith("data:") ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={cms.hero.imageUrl}
-              alt="LOOMSDAY French flax linen bedding in serene natural morning light"
-              className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out"
-            />
-          ) : (
-            <Image
-              src={cms.hero.imageUrl || "/images/hero-bedding.jpg"}
-              alt="LOOMSDAY French flax linen bedding in serene natural morning light"
-              fill
-              priority
-              quality={95}
-              className="object-cover object-center scale-105 transition-transform duration-1000 ease-out"
-            />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={
+              cms?.hero?.imageUrl && cms.hero.imageUrl.trim().length > 0
+                ? cms.hero.imageUrl
+                : "/images/hero-bedding.jpg"
+            }
+            alt="LOOMSDAY French flax linen bedding in serene natural morning light"
+            className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out"
+            loading="eager"
+            // @ts-expect-error fetchpriority is standard in modern browsers
+            fetchpriority="high"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.src.endsWith("/images/hero-bedding.jpg")) {
+                target.src = "/images/hero-bedding.jpg";
+              }
+            }}
+          />
         </div>
 
         {/* Scrim overlays for pure editorial contrast */}
