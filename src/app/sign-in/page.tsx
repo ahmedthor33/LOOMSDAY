@@ -52,7 +52,7 @@ export default function SignInPage() {
 
   const handleQuickDemo = () => {
     demoLogin();
-    showToast("Signed in as Eleanor Vane (Sanctuary VIP).");
+    showToast("Signed in as Valued Patron.");
     router.push("/account");
   };
 
@@ -140,7 +140,7 @@ export default function SignInPage() {
                 Testing the Boutique?
               </p>
               <p className="font-body-sm text-xs text-on-surface-variant">
-                1-Click Instant VIP Access as Eleanor Vane
+                1-Click Instant Access as Valued Patron
               </p>
             </div>
             <button
@@ -218,7 +218,7 @@ export default function SignInPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="eleanor@atelier-nocturne.com"
+                  placeholder="patron@domain.com"
                   className="w-full h-12 px-4 rounded bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/40 font-body-md text-body-md transition-all duration-200 focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-secondary border border-surface-variant/50"
                 />
                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">

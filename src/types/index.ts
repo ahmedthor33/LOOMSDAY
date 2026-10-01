@@ -104,8 +104,11 @@ export interface OrderItem {
 export interface Order {
   id: string;
   userId?: string;
+  customerName?: string;
+  customerEmail?: string;
   createdAt: string;
   status: 'Processing' | 'In Transit' | 'Delivered' | 'Cancelled';
+  carrier?: string;
   trackingNumber: string;
   items: OrderItem[];
   subtotal: number;
@@ -113,6 +116,7 @@ export interface Order {
   discount: number;
   total: number;
   promoCode?: string;
+  paymentMethod?: string;
   shippingAddress: {
     name: string;
     street: string;
@@ -121,4 +125,91 @@ export interface Order {
     zipCode: string;
     country: string;
   };
+}
+
+export interface AdminCoupon {
+  id: string;
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  minSpend: number;
+  expiresAt?: string;
+  isActive: boolean;
+  usageCount: number;
+  maxUsage?: number;
+}
+
+export interface ShippingSettings {
+  freeShippingThreshold: number;
+  standardShippingFee: number;
+  expressShippingFee: number;
+  monogramThreshold: number;
+  estimatedDeliveryDays: string;
+}
+
+export interface StorefrontCms {
+  announcement: {
+    text: string;
+    enabled: boolean;
+    link: string;
+  };
+  hero: {
+    eyebrow: string;
+    headline: string;
+    subheadline: string;
+    primaryCtaText: string;
+    primaryCtaLink: string;
+    secondaryCtaText: string;
+    secondaryCtaLink: string;
+    imageUrl: string;
+  };
+  provenance: {
+    badge: string;
+    title: string;
+    paragraph1: string;
+    paragraph2: string;
+    foundedYear: string;
+  };
+}
+
+export interface PaymentMethodConfig {
+  id: string;
+  name: string;
+  accountTitle: string;
+  accountNumber: string;
+  bankName?: string;
+  iban?: string;
+  raastId?: string;
+  badge: string;
+  icon: string;
+  instructions: string;
+  isEnabled: boolean;
+  requiresProofReference?: boolean;
+  isCustom?: boolean;
+}
+
+export type PaymentMethodType = 'Cash on Delivery' | 'Bank Transfer' | 'JazzCash' | 'Easypaisa' | string;
+
+export interface AdminTransaction {
+  id: string;
+  orderId: string;
+  customerEmail: string;
+  amount: number;
+  gateway: string;
+  status: 'Captured' | 'Pending' | 'Refunded';
+  date: string;
+  last4?: string;
+  accountReference?: string;
+}
+
+export interface CrossSellItem {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  imageUrl: string;
+  slug: string;
+  size?: string;
+  colorName?: string;
+  colorHex?: string;
 }

@@ -207,9 +207,9 @@ export function CartDrawer() {
                         productSlug: cs.slug,
                         imageUrl: cs.imageUrl,
                         price: cs.price,
-                        size: cs.size,
-                        colorName: cs.colorName,
-                        colorHex: cs.colorHex,
+                        size: cs.size || "Standard",
+                        colorName: cs.colorName || "Natural",
+                        colorHex: cs.colorHex || "#ECEBE4",
                         inStock: true,
                       });
                     }}

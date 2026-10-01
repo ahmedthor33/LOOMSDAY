@@ -6,11 +6,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
+import { useAuth } from "@/context/AuthContext";
+import { useAdminStore, INITIAL_PAYMENT_METHODS } from "@/store/useAdminStore";
+import { AddressConfirmationModal } from "@/components/cart/AddressConfirmationModal";
+import { Order, PaymentMethodConfig } from "@/types";
 import { formatCurrency, calculateInstallments, MONOGRAM_THRESHOLD, FREE_SHIPPING_THRESHOLD } from "@/lib/utils";
 import { useToast } from "@/components/ui/Toast";
 
 export default function CartPage() {
   const router = useRouter();
+  const { user, profile } = useAuth();
+  const { addOrder, paymentMethods } = useAdminStore();
   const {
     items,
     removeItem,
@@ -24,6 +30,7 @@ export default function CartPage() {
     discountAmount,
     total,
     totalItemsCount,
+    clearCart,
   } = useCartStore();
 
   const { items: wishlistItems } = useWishlistStore();
@@ -32,6 +39,27 @@ export default function CartPage() {
   const [inputCode, setInputCode] = useState("");
   const [promoMessage, setPromoMessage] = useState("");
   const [isProcessingCheckout, setIsProcessingCheckout] = useState(false);
+
+  // Dynamic Payment Methods from Admin Atelier OS
+  const enabledPaymentMethods: PaymentMethodConfig[] = React.useMemo(() => {
+    const list = paymentMethods && paymentMethods.length > 0 ? paymentMethods : INITIAL_PAYMENT_METHODS;
+    return list.filter((m) => m.isEnabled);
+  }, [paymentMethods]);
+
+  const [selectedPaymentId, setSelectedPaymentId] = useState<string>("cod");
+  const [paymentRef, setPaymentRef] = useState("");
+
+  React.useEffect(() => {
+    if (enabledPaymentMethods.length > 0) {
+      const exists = enabledPaymentMethods.some((m) => m.id === selectedPaymentId);
+      if (!exists) {
+        setSelectedPaymentId(enabledPaymentMethods[0].id);
+      }
+    }
+  }, [enabledPaymentMethods, selectedPaymentId]);
+
+  const activePaymentMethod =
+    enabledPaymentMethods.find((m) => m.id === selectedPaymentId) || enabledPaymentMethods[0];
 
   const currentSubtotal = subtotal();
   const currentTotal = total();
@@ -55,16 +83,88 @@ export default function CartPage() {
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+
   const handleCheckout = () => {
     if (items.length === 0) return;
+    setIsAddressModalOpen(true);
+  };
+
+  const handleConfirmedOrder = (address: {
+    name: string;
+    phone: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    notes?: string;
+  }) => {
     setIsProcessingCheckout(true);
 
+    const paymentMethodTitle = activePaymentMethod ? activePaymentMethod.name : "Cash on Delivery (COD)";
+    const paymentMethodDisplay = paymentRef ? `${paymentMethodTitle} (Ref: ${paymentRef})` : paymentMethodTitle;
+
+    const newOrder: Order = {
+      id: "ORD-" + Math.floor(1000 + Math.random() * 9000),
+      userId: user?.id || "guest-pk",
+      customerName: address.name,
+      customerEmail: user?.email || `${address.phone.replace(/[^0-9]/g, "")}@loomsday.pk`,
+      createdAt: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+      status: "Processing",
+      carrier: "TCS Express Courier",
+      trackingNumber: "TCS-" + Math.floor(1000000 + Math.random() * 9000000),
+      paymentMethod: paymentMethodDisplay,
+      items: items.map((it) => ({
+        id: `item-${Date.now()}-${Math.random()}`,
+        productId: it.productId,
+        productName: it.productName,
+        productSlug: it.productSlug,
+        imageUrl: it.imageUrl,
+        price: it.price,
+        quantity: it.quantity,
+        size: it.size,
+        colorName: it.colorName,
+      })),
+      subtotal: currentSubtotal,
+      shipping: currentShipping,
+      discount: currentDiscount,
+      total: currentTotal,
+      promoCode: promoCode || undefined,
+      shippingAddress: {
+        name: address.name,
+        street: address.street + (address.notes ? ` (Note: ${address.notes})` : ""),
+        city: address.city,
+        state: address.state,
+        zipCode: address.zipCode,
+        country: "Pakistan",
+      },
+    };
+
     setTimeout(() => {
+      addOrder(newOrder);
       setIsProcessingCheckout(false);
-      showToast("Order reservation placed! Redirecting to boutique concierge...", "success");
+      setIsAddressModalOpen(false);
+      clearCart();
+      showToast(`Order #${newOrder.id} placed! Delivering via TCS to ${address.city}.`, "success");
       router.push("/account");
-    }, 1200);
+    }, 1000);
   };
+
+  if (!mounted) {
+    return (
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-24 text-center text-on-surface-variant">
+        <span className="material-symbols-outlined text-4xl animate-spin text-secondary">progress_activity</span>
+        <p className="font-label-eyebrow text-xs uppercase tracking-widest mt-4">Preparing Sanctuary Bag...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-8">
@@ -315,14 +415,139 @@ export default function CartPage() {
               )}
             </div>
 
+            {/* Payment Method Selector (Pakistan) */}
+            <div className="space-y-3 pt-2">
+              <div className="flex items-center justify-between">
+                <label className="block font-label-sm text-xs uppercase tracking-wider text-primary font-medium">
+                  Payment Method (Pakistan)
+                </label>
+                <span className="text-[10px] text-secondary font-label-eyebrow uppercase tracking-wider">
+                  {enabledPaymentMethods.length} Channels Active
+                </span>
+              </div>
+
+              {enabledPaymentMethods.length === 0 ? (
+                <div className="p-4 rounded-xl bg-surface-container border border-surface-variant text-xs text-on-surface-variant text-center space-y-1">
+                  <span className="material-symbols-outlined text-xl text-secondary">payment</span>
+                  <p className="font-semibold text-primary">No Payment Channels Currently Active</p>
+                  <p className="text-[11px]">Please contact store administration to enable payment gateways.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-2">
+                    {enabledPaymentMethods.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setSelectedPaymentId(m.id)}
+                        className={`p-3 rounded-lg border text-left transition-all flex flex-col justify-between ${
+                          selectedPaymentId === m.id
+                            ? "border-secondary bg-surface ring-1 ring-secondary/40 shadow-sm"
+                            : "border-surface-variant/50 bg-surface-container hover:border-surface-variant"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span className="material-symbols-outlined text-secondary text-lg">{m.icon}</span>
+                          <span className="text-[9px] uppercase tracking-wider font-semibold text-secondary bg-secondary/10 px-1.5 py-0.5 rounded">
+                            {m.badge}
+                          </span>
+                        </div>
+                        <span className="font-label-md text-xs text-primary font-medium mt-2">
+                          {m.name}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Dynamic Active Payment Details Box */}
+                  {activePaymentMethod && (
+                    <div className="p-3.5 rounded-xl bg-surface border border-secondary/30 text-xs space-y-2.5 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-secondary text-[11px] uppercase tracking-wider">
+                          {activePaymentMethod.name} Details
+                        </span>
+                        <span className="text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-semibold uppercase">
+                          Verified Channel
+                        </span>
+                      </div>
+
+                      <div className="space-y-1 text-[11px] text-on-surface">
+                        <p>
+                          <span className="text-on-surface-variant">Account Title:</span>{" "}
+                          <strong className="text-primary">{activePaymentMethod.accountTitle || "LOOMSDAY LUXURY BEDDING"}</strong>
+                        </p>
+
+                        {activePaymentMethod.accountNumber && (
+                          <p>
+                            <span className="text-on-surface-variant">Account / Phone:</span>{" "}
+                            <strong className="font-mono text-primary">{activePaymentMethod.accountNumber}</strong>
+                          </p>
+                        )}
+
+                        {activePaymentMethod.bankName && (
+                          <p>
+                            <span className="text-on-surface-variant">Bank / Channel:</span>{" "}
+                            <strong>{activePaymentMethod.bankName}</strong>
+                          </p>
+                        )}
+
+                        {activePaymentMethod.iban && (
+                          <p>
+                            <span className="text-on-surface-variant">IBAN:</span>{" "}
+                            <span className="font-mono text-[10px] text-secondary font-medium">{activePaymentMethod.iban}</span>
+                          </p>
+                        )}
+
+                        {activePaymentMethod.raastId && (
+                          <p>
+                            <span className="text-on-surface-variant">Raast ID:</span>{" "}
+                            <span className="font-mono text-primary">{activePaymentMethod.raastId}</span>
+                          </p>
+                        )}
+
+                        {activePaymentMethod.instructions && (
+                          <p className="text-[11px] text-on-surface-variant pt-1 leading-relaxed border-t border-surface-variant/30">
+                            {activePaymentMethod.instructions}
+                          </p>
+                        )}
+                      </div>
+
+                      {activePaymentMethod.requiresProofReference && (
+                        <div className="pt-1.5 border-t border-surface-variant/30">
+                          <label className="block text-[10px] uppercase font-label-eyebrow text-on-surface-variant mb-1">
+                            Sender Name / Mobile Number / Transaction TID
+                          </label>
+                          <input
+                            type="text"
+                            value={paymentRef}
+                            onChange={(e) => setPaymentRef(e.target.value)}
+                            placeholder="e.g. 0300-1234567 or Meezan TID / Transfer Ref..."
+                            className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-variant bg-surface-container-low text-primary focus:outline-none focus:border-secondary"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
             {/* Checkout Action */}
             <button
               type="button"
-              disabled={items.length === 0 || isProcessingCheckout}
+              disabled={items.length === 0 || isProcessingCheckout || enabledPaymentMethods.length === 0}
               onClick={handleCheckout}
               className="w-full h-12 rounded bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-md active:translate-y-0.5"
             >
-              <span>{isProcessingCheckout ? "Reserving Sanctuary Order..." : "Proceed to Checkout"}</span>
+              <span>
+                {isProcessingCheckout
+                  ? "Confirming Sanctuary Order..."
+                  : enabledPaymentMethods.length === 0
+                  ? "No Payment Channel Available"
+                  : activePaymentMethod?.id === "cod"
+                  ? `Place Order (${activePaymentMethod.name})`
+                  : `Proceed with ${activePaymentMethod?.name || "Payment"}`}
+              </span>
               <span className="material-symbols-outlined text-[18px]">lock</span>
             </button>
 
@@ -340,6 +565,24 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Interactive Delivery Address Confirmation Modal */}
+      <AddressConfirmationModal
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+        onConfirm={handleConfirmedOrder}
+        totalAmount={currentTotal}
+        paymentMethodLabel={activePaymentMethod ? activePaymentMethod.name : "Cash on Delivery (COD)"}
+        initialData={{
+          name: profile?.fullName || "Syed Ahmed",
+          phone: profile?.phone || "0300-1234567",
+          street: profile?.shippingAddress?.street || "House 14, Street 7, Phase 5, DHA",
+          city: profile?.shippingAddress?.city || "Lahore",
+          state: profile?.shippingAddress?.state || "Punjab",
+          zipCode: profile?.shippingAddress?.zipCode || "54000",
+        }}
+        isSubmitting={isProcessingCheckout}
+      />
     </div>
   );
 }

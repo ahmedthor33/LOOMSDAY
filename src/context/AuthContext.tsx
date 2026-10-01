@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { UserProfile } from "@/types";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
@@ -13,29 +13,64 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   demoLogin: () => void;
+  updateProfile: (updates: Partial<UserProfile>) => Promise<{ error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Default Demo User from Stitch design ("Eleanor Vane")
+// Clean Patron Profile template
 const DEMO_PROFILE: UserProfile = {
   id: "demo-user-1",
-  email: "eleanor@atelier-nocturne.com",
-  fullName: "Eleanor Vane",
-  phone: "+1 (555) 482-1928",
-  shippingAddress: {
-    street: "742 Evergreen Terrace, Suite 4B",
-    city: "New York",
-    state: "NY",
-    zipCode: "10012",
-    country: "United States",
-  },
+  email: "patron@loomsday.com",
+  fullName: "Valued Patron",
+  phone: "",
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const fetchProfileFromSupabase = useCallback(async (userId: string, email: string, metaName?: string) => {
+    if (!isSupabaseConfigured) return;
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", userId)
+        .single();
+
+      if (data && !error) {
+        setProfile({
+          id: userId,
+          email,
+          fullName: data.full_name || metaName || email.split("@")[0],
+          phone: data.phone || undefined,
+          shippingAddress: data.shipping_street
+            ? {
+                street: data.shipping_street,
+                city: data.shipping_city || "",
+                state: data.shipping_state || "",
+                zipCode: data.shipping_zip || "",
+                country: data.shipping_country || "United States",
+              }
+            : undefined,
+        });
+      } else {
+        setProfile((prev) => ({
+          id: userId,
+          email,
+          fullName: metaName || prev?.fullName || email.split("@")[0],
+          shippingAddress: prev?.shippingAddress,
+        }));
+      }
+    } catch (err) {
+      console.warn("Could not query profiles table:", err);
+    }
+  }, []);
 
   useEffect(() => {
     // Check local storage for persistent guest/demo session
@@ -53,27 +88,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isSupabaseConfigured) {
       const supabase = getSupabaseBrowserClient();
       if (supabase) {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-          if (session?.user) {
-            setUser({ id: session.user.id, email: session.user.email || "" });
-            setProfile({
-              id: session.user.id,
-              email: session.user.email || "",
-              fullName: session.user.user_metadata?.full_name || session.user.email?.split("@")[0],
-            });
-          }
-        });
-
-        const { data: authListener } = supabase.auth.onAuthStateChange(
-          (event, session) => {
+        supabase.auth
+          .getSession()
+          .then(({ data }) => {
+            const session = data?.session;
             if (session?.user) {
               const u = { id: session.user.id, email: session.user.email || "" };
               setUser(u);
-              setProfile({
-                id: session.user.id,
-                email: session.user.email || "",
-                fullName: session.user.user_metadata?.full_name,
-              });
+              fetchProfileFromSupabase(
+                session.user.id,
+                session.user.email || "",
+                session.user.user_metadata?.full_name
+              );
+            }
+          })
+          .catch((err: unknown) => {
+            console.warn("Error getting Supabase session:", err);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+          async (_event: string, session: { user?: { id: string; email?: string; user_metadata?: { full_name?: string } } } | null) => {
+            if (session?.user) {
+              const u = { id: session.user.id, email: session.user.email || "" };
+              setUser(u);
+              await fetchProfileFromSupabase(
+                session.user.id,
+                session.user.email || "",
+                session.user.user_metadata?.full_name
+              );
             } else {
               if (!localStorage.getItem("loomsday-user")) {
                 setUser(null);
@@ -90,16 +135,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     setIsLoading(false);
-  }, []);
+  }, [fetchProfileFromSupabase]);
 
   const signInWithEmail = async (email: string, password = ""): Promise<{ error?: string }> => {
     setIsLoading(true);
     if (isSupabaseConfigured) {
       const supabase = getSupabaseBrowserClient();
       if (supabase) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         setIsLoading(false);
         if (error) return { error: error.message };
+        if (data?.user) {
+          setUser({ id: data.user.id, email: data.user.email || email });
+          fetchProfileFromSupabase(
+            data.user.id,
+            data.user.email || email,
+            data.user.user_metadata?.full_name
+          );
+        }
         return {};
       }
     }
@@ -123,13 +176,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isSupabaseConfigured) {
       const supabase = getSupabaseBrowserClient();
       if (supabase) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: { data: { full_name: name } },
         });
         setIsLoading(false);
         if (error) return { error: error.message };
+        if (data?.user) {
+          setUser({ id: data.user.id, email: data.user.email || email });
+          setProfile({
+            id: data.user.id,
+            email: data.user.email || email,
+            fullName: name,
+            shippingAddress: DEMO_PROFILE.shippingAddress,
+          });
+        }
         return {};
       }
     }
@@ -181,6 +243,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("loomsday-user", JSON.stringify(DEMO_PROFILE));
   };
 
+  const updateProfile = async (updates: Partial<UserProfile>): Promise<{ error?: string }> => {
+    try {
+      const merged = { ...profile, ...updates } as UserProfile;
+      setProfile(merged);
+      localStorage.setItem("loomsday-user", JSON.stringify(merged));
+
+      if (isSupabaseConfigured && user) {
+        const supabase = getSupabaseBrowserClient();
+        if (supabase) {
+          const payload: Record<string, unknown> = {
+            id: user.id,
+            updated_at: new Date().toISOString(),
+          };
+          if (merged.fullName) payload.full_name = merged.fullName;
+          if (merged.phone) payload.phone = merged.phone;
+          if (merged.shippingAddress) {
+            payload.shipping_street = merged.shippingAddress.street;
+            payload.shipping_city = merged.shippingAddress.city;
+            payload.shipping_state = merged.shippingAddress.state;
+            payload.shipping_zip = merged.shippingAddress.zipCode;
+            payload.shipping_country = merged.shippingAddress.country;
+          }
+
+          const { error } = await supabase.from("profiles").upsert(payload);
+          if (error) {
+            console.warn("Note: Profile upsert returned:", error.message);
+            // Non-fatal if schema hasn't been run yet
+          }
+        }
+      }
+      return {};
+    } catch (err: unknown) {
+      return { error: err instanceof Error ? err.message : "Failed to update profile" };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -192,6 +290,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInWithGoogle,
         signOut,
         demoLogin,
+        updateProfile,
       }}
     >
       {children}

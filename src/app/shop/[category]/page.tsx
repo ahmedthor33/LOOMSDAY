@@ -3,7 +3,7 @@
 import React, { useState, useMemo, use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCTS } from "@/lib/products-data";
+import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 
@@ -28,6 +28,8 @@ const CATEGORY_META: Record<string, { title: string; subtitle: string; descripti
 export default function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const resolvedParams = use(params);
   const categorySlug = resolvedParams.category.toLowerCase();
+  const { products } = useAdminStore();
+  const allProducts = products || [];
 
   if (!["bedsheets", "pillows", "duvets"].includes(categorySlug)) {
     notFound();
@@ -51,7 +53,7 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return allProducts.filter((product) => {
       // Must match active route category
       if (product.category !== categorySlug) return false;
 
@@ -137,7 +139,7 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
         <div className="mt-8 pt-5 pb-4 bg-surface-container-low/60 rounded-xl px-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-surface-variant/30">
           <div className="flex items-center gap-3">
             <span className="font-label-sm text-xs uppercase tracking-wider text-on-surface-variant">
-              Showing {filteredProducts.length} of {PRODUCTS.filter((p) => p.category === categorySlug).length} pieces
+              Showing {filteredProducts.length} of {allProducts.filter((p) => p.category === categorySlug).length} pieces
             </span>
             {(filters.size || filters.color || filters.material || filters.maxPrice < 400) && (
               <button
@@ -220,7 +222,24 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
         </div>
 
         <div className="lg:col-span-9">
-          {filteredProducts.length === 0 ? (
+          {allProducts.filter((p) => p.category === categorySlug).length === 0 ? (
+            <div className="py-24 text-center space-y-4 bg-surface-container-low rounded-2xl p-10 border border-surface-variant/30 max-w-lg mx-auto">
+              <span className="material-symbols-outlined text-5xl text-secondary">inventory_2</span>
+              <h3 className="font-headline-sm text-2xl text-primary font-serif">Curating {meta.title}</h3>
+              <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                No sanctuary pieces are currently listed under this category. Visit the Admin Atelier to add products.
+              </p>
+              <div className="pt-2">
+                <Link
+                  href="/admin"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary font-label-md text-xs uppercase tracking-wider rounded shadow-sm hover:bg-neutral-800 transition-colors"
+                >
+                  <span>Open Admin Atelier</span>
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+              </div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="py-20 text-center space-y-4 bg-surface-container-low rounded-xl p-8 border border-surface-variant/30">
               <h3 className="font-headline-sm text-xl text-primary">No Matching Rest Pieces</h3>
               <p className="font-body-md text-sm text-on-surface-variant">

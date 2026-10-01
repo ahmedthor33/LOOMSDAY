@@ -102,7 +102,7 @@ export const useCartStore = create<CartState>()(
       shippingFee: () => {
         const sub = get().subtotal();
         if (sub === 0) return 0;
-        return sub >= FREE_SHIPPING_THRESHOLD ? 0 : 15;
+        return sub >= FREE_SHIPPING_THRESHOLD ? 0 : 350;
       },
 
       discountAmount: () => {

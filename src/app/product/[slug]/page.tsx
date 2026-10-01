@@ -4,7 +4,7 @@ import React, { useState, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCTS } from "@/lib/products-data";
+import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency, calculateInstallments } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
@@ -12,7 +12,9 @@ import { useToast } from "@/components/ui/Toast";
 
 export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
-  const product = PRODUCTS.find((p) => p.slug === resolvedParams.slug);
+  const { products } = useAdminStore();
+  const allProducts = products || [];
+  const product = allProducts.find((p) => p.slug === resolvedParams.slug);
 
   if (!product) {
     notFound();
@@ -503,7 +505,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           <div className="space-y-4">
             <div className="p-6 bg-surface-container-low rounded border border-surface-variant/30 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="font-label-md text-sm text-primary font-semibold">Eleanor Vane</span>
+                <span className="font-label-md text-sm text-primary font-semibold">Amina R.</span>
                 <span className="font-body-sm text-xs text-on-surface-variant">2 weeks ago</span>
               </div>
               <div className="flex text-secondary">

@@ -2,11 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { PRODUCTS } from "@/lib/products-data";
+import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 
 export default function ShopPage() {
+  const { products } = useAdminStore();
+  const allProducts = products || [];
+
   const [filters, setFilters] = useState<FilterState>({
     category: "all",
     size: "",
@@ -23,7 +26,7 @@ export default function ShopPage() {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return allProducts.filter((product) => {
       // Category filter
       if (filters.category !== "all" && product.category !== filters.category) {
         return false;
@@ -111,7 +114,7 @@ export default function ShopPage() {
                 Slow-Crafted Linens
               </span>
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-xs">
-                {PRODUCTS.length} Sanctuary Pieces
+                {allProducts.length} Sanctuary Pieces
               </span>
             </div>
             <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-primary tracking-tight">
@@ -254,7 +257,24 @@ export default function ShopPage() {
 
         {/* Right Product Grid */}
         <div className="lg:col-span-9">
-          {filteredProducts.length === 0 ? (
+          {allProducts.length === 0 ? (
+            <div className="py-24 text-center space-y-4 bg-surface-container-low rounded-2xl p-10 border border-surface-variant/30 max-w-lg mx-auto">
+              <span className="material-symbols-outlined text-5xl text-secondary">inventory_2</span>
+              <h3 className="font-headline-sm text-2xl text-primary font-serif">Curating New Sanctuary Pieces</h3>
+              <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                Our master weavers are currently tailoring and preparing the next suite of heirloom French flax bedding.
+              </p>
+              <div className="pt-2">
+                <Link
+                  href="/admin"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary font-label-md text-xs uppercase tracking-wider rounded shadow-sm hover:bg-neutral-800 transition-colors"
+                >
+                  <span>Open Admin Atelier</span>
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+              </div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="py-20 text-center space-y-4 bg-surface-container-low rounded-xl p-8 border border-surface-variant/30">
               <span className="material-symbols-outlined text-5xl text-on-surface-variant/50">search_off</span>
               <h3 className="font-headline-sm text-xl text-primary">No Matching Rest Pieces</h3>

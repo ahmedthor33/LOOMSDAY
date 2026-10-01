@@ -6,17 +6,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(amount);
+  // Convert or format to Pakistani Rupee (PKR / Rs.)
+  const pkrValue = amount > 0 && amount < 1000 ? amount * 100 : amount;
+  return `Rs. ${Math.round(pkrValue).toLocaleString("en-PK")}`;
 }
 
 export function calculateInstallments(amount: number, count = 4): string {
-  return formatCurrency(amount / count);
+  const pkrValue = amount > 0 && amount < 1000 ? amount * 100 : amount;
+  return formatCurrency(pkrValue / count);
 }
 
-export const FREE_SHIPPING_THRESHOLD = 100;
-export const MONOGRAM_THRESHOLD = 715;
+// Nationwide Pakistan thresholds in PKR
+export const FREE_SHIPPING_THRESHOLD = 5000; // Free delivery across Pakistan on orders over Rs. 5,000
+export const MONOGRAM_THRESHOLD = 35000; // Bespoke monogramming threshold (Rs. 35,000)
+export const STANDARD_SHIPPING_FEE = 350; // Standard courier delivery Rs. 350

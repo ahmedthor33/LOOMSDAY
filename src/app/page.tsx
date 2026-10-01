@@ -5,21 +5,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/products-data";
 import { ProductCard } from "@/components/product/ProductCard";
+import { useAdminStore } from "@/store/useAdminStore";
 
 export default function HomePage() {
+  const { cms, products } = useAdminStore();
   const [activeFilter, setActiveFilter] = useState<"all" | "linen" | "cotton" | "down">("all");
 
   const filterProducts = () => {
+    const list = products || [];
     if (activeFilter === "linen") {
-      return PRODUCTS.filter((p) => p.material.toLowerCase().includes("linen") || p.material.toLowerCase().includes("flax"));
+      return list.filter((p) => p.material.toLowerCase().includes("linen") || p.material.toLowerCase().includes("flax"));
     }
     if (activeFilter === "cotton") {
-      return PRODUCTS.filter((p) => p.material.toLowerCase().includes("cotton") || p.material.toLowerCase().includes("sateen"));
+      return list.filter((p) => p.material.toLowerCase().includes("cotton") || p.material.toLowerCase().includes("sateen"));
     }
     if (activeFilter === "down") {
-      return PRODUCTS.filter((p) => p.material.toLowerCase().includes("down") || p.category === "duvets");
+      return list.filter((p) => p.material.toLowerCase().includes("down") || p.category === "duvets");
     }
-    return PRODUCTS.slice(0, 4); // Top 4 Bestsellers for landing page
+    return list.slice(0, 4); // Top 4 Bestsellers for landing page
   };
 
   const displayedProducts = filterProducts();
@@ -29,17 +32,29 @@ export default function HomePage() {
       {/* 1. HERO SECTION */}
       <section className="relative w-full -mt-28 min-h-[92vh] flex items-end pb-16 overflow-hidden bg-surface-container-low">
         {/* Background Editorial Image */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-1000 ease-out scale-105"
-          style={{
-            backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCoGCxLRkGRSWdD8voHI2u-XCUnQDKQ3mQQsYCUqsJ-kcA4_6x8bU-OixgB8TyNmN6w6VyIDZdCuSiiwIqqdqbdNuAmeKAmoJB-iUfoXfbjZwj8VoLafvdEqHBYHPrmMZe_QZPA-EVV-tDPlZaLgsqaruaxYXpoep80TRrwZ1YpLN_4KxOS-3H80raCY6_hwrQXLDn_0GJ32s3smXhWddjDEJvU5D--awWchyxPA1OyNe9hpLzfUItXDQ')",
-          }}
-        />
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          {cms.hero.imageUrl?.startsWith("data:") ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={cms.hero.imageUrl}
+              alt="LOOMSDAY French flax linen bedding in serene natural morning light"
+              className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out"
+            />
+          ) : (
+            <Image
+              src={cms.hero.imageUrl || "/images/hero-bedding.jpg"}
+              alt="LOOMSDAY French flax linen bedding in serene natural morning light"
+              fill
+              priority
+              quality={95}
+              className="object-cover object-center scale-105 transition-transform duration-1000 ease-out"
+            />
+          )}
+        </div>
 
         {/* Scrim overlays for pure editorial contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/35 to-primary/10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-primary/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 via-primary/30 to-transparent" />
 
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 pt-44">
@@ -47,30 +62,30 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-3">
               <span className="w-8 h-[1px] bg-secondary-fixed" />
               <span className="font-label-eyebrow text-label-eyebrow tracking-[0.25em] text-secondary-fixed uppercase">
-                THE SPRING LINEN COLLECTION
+                {cms.hero.eyebrow}
               </span>
             </div>
 
             <h1 className="font-display-hero text-display-hero tracking-tight leading-[1.08] text-surface font-normal">
-              Sleep, <span className="italic font-display-hero text-secondary-fixed">elevated.</span>
+              {cms.hero.headline}
             </h1>
 
             <p className="font-body-lg text-body-lg text-surface-container-low max-w-xl font-light">
-              Woven in Northern France from 100% certified organic flax. Impossibly soft from night one, tailored for a lifetime of quiet rest.
+              {cms.hero.subheadline}
             </p>
 
             <div className="pt-4 flex flex-wrap items-center gap-6">
               <Link
-                href="/shop"
+                href={cms.hero.primaryCtaLink}
                 className="px-8 py-4 bg-surface text-primary font-label-md text-label-md uppercase tracking-widest hover:bg-secondary-fixed hover:text-on-secondary-fixed transition-all duration-300 shadow-xl hover:-translate-y-0.5 rounded"
               >
-                Shop the Collection
+                {cms.hero.primaryCtaText}
               </Link>
               <Link
-                href="/shop/duvets"
+                href={cms.hero.secondaryCtaLink}
                 className="group flex items-center gap-2 text-secondary-fixed font-label-md text-label-md uppercase tracking-widest hover:text-surface transition-colors py-3"
               >
-                <span>Discover Duvets</span>
+                <span>{cms.hero.secondaryCtaText}</span>
                 <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1.5 transition-transform">
                   arrow_forward
                 </span>
@@ -291,18 +306,28 @@ export default function HomePage() {
           </div>
 
           {/* 4-Col Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {displayedProducts.length === 0 ? (
+            <div className="py-16 text-center space-y-3 bg-surface-container-low rounded-2xl p-8 border border-surface-variant/30 max-w-xl mx-auto">
+              <span className="material-symbols-outlined text-4xl text-secondary">bedtime</span>
+              <h3 className="font-headline-sm text-xl text-primary font-serif">Curating New Bedding Pieces</h3>
+              <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                Our Normandy artisans and master tailors are weaving the next suite of heirloom French flax linen. Check back shortly or explore our bespoke collections.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {displayedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
 
           <div className="mt-12 text-center">
             <Link
               href="/shop"
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary font-label-md text-label-md uppercase tracking-widest hover:bg-neutral-800 transition-colors rounded shadow-sm"
             >
-              <span>View All 24 Rest Pieces</span>
+              <span>Explore The Collection</span>
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </Link>
           </div>
@@ -430,8 +455,8 @@ export default function HomePage() {
                 &ldquo;The drape of the French flax sheets feels like slipping into the linens of an ancient villa in Provence. Impossibly soft from day one.&rdquo;
               </blockquote>
               <div className="pt-2">
-                <p className="font-label-md text-primary font-medium">Eleanor Vane</p>
-                <p className="font-body-sm text-xs text-on-surface-variant">Verified Collector • New York</p>
+                <p className="font-label-md text-primary font-medium">Amina R.</p>
+                <p className="font-body-sm text-xs text-on-surface-variant">Verified Collector • Lahore</p>
               </div>
             </div>
 
@@ -447,8 +472,8 @@ export default function HomePage() {
                 &ldquo;The Cloud Goose Down insert is a masterpiece of thermal regulation. Weightless yet deeply comforting throughout chilly winter nights.&rdquo;
               </blockquote>
               <div className="pt-2">
-                <p className="font-label-md text-primary font-medium">Julian Thorne</p>
-                <p className="font-body-sm text-xs text-on-surface-variant">Architectural Designer • Copenhagen</p>
+                <p className="font-label-md text-primary font-medium">Julian T.</p>
+                <p className="font-body-sm text-xs text-on-surface-variant">Architectural Designer • Islamabad</p>
               </div>
             </div>
 
@@ -464,8 +489,8 @@ export default function HomePage() {
                 &ldquo;I have thrown away all our old sateen sets. LOOMSDAY represents the golden age of slow textile weaving.&rdquo;
               </blockquote>
               <div className="pt-2">
-                <p className="font-label-md text-primary font-medium">Amara C.</p>
-                <p className="font-body-sm text-xs text-on-surface-variant">Verified Collector • London</p>
+                <p className="font-label-md text-primary font-medium">Zainab K.</p>
+                <p className="font-body-sm text-xs text-on-surface-variant">Verified Collector • Karachi</p>
               </div>
             </div>
           </div>

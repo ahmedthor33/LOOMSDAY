@@ -211,7 +211,7 @@ export default function SignUpPage() {
                   required
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="Eleanor"
+                  placeholder="Fatima"
                   className="w-full px-4 h-12 bg-surface-container-low text-on-surface rounded placeholder:text-on-surface-variant/40 font-body-md text-sm border border-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-secondary"
                 />
               </div>
@@ -224,7 +224,7 @@ export default function SignUpPage() {
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Vane"
+                  placeholder="Khan"
                   className="w-full px-4 h-12 bg-surface-container-low text-on-surface rounded placeholder:text-on-surface-variant/40 font-body-md text-sm border border-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-secondary"
                 />
               </div>
@@ -240,7 +240,7 @@ export default function SignUpPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="eleanor.vane@domain.com"
+                placeholder="patron@domain.com"
                 className="w-full px-4 h-12 bg-surface-container-low text-on-surface rounded placeholder:text-on-surface-variant/40 font-body-md text-sm border border-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-secondary"
               />
             </div>
