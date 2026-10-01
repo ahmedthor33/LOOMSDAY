@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>LOOMSDAY | Elevated Sleep</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#fcf9f4", "tertiary-fixed": "#eae1d2", "outline": "#747878", "on-surface": "#1c1c19", "surface-container-high": "#ebe8e3", "primary-fixed-dim": "#c8c6c5", "inverse-primary": "#c8c6c5", "on-primary-fixed-variant": "#474746", "primary": "#010101", "tertiary-container": "#201c13", "primary-container": "#1c1c1c", "on-secondary": "#ffffff", "on-tertiary-container": "#8b8477", "on-secondary-container": "#775f33", "on-background": "#1c1c19", "secondary": "#735b30", "surface-variant": "#e5e2dd", "on-primary": "#ffffff", "on-secondary-fixed-variant": "#59431b", "on-tertiary-fixed-variant": "#4b463b", "on-primary-container": "#858484", "tertiary": "#030200", "error": "#ba1a1a", "tertiary-fixed-dim": "#cec5b7", "surface-tint": "#5f5e5e", "on-tertiary": "#ffffff", "inverse-on-surface": "#f3f0eb", "error-container": "#ffdad6", "surface-container": "#f0ede9", "on-error-container": "#93000a", "primary-fixed": "#e5e2e1", "outline-variant": "#c4c7c7", "on-surface-variant": "#444748", "surface-container-lowest": "#ffffff", "surface-container-low": "#f6f3ee", "surface-container-highest": "#e5e2dd", "on-error": "#ffffff", "surface-bright": "#fcf9f4", "surface-dim": "#dcdad5", "on-tertiary-fixed": "#1f1b12", "surface": "#fcf9f4", "secondary-fixed": "#ffdea8", "inverse-surface": "#31302d", "on-primary-fixed": "#1b1b1b", "on-secondary-fixed": "#271900", "secondary-container": "#fcdba5", "secondary-fixed-dim": "#e2c28e" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "gutter-mobile": "1rem", "space-xl": "4rem", "gutter": "1.5rem", "margin": "3.5rem", "space-lg": "2.5rem", "space-sm": "0.75rem", "space-md": "1.5rem", "margin-mobile": "1.25rem", "space-xs": "0.375rem" }, "fontFamily": { "label-sm": ["Inter"], "display-hero-mobile": ["Playfair Display"], "headline-lg": ["Playfair Display"], "label-md": ["Inter"], "body-md": ["Inter"], "headline-md": ["Playfair Display"], "body-lg": ["Inter"], "label-eyebrow": ["Inter"], "headline-sm": ["Playfair Display"], "display-hero": ["Playfair Display"], "body-sm": ["Inter"], "headline-lg-mobile": ["Playfair Display"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.12em", "fontWeight": "500" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.08em", "fontWeight": "500" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "300" }], "label-eyebrow": ["11px", { "lineHeight": "16px", "letterSpacing": "0.2em", "fontWeight": "500" }], "headline-sm": ["22px", { "lineHeight": "30px", "fontWeight": "500" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,28,28,0.04)]"><div class="bg-surface-container text-on-surface-variant flex items-center justify-center py-2 px-margin text-center tracking-widest uppercase font-label-eyebrow text-label-eyebrow border-b border-surface-variant/40"><span class="text-secondary mr-2">✦</span>COMPLIMENTARY SHIPPING ON ORDERS OVER $100<span class="text-secondary ml-2">✦</span></div><div class="h-20 max-w-[1440px] mx-auto px-margin flex items-center justify-between gap-8"><div class="flex items-center gap-10"><a class="flex items-center gap-3 group" data-path="landing" href="#"><img alt="LOOMSDAY Wordmark Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XkbhpO4WI8CcTsRczmmW-eOD2FFFbmj329t-TFWFhNHl_SYCAPrmxKeexJ1BL5I5JGK5FdOfuxGH72_cACdMMJn-odKjvQSqpAJIG1sl21mEPGuENElECzui7MbkNzMocVwvfGmFN16h3N7V_bWuB9v9wfj5YHq9cnz5yH5YCUHVIDoyG-uOHoVPhcfnUyvKf-IIfBOiQU4Tc5kAhu7TWU3ln4tEnn7qd9LF4rldRRhvzAdWEJRMbKl2kV"/><span class="font-headline-sm text-headline-sm tracking-tight text-primary uppercase">LOOMSDAY</span></a><nav class="hidden xl:flex items-center gap-8" data-active-classes="text-primary font-medium border-b border-primary pb-1"><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="plp" href="#">Bedsheets</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="plp" href="#">Pillows &amp; Covers</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="plp" href="#">Duvets</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="landing" href="#">Craft &amp; About</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="landing" href="#">Journal</a></nav></div><div class="flex items-center gap-6"><div class="hidden md:flex items-center text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase cursor-pointer hover:text-on-surface transition-colors"><span>USD $</span></div><button aria-label="Search" class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[22px]">search</span></button><a aria-label="Wishlist" class="relative text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" data-path="wishlist" href="#"><span class="material-symbols-outlined text-[22px]">favorite</span><span class="absolute -top-1.5 -right-2 bg-secondary text-on-secondary font-label-sm text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium leading-none">2</span></a><a aria-label="Shopping Cart" class="relative text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" data-path="cart" href="#"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute -top-1.5 -right-2 bg-primary text-on-primary font-label-sm text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium leading-none">3</span></a><a aria-label="Account" class="flex items-center gap-2 pl-2" data-path="signin" href="#"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant/80 hover:ring-secondary transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSH3AertD5W5cFYCtpMGdVC3IQpLZsROJxCWpRUtyd9hGo1dZblcdD2lCbrIUW1vtEqFP701DqqMjuEhB_AqOyZg-Hqw_BlSEpklNh8qE3PH5WD24qxQrGoXi9SA7jsfhQCw69uqP8g2E-A2igpPgKLlhDXRY_hRimeyFa9xoqoKje8immHKT0ApV4z7QD06GBnK0YA4a6GCbvcNCj4oA0_o7XdgKpztJH34GmfPocL3uzl6rvomWiwQ"/></a></div></div></header><main class="w-full pt-28 bg-surface flex-1"><div class="max-w-[1440px] mx-auto px-margin"><div class="flex flex-col w-full">
+<!-- Micro Breadcrumb & Category Tracker -->
+<nav class="flex items-center gap-2 mb-6 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest">
+<a class="hover:text-primary transition-colors" data-path="landing" href="#">Home</a>
+<span>/</span>
+<a class="hover:text-primary transition-colors" data-path="plp" href="#">Bedsheets</a>
+<span>/</span>
+<span class="text-primary font-medium">French Flax Linen Set</span>
+</nav>
+<!-- Section 1: Main Product Showcase (Split Grid 60/40) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative items-start">
+<!-- Left Column (60%): High-Fashion Editorial Gallery -->
+<div class="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 lg:gap-6">
+<!-- Thumbnail Strip -->
+<div class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible shrink-0 pb-2 md:pb-0" id="gallery-strip">
+<button class="thumb-btn relative w-20 h-24 rounded overflow-hidden shadow-sm transition-all focus:outline-none ring-2 ring-primary" onclick="switchGalleryImage(0)" type="button">
+<img class="w-full h-full object-cover" data-alt="Close up shot of natural french flax linen bedding illuminated by warm early morning sunbeams showing luxurious soft crinkled texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD00i2AEdWa1ZmM8iPW5V3ESvAqIR743p80UFxJrvJGUtGwOfyJnQPzh58GYWwQp_NdA3nlXg3Ag2058VsfRBLD29nbcH_e699AbvG54s_2aXkfqydR5dKxSgFsU_DSmMlOM78Z_LwE_gLBiVxnKKAwVDn2MGv-CiDKxoQ-sVy3BWPUIF2QJkyAYLQSvNq-gICYAzeg6KMGe-mxMgNbcYB-VgyL2j1MvuSevA25HFRFemwkmy_jBkj-GQ"/>
+</button>
+<button class="thumb-btn relative w-20 h-24 rounded overflow-hidden shadow-sm opacity-70 hover:opacity-100 transition-all focus:outline-none" onclick="switchGalleryImage(1)" type="button">
+<img class="w-full h-full object-cover" data-alt="Macro textural weave view of authentic French Normandy flax linen fabric showing organic slubs and natural earthy ecru fibers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy3FKm8z8HdY1prOMc94xIOhSYz7NHLawmHjW6oZqnQhzDvKgWYI-k1FbXUYQgvjsXE29yd86pCxsCtvqLsWWmQ6cuirfMBxq1IWgdi1d58Zzrq3JjtFTeko2upefCNRHmKiHlbFhR5JYRuuVQq7ZZ-JVnTv5RIa0jVIPSwZaQNK7CXUk1BJpgatEVa7aDNT7I1tE1UveeENAfTy8mezCEeq1c5YsB-wKXG0er7TweutoqB9IghaqbfA"/>
+</button>
+<button class="thumb-btn relative w-20 h-24 rounded overflow-hidden shadow-sm opacity-70 hover:opacity-100 transition-all focus:outline-none" onclick="switchGalleryImage(2)" type="button">
+<img class="w-full h-full object-cover" data-alt="Neatly stacked warm ivory and soft sand washed linen sheets folded gently atop a minimalist solid white oak bedroom bench" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfLLFw2WH_qNhLQF957rsfjy486tgIpotocui0CBdJZqxW9tY6NJCp_aHOrQoxGqLwpfwrUKaYrhgkLs05fv5vUpWLTfS09YXSIdlOAhdqZr_jL2z48udRzfGN8eHccYOsre0JaYoNT-egUyqtEWi3NYBslPEQDqgj3A68moFkiw3gAzwXPBaEcgdtdpaIbWO5zNBuqhMZ0TfT3PfCaF9Pj0qMS4vMDqqpaDryEJ_bgX8m_E6X1ZxF5w"/>
+</button>
+<button class="thumb-btn relative w-20 h-24 rounded overflow-hidden shadow-sm opacity-70 hover:opacity-100 transition-all focus:outline-none" onclick="switchGalleryImage(3)" type="button">
+<img class="w-full h-full object-cover" data-alt="Detailed close-up of tailored envelope seam of an unironed organic flax linen pillowcase on a serene down pillow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC67jXQbA49MzDskFk-ObAlqr9x12dMpkYxzqIg0gnboTkJYAzdjK_Ke2BV0GqHU2AQTKUMcCJsW-_DB21blkMnO3lj_R376tS1lvcaUPD2NJHannGetaRzNx8ib6aeuMyGC2g-4Z6qcZuk_dLkROJ8L_z7znKVGbCnCZwJspCt2H_v0VWS3rO_517G7ZinqHdLGN7Pk2z54AcSZE0m5YwwC8bmi6GPOYJRknRtfip4dY-ru4M6eypJtg"/>
+</button>
+<button class="thumb-btn relative w-20 h-24 rounded overflow-hidden shadow-sm opacity-70 hover:opacity-100 transition-all focus:outline-none" onclick="switchGalleryImage(4)" type="button">
+<img class="w-full h-full object-cover" data-alt="Wide serene luxury suite bedroom bathed in tranquil golden hour glow with French flax linen bed sheets effortlessly draped" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt20kuK5O8HTR0gU9CUsQk_u_j6-UW8mWutLIpnKZeUsfgm1iB2Qns3oX9fZFfMpWOAoIji5m-0yYHsIIbsccwX3Pw6V9F0hFatSdBdHdglTpKog5mo-A_ofuL5ukHWefOOZqfRlVKY7L8b6HR8VWIglAE1CSXmV5VJT6hw2zS3Vn_ZLRUFZQWZDLqOM-wnbVEUAmz7q7NzJwASkHCWD5Ba9i4WYHqWRcwRNgMdeHNzJ1GrIK58gbNkw"/>
+</button>
+</div>
+<!-- Main Visual Stage with Badges -->
+<div class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container shadow-md group">
+<img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" data-alt="Sumptuous French flax linen bedsheet set effortlessly draped over a low-profile platform bed in tranquil morning sunlight with soft golden shadows" id="main-product-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ"/>
+<!-- Floating Certification Badge -->
+<div class="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1.5 rounded shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface tracking-wider">OEKO-TEX® Standard 100</span>
+</div>
+<!-- Zoom Cue -->
+<div class="absolute bottom-4 right-4 bg-surface/85 backdrop-blur-sm p-2 rounded-full text-on-surface shadow-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+<span class="material-symbols-outlined text-[20px]">zoom_in</span>
+</div>
+<!-- Material Origin Note -->
+<div class="absolute bottom-4 left-4 hidden sm:flex items-center gap-2 bg-surface-container-high/80 backdrop-blur-sm px-3 py-1 rounded">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Stone-Washed Normandy Flax</span>
+</div>
+</div>
+</div>
+<!-- Right Column (40%): Sticky Merchandising & Purchase Module -->
+<div class="lg:col-span-5 flex flex-col lg:sticky lg:top-24 space-y-6">
+<!-- Eyebrow & Badges -->
+<div class="flex items-center justify-between">
+<span class="inline-block bg-surface-container-high text-secondary px-2.5 py-1 rounded font-label-eyebrow text-label-eyebrow uppercase tracking-widest font-medium">
+          BEST SELLER • 100% NORMANDY FLAX
+        </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> Limited Autumn Batch
+        </span>
+</div>
+<!-- Title & Price Block -->
+<div class="space-y-2">
+<h1 class="font-display-hero text-headline-lg text-primary leading-tight">
+          The French Flax Linen Sheet Set
+        </h1>
+<div class="flex items-baseline gap-4 pt-1">
+<span class="font-headline-md text-headline-md text-primary" id="price-display">$285</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Includes taxes &amp; duties</span>
+</div>
+<!-- Installment Banner -->
+<div class="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low px-3 py-2 rounded">
+<span class="material-symbols-outlined text-[18px] text-secondary">payments</span>
+<span>Or 4 interest-free installments of <strong class="text-primary font-medium" id="installment-price">$71.25</strong> with</span>
+<span class="font-label-sm uppercase font-semibold text-primary">Klarna</span>
+<span class="text-on-surface-variant/50">•</span>
+<span class="font-label-sm uppercase font-semibold text-primary">Afterpay</span>
+</div>
+</div>
+<!-- Rating & Social Proof -->
+<div class="flex items-center gap-3">
+<div class="flex items-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-md text-label-md font-semibold text-primary">4.9</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">
+          (<a class="underline hover:text-primary transition-colors" href="#reviews-anchor">438 Verified Reviews</a>)
+        </span>
+<span class="text-on-surface-variant/40">•</span>
+<button class="font-label-sm text-label-sm text-secondary hover:underline uppercase tracking-wider" type="button">Write a review</button>
+</div>
+<!-- Editorial Summary -->
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Crafted from the finest French flax, pre-washed with volcanic stones for signature lived-in drape. Breathable, naturally hypoallergenic, and designed to grow softer with every sleep.
+      </p>
+<!-- Color Selector -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+            Color: <strong class="text-primary font-medium" id="selected-color-label">Warm Ivory</strong>
+</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Naturally Milled Pigment</span>
+</div>
+<div class="flex items-center gap-3" id="color-swatches">
+<!-- Swatch: Warm Ivory (Active) -->
+<button aria-label="Warm Ivory" class="swatch-btn relative w-8 h-8 rounded-full bg-[#FAF7F2] shadow-sm ring-2 ring-primary ring-offset-2 ring-offset-surface transition-all" onclick="selectColor(this, 'Warm Ivory')" type="button">
+<span class="sr-only">Warm Ivory</span>
+</button>
+<!-- Swatch: Soft Sand -->
+<button aria-label="Soft Sand" class="swatch-btn relative w-8 h-8 rounded-full bg-[#E8DFD0] shadow-sm hover:scale-110 transition-all" onclick="selectColor(this, 'Soft Sand')" type="button">
+<span class="sr-only">Soft Sand</span>
+</button>
+<!-- Swatch: Muted Sage -->
+<button aria-label="Muted Sage" class="swatch-btn relative w-8 h-8 rounded-full bg-[#C2C9BC] shadow-sm hover:scale-110 transition-all" onclick="selectColor(this, 'Muted Sage')" type="button">
+<span class="sr-only">Muted Sage</span>
+</button>
+<!-- Swatch: Dune Mist -->
+<button aria-label="Dune Mist" class="swatch-btn relative w-8 h-8 rounded-full bg-[#D6CEBF] shadow-sm hover:scale-110 transition-all" onclick="selectColor(this, 'Dune Mist')" type="button">
+<span class="sr-only">Dune Mist</span>
+</button>
+<!-- Swatch: Charcoal -->
+<button aria-label="French Charcoal" class="swatch-btn relative w-8 h-8 rounded-full bg-[#3B3A36] shadow-sm hover:scale-110 transition-all" onclick="selectColor(this, 'French Charcoal')" type="button">
+<span class="sr-only">French Charcoal</span>
+</button>
+</div>
+</div>
+<!-- Size Selector -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Bed Size</span>
+<button class="font-label-sm text-label-sm text-secondary hover:underline uppercase tracking-wider flex items-center gap-1" onclick="toggleSizeModal(true)" type="button">
+<span class="material-symbols-outlined text-[16px]">straighten</span> Size &amp; Fit Guide
+          </button>
+</div>
+<div class="grid grid-cols-4 gap-2" id="size-options">
+<button class="size-pill py-3 rounded text-center font-label-md text-label-md bg-surface-container hover:bg-surface-variant transition-colors flex flex-col items-center" onclick="selectSize(this, 'Full', 265)" type="button">
+<span class="font-medium text-primary">Full</span>
+<span class="text-[10px] text-on-surface-variant mt-0.5">$265</span>
+</button>
+<button class="size-pill py-3 rounded text-center font-label-md text-label-md bg-primary text-on-primary transition-colors flex flex-col items-center shadow-sm" onclick="selectSize(this, 'Queen', 285)" type="button">
+<span class="font-medium">Queen</span>
+<span class="text-[10px] text-primary-fixed-dim mt-0.5">$285</span>
+</button>
+<button class="size-pill py-3 rounded text-center font-label-md text-label-md bg-surface-container hover:bg-surface-variant transition-colors flex flex-col items-center" onclick="selectSize(this, 'King', 310)" type="button">
+<span class="font-medium text-primary">King</span>
+<span class="text-[10px] text-on-surface-variant mt-0.5">$310</span>
+</button>
+<button class="size-pill py-3 rounded text-center font-label-md text-label-md bg-surface-container hover:bg-surface-variant transition-colors flex flex-col items-center" onclick="selectSize(this, 'Cal King', 315)" type="button">
+<span class="font-medium text-primary">Cal King</span>
+<span class="text-[10px] text-on-surface-variant mt-0.5">$315</span>
+</button>
+</div>
+</div>
+<!-- What's Included Drawer / Note -->
+<div class="bg-surface-container-low p-4 rounded space-y-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">inventory_2</span> Suite Contents
+        </span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          1 Deep Fitted Sheet (fits mattresses up to 16" deep with 360° elastic hem), 1 Draped Flat Sheet, and 2 Tailored Envelope Pillowcases.
+        </p>
+</div>
+<!-- Quantity + Add to Cart Primary Action -->
+<div class="flex items-center gap-3 pt-2">
+<!-- Quantity Stepper -->
+<div class="flex items-center bg-surface-container rounded h-12 px-2 shrink-0">
+<button aria-label="Decrease quantity" class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 transition-transform" onclick="updateQty(-1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="w-8 text-center font-label-md text-label-md font-semibold text-primary select-none" id="qty-counter">1</span>
+<button aria-label="Increase quantity" class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 transition-transform" onclick="updateQty(1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<!-- Add to Cart CTA -->
+<button class="flex-1 h-12 bg-primary text-on-primary font-label-md text-label-md uppercase tracking-widest font-semibold rounded hover:bg-neutral-800 transition-all flex items-center justify-center gap-2 shadow-sm active:translate-y-0.5" id="add-to-cart-btn" onclick="triggerCartToast()" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+<span id="btn-text">Add to Cart — $285</span>
+</button>
+<!-- Wishlist Button -->
+<button aria-label="Add to Wishlist" class="w-12 h-12 bg-surface-container hover:bg-surface-variant rounded flex items-center justify-center text-on-surface transition-colors" onclick="toggleWishlist(this)" type="button">
+<span class="material-symbols-outlined text-[20px]" id="wishlist-icon">favorite_border</span>
+</button>
+</div>
+<!-- Value Proposition Micro-Bar -->
+<div class="grid grid-cols-3 gap-2 pt-4 bg-surface-container/60 p-3.5 rounded text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[20px] text-secondary mb-1">local_shipping</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider text-primary font-medium">Free Shipping</span>
+<span class="text-[11px] text-on-surface-variant font-body-sm leading-tight">Orders over $100</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[20px] text-secondary mb-1">hotel</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider text-primary font-medium">30-Night Trial</span>
+<span class="text-[11px] text-on-surface-variant font-body-sm leading-tight">Wash it, sleep on it</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[20px] text-secondary mb-1">workspace_premium</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider text-primary font-medium">Lifetime Care</span>
+<span class="text-[11px] text-on-surface-variant font-body-sm leading-tight">Artisan warranty</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Architectural Details & Specifications Accordion -->
+<section class="mt-20 pt-12">
+<div class="max-w-4xl mx-auto space-y-6">
+<div class="text-center space-y-2 mb-10">
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">TRANSPARENCY &amp; CARE</p>
+<h2 class="font-headline-lg text-headline-lg text-primary">Artisanal Specifications</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Every thread accounted for, from coastal French fields to your dawn repose.</p>
+</div>
+<div class="space-y-3" id="pdp-accordion-group">
+<!-- Item 1: Dimensions -->
+<div class="bg-surface-container rounded-lg overflow-hidden transition-colors">
+<button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none" onclick="toggleAccordion('acc-dimensions', this)" type="button">
+<span class="font-headline-sm text-headline-sm text-primary flex items-center gap-3">
+<span class="font-label-sm text-secondary uppercase tracking-widest font-mono">01.</span>
+              Details &amp; Dimensions
+            </span>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 acc-icon">expand_more</span>
+</button>
+<div class="hidden px-6 pb-6 pt-1 text-on-surface-variant font-body-md text-body-md space-y-4" id="acc-dimensions">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+<div class="bg-surface-container-high/60 p-4 rounded">
+<p class="font-label-sm uppercase text-primary font-medium">Fitted Sheet</p>
+<p class="mt-1 font-body-sm text-body-sm">60" W × 80" L + 16" deep pocket. Features high-tensile 360° elastic banding to fit any hybrid or deep pillow-top mattress snug without slipping.</p>
+</div>
+<div class="bg-surface-container-high/60 p-4 rounded">
+<p class="font-label-sm uppercase text-primary font-medium">Flat Sheet</p>
+<p class="mt-1 font-body-sm text-body-sm">96" W × 108" L with a generous 4" double-turned decorative top cuff that hangs effortlessly with bespoke proportion.</p>
+</div>
+<div class="bg-surface-container-high/60 p-4 rounded">
+<p class="font-label-sm uppercase text-primary font-medium">Pillowcases (Pair)</p>
+<p class="mt-1 font-body-sm text-body-sm">20" W × 30" L. Deep interior 8" envelope enclosure keeps pillow inserts completely concealed for a pristine hotel finish.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2: Materials & Sustainability -->
+<div class="bg-surface-container rounded-lg overflow-hidden transition-colors">
+<button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none" onclick="toggleAccordion('acc-materials', this)" type="button">
+<span class="font-headline-sm text-headline-sm text-primary flex items-center gap-3">
+<span class="font-label-sm text-secondary uppercase tracking-widest font-mono">02.</span>
+              Materials &amp; Sustainability
+            </span>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 acc-icon">expand_more</span>
+</button>
+<div class="hidden px-6 pb-6 pt-1 text-on-surface-variant font-body-md text-body-md space-y-4" id="acc-materials">
+<p>100% long-staple French Flax sourced exclusively from multi-generational agricultural partners in Normandy, France. Rain-fed and grown with zero synthetic irrigation or genetic intervention.</p>
+<div class="flex flex-wrap gap-3 pt-2">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px] text-secondary">eco</span> OEKO-TEX Standard 100 Certified (No Harmful Chemicals)
+              </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px] text-secondary">water_drop</span> Pre-washed with volcanic stones &amp; biodegradable enzymes
+              </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px] text-secondary">public</span> Carbon-Neutral Weaving Mill in Northern Portugal
+              </span>
+</div>
+</div>
+</div>
+<!-- Item 3: Care Instructions -->
+<div class="bg-surface-container rounded-lg overflow-hidden transition-colors">
+<button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none" onclick="toggleAccordion('acc-care', this)" type="button">
+<span class="font-headline-sm text-headline-sm text-primary flex items-center gap-3">
+<span class="font-label-sm text-secondary uppercase tracking-widest font-mono">03.</span>
+              Care &amp; Longevity Guide
+            </span>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 acc-icon">expand_more</span>
+</button>
+<div class="hidden px-6 pb-6 pt-1 text-on-surface-variant font-body-md text-body-md space-y-4" id="acc-care">
+<p>French linen thrives with casual simplicity. Do not dry clean or use optical brighteners. The more you wash and live in it, the more relaxed and buttery it becomes.</p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+<div class="p-3 bg-surface-container-high rounded">
+<span class="font-label-sm uppercase text-primary font-medium block">Machine Wash</span>
+<span class="font-body-sm text-body-sm">Gentle cycle with cool or warm water (max 40°C). Use mild liquid detergent.</span>
+</div>
+<div class="p-3 bg-surface-container-high rounded">
+<span class="font-label-sm uppercase text-primary font-medium block">Tumble Dry</span>
+<span class="font-body-sm text-body-sm">Tumble dry on low heat. Remove while slightly damp to avoid fiber brittleness.</span>
+</div>
+<div class="p-3 bg-surface-container-high rounded">
+<span class="font-label-sm uppercase text-primary font-medium block">No Iron Required</span>
+<span class="font-body-sm text-body-sm">Embrace the signature natural ripples and tactile crinkles of unpressed linen.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 4: Complimentary Shipping & Returns -->
+<div class="bg-surface-container rounded-lg overflow-hidden transition-colors">
+<button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none" onclick="toggleAccordion('acc-shipping', this)" type="button">
+<span class="font-headline-sm text-headline-sm text-primary flex items-center gap-3">
+<span class="font-label-sm text-secondary uppercase tracking-widest font-mono">04.</span>
+              Complimentary Shipping &amp; Returns
+            </span>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 acc-icon">expand_more</span>
+</button>
+<div class="hidden px-6 pb-6 pt-1 text-on-surface-variant font-body-md text-body-md space-y-3" id="acc-shipping">
+<p>This item qualifies for complimentary FedEx Ground shipping within the continental United States. Packed thoughtfully in a reusable matching linen travel tote bag with zero single-use plastics.</p>
+<p>Take up to 30 nights to test the drape and breatheability. If it does not elevate your sleep sanctuary, return it for a full refund via our prepaid return label. Gently laundered returns are laundered and donated to local women's shelters.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: 'The Fabric Difference' Feature Module (Comparison Matrix) -->
+<section class="mt-24 pt-12 pb-16 bg-surface-container-low -mx-margin px-margin rounded-xl shadow-sm">
+<div class="max-w-5xl mx-auto space-y-12">
+<div class="text-center space-y-3">
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">TACTILE SCIENCE</p>
+<h2 class="font-headline-lg text-headline-lg text-primary">The Fabric Difference</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mx-auto">
+          Why Normandy flax outperforms mass-market cotton and synthetic weaves across every biological sleep benchmark.
+        </p>
+</div>
+<!-- Feature Comparison Matrix -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[640px]">
+<thead>
+<tr>
+<th class="p-4 font-label-md text-label-md uppercase text-on-surface-variant tracking-wider w-1/4">Metric</th>
+<th class="p-4 font-headline-sm text-headline-sm text-primary bg-surface-container rounded-t-lg w-1/4 text-center">
+                LOOMSDAY Flax
+                <span class="block font-label-sm text-label-sm text-secondary uppercase tracking-wider font-normal mt-1">100% Normandy</span>
+</th>
+<th class="p-4 font-label-md text-label-md uppercase text-on-surface-variant text-center w-1/4">Traditional Cotton</th>
+<th class="p-4 font-label-md text-label-md uppercase text-on-surface-variant text-center w-1/4">Synthetic Microfiber</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md divide-y divide-surface-variant/40">
+<!-- Row 1 -->
+<tr>
+<td class="p-4 font-medium text-primary">Natural Thermoregulation</td>
+<td class="p-4 text-center bg-surface-container font-semibold text-primary">
+<span class="flex items-center justify-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                  Dynamic Breathability
+                </span>
+</td>
+<td class="p-4 text-center text-on-surface-variant">Moderate (traps moisture)</td>
+<td class="p-4 text-center text-on-surface-variant">Poor (causes night sweats)</td>
+</tr>
+<!-- Row 2 -->
+<tr>
+<td class="p-4 font-medium text-primary">Durability &amp; Lifespan</td>
+<td class="p-4 text-center bg-surface-container font-semibold text-primary">
+<span class="flex items-center justify-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                  15+ Years (Grows softer)
+                </span>
+</td>
+<td class="p-4 text-center text-on-surface-variant">3–5 Years (thins out)</td>
+<td class="p-4 text-center text-on-surface-variant">1–2 Years (pills quickly)</td>
+</tr>
+<!-- Row 3 -->
+<tr>
+<td class="p-4 font-medium text-primary">Environmental Impact</td>
+<td class="p-4 text-center bg-surface-container font-semibold text-primary">
+<span class="flex items-center justify-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                  Rain-fed, Zero Waste
+                </span>
+</td>
+<td class="p-4 text-center text-on-surface-variant">High water &amp; pesticide use</td>
+<td class="p-4 text-center text-on-surface-variant">Petroleum &amp; microplastics</td>
+</tr>
+<!-- Row 4 -->
+<tr>
+<td class="p-4 font-medium text-primary">Allergen &amp; Static Resistance</td>
+<td class="p-4 text-center bg-surface-container font-semibold text-primary rounded-b-lg">
+<span class="flex items-center justify-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                  Naturally Antibacterial
+                </span>
+</td>
+<td class="p-4 text-center text-on-surface-variant">Dust mite susceptible</td>
+<td class="p-4 text-center text-on-surface-variant">High static cling</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Tactile Micro-Banner Quote -->
+<div class="p-8 rounded-lg bg-surface text-center space-y-3 max-w-2xl mx-auto shadow-sm">
+<p class="font-headline-sm text-headline-sm italic text-primary">
+          "The tactile equivalent of an unhurried Sunday morning in Provence."
+        </p>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant tracking-widest block">
+          — Architectural Sleep Digest
+        </span>
+</div>
+</div>
+</section>
+<!-- Section 4: Complete the Suite / Complementary Recommendations -->
+<section class="mt-20 pt-8 pb-12">
+<div class="flex flex-col md:flex-row items-baseline justify-between mb-8">
+<div>
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">CURATED HARMONY</p>
+<h2 class="font-headline-lg text-headline-lg text-primary">Complete the Suite</h2>
+</div>
+<a class="font-label-sm text-label-sm uppercase tracking-wider text-secondary hover:text-primary transition-colors flex items-center gap-1 mt-2 md:mt-0" data-path="plp" href="#">
+        Explore Bedding Archive <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Product Grid: 4 Complementary Items -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-[3/4] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Heirloom linen duvet cover folded gently with soft billowy wrinkles in soft dune mist color palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASNCJ9xMy8eD2jna__H60Q_j4FpgC-vs998KdgVfJU5VaZM9HrXazoNYHWpq7IzaajkHjRo8ZO45KLfpE5aB8RmJsO6P-MtrxRsz2Paumd-jpiRPZb2u8LJ-KhUuCm_JqzFvHNVRaVtFYCmy-E2nGPl-cS3q2cQ2Tlz7QLRex9DpOX1JqMPiIru7x7N1rQULkIRo-ekxWJQJZQ2YtPIG0Mmh_slZVG1Cq3GL7gnSvTGq6D3IaXzPkQDg"/>
+<button class="absolute bottom-3 left-3 right-3 bg-surface/90 backdrop-blur-md text-primary hover:bg-primary hover:text-on-primary font-label-sm text-label-sm uppercase tracking-wider py-2.5 rounded opacity-0 group-hover:opacity-100 transition-all text-center shadow-sm" onclick="quickAdd('Heirloom Linen Duvet Cover', 220)" type="button">
+            Quick Add +
+          </button>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant tracking-wider">Normandy Flax</p>
+<h3 class="font-headline-sm text-[18px] text-primary mt-1">Heirloom Linen Duvet Cover</h3>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-semibold">$220</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">4 Colors</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-[3/4] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Two plush cloud down alternative pillows arranged on clean minimal bedding with morning side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfUZ6PCtR2R_hmScqlNYdiDM8A0R4FIrBUZRn9XeJR9vpeUPSbG_EpVa1cIdmxN_-xITViR--FTQszHnN0ldeof5jh5adipHzxc227JVd2V9l74f_Oy1MjsS6e0drZ66l9TtI-Xcp6Zppy4zTxJFJUIafjD5QAvURkSplR1nUmfzNWhXFuCnn23ydx0DEN0uo9Yu_K7IQrTs820U1gqu7Q1hZXvygpJDl5vhDpviGbQzR0V0kng4MLXQ"/>
+<button class="absolute bottom-3 left-3 right-3 bg-surface/90 backdrop-blur-md text-primary hover:bg-primary hover:text-on-primary font-label-sm text-label-sm uppercase tracking-wider py-2.5 rounded opacity-0 group-hover:opacity-100 transition-all text-center shadow-sm" onclick="quickAdd('Cloud Down Alternative Pillow Pair', 95)" type="button">
+            Quick Add +
+          </button>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant tracking-wider">Hypoallergenic Loft</p>
+<h3 class="font-headline-sm text-[18px] text-primary mt-1">Cloud Down Alternative Pillow Pair</h3>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-semibold">$95</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Set of 2</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-[3/4] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Chunky textured washed waffle weave bed blanket folded loosely over soft linen sheets on an airy minimalist bed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFFO3qmzaCZ2siV3ZR4s5C-14Gh0Xh7NdLFK8u2d-8DROdMb3ZG9XYJU5HhA2Pz_Otpwjaw-zC0pk6dOKZDkxSxIyadxigBpu3tP2YQLrqYiPwakxkRrq51x10S9-BMEcxd_YLfhYdcj-Icu1OqWinNYehNoSNMTBsu6sxGp6Pc4Dx6c_0V5VaEKpFD9attx4kv3X51mfOTh6KzFqNzTYqVmlQcd0RXgpwcRHFRsngLXe3O2CJ9qkCXw"/>
+<button class="absolute bottom-3 left-3 right-3 bg-surface/90 backdrop-blur-md text-primary hover:bg-primary hover:text-on-primary font-label-sm text-label-sm uppercase tracking-wider py-2.5 rounded opacity-0 group-hover:opacity-100 transition-all text-center shadow-sm" onclick="quickAdd('Washed Waffle Bed Blanket', 180)" type="button">
+            Quick Add +
+          </button>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant tracking-wider">Organic Cotton Weave</p>
+<h3 class="font-headline-sm text-[18px] text-primary mt-1">Washed Waffle Bed Blanket</h3>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-semibold">$180</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">3 Shades</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-[3/4] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Lustrous 22-momme pure mulberry silk pillowcase duo resting gracefully on soft bed linens with subtle sheen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJdliibu-Bc2ftSHRUpJ7CNv9bsES9k9QGO6CodD3AhyUm0PZP3NGg33ocnakEjV_yT4EqjFKFL96gK_KsJK-I6h4gJBGy5vzjEOZ-aDW_UJJD5v1x6teRQ0wTG1SMrQtsJErYARcj7h24KCg8iv24OlldJUHcmbzw2DwYV4JgSVkv679D6-ob_K3WAhspxAG_8oD_2OtDUImZ2lHXvgKyDp1pOW9271RKtLj4hDlCtYUVbH-p5d9yAA"/>
+<button class="absolute bottom-3 left-3 right-3 bg-surface/90 backdrop-blur-md text-primary hover:bg-primary hover:text-on-primary font-label-sm text-label-sm uppercase tracking-wider py-2.5 rounded opacity-0 group-hover:opacity-100 transition-all text-center shadow-sm" onclick="quickAdd('Silk Pillowcase Duo', 110)" type="button">
+            Quick Add +
+          </button>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<p class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant tracking-wider">22-Momme Mulberry</p>
+<h3 class="font-headline-sm text-[18px] text-primary mt-1">Silk Pillowcase Duo</h3>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-semibold">$110</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Champagne &amp; Cloud</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Modal: Size & Fit Guide -->
+<div class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm hidden items-center justify-center p-4" id="size-modal">
+<div class="bg-surface rounded-xl max-w-2xl w-full p-8 shadow-xl relative max-h-[90vh] overflow-y-auto">
+<div class="flex items-center justify-between pb-4 border-b border-surface-variant/60">
+<div>
+<span class="font-label-eyebrow text-label-eyebrow text-secondary uppercase tracking-widest">PROPORTIONS</span>
+<h3 class="font-headline-md text-headline-md text-primary">Bed Sheet Sizing Guide</h3>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container text-on-surface" onclick="toggleSizeModal(false)" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="mt-6 space-y-6">
+<p class="font-body-md text-body-md text-on-surface-variant">
+          All our fitted sheets are engineered with 16-inch extra-deep pockets to easily accommodate memory foam toppers, organic latex pads, and standard pillow-top mattresses.
+        </p>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="border-b border-surface-variant/80 font-label-sm uppercase text-primary">
+<th class="py-2.5">Size</th>
+<th class="py-2.5">Fitted Sheet</th>
+<th class="py-2.5">Flat Sheet</th>
+<th class="py-2.5">Pillowcases</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant/40 text-on-surface-variant">
+<tr>
+<td class="py-3 font-medium text-primary">Full</td>
+<td class="py-3">54" × 75" × 16"</td>
+<td class="py-3">85" × 96"</td>
+<td class="py-3">20" × 30" (Standard)</td>
+</tr>
+<tr>
+<td class="py-3 font-medium text-primary">Queen</td>
+<td class="py-3">60" × 80" × 16"</td>
+<td class="py-3">96" × 108"</td>
+<td class="py-3">20" × 30" (Standard)</td>
+</tr>
+<tr>
+<td class="py-3 font-medium text-primary">King</td>
+<td class="py-3">76" × 80" × 16"</td>
+<td class="py-3">110" × 108"</td>
+<td class="py-3">20" × 40" (King)</td>
+</tr>
+<tr>
+<td class="py-3 font-medium text-primary">Cal King</td>
+<td class="py-3">72" × 84" × 16"</td>
+<td class="py-3">106" × 112"</td>
+<td class="py-3">20" × 40" (King)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-surface-container p-4 rounded text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Still unsure about measurements? Contact our <a class="text-secondary underline font-medium" href="#">Linen Concierge</a> for personal recommendations.
+          </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Toast Notification: Added to Cart -->
+<div class="fixed bottom-8 right-8 z-50 bg-primary text-on-primary px-6 py-4 rounded-lg shadow-xl translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-4" id="cart-toast">
+<span class="material-symbols-outlined text-secondary text-[24px]">check_circle</span>
+<div>
+<p class="font-label-sm uppercase tracking-wider text-secondary">Added to Bag</p>
+<p class="font-body-sm text-body-sm text-on-primary" id="toast-message">The French Flax Linen Set — Queen ($285)</p>
+</div>
+<a class="ml-2 px-3 py-1 bg-surface/20 hover:bg-surface/30 rounded font-label-sm text-label-sm uppercase tracking-wider text-on-primary" data-path="cart" href="#">View</a>
+</div>
+</div>
+<script>
+  let currentBasePrice = 285;
+  let currentQty = 1;
+  let currentSize = 'Queen';
+  let currentColor = 'Warm Ivory';
+
+  const galleryImages = [
+    {
+      src: "placeholder",
+      alt: "Close up shot of natural french flax linen bedding illuminated by warm early morning sunbeams showing luxurious soft crinkled texture"
+    },
+    {
+      src: "placeholder",
+      alt: "Macro textural weave view of authentic French Normandy flax linen fabric showing organic slubs and natural earthy ecru fibers"
+    },
+    {
+      src: "placeholder",
+      alt: "Neatly stacked warm ivory and soft sand washed linen sheets folded gently atop a minimalist solid white oak bedroom bench"
+    },
+    {
+      src: "placeholder",
+      alt: "Detailed close-up of tailored envelope seam of an unironed organic flax linen pillowcase on a serene down pillow"
+    },
+    {
+      src: "placeholder",
+      alt: "Wide serene luxury suite bedroom bathed in tranquil golden hour glow with French flax linen bed sheets effortlessly draped"
+    }
+  ];
+
+  function switchGalleryImage(index) {
+    const mainImg = document.getElementById('main-product-img');
+    const thumbs = document.querySelectorAll('#gallery-strip .thumb-btn');
+
+    if (galleryImages[index]) {
+      mainImg.src = galleryImages[index].src;
+      mainImg.setAttribute('data-alt', galleryImages[index].alt);
+    }
+
+    thumbs.forEach((thumb, idx) => {
+      if (idx === index) {
+        thumb.classList.add('ring-2', 'ring-primary', 'opacity-100');
+        thumb.classList.remove('opacity-70');
+      } else {
+        thumb.classList.remove('ring-2', 'ring-primary', 'opacity-100');
+        thumb.classList.add('opacity-70');
+      }
+    });
+  }
+
+  function selectColor(btn, colorName) {
+    currentColor = colorName;
+    document.getElementById('selected-color-label').innerText = colorName;
+
+    const swatches = document.querySelectorAll('#color-swatches .swatch-btn');
+    swatches.forEach(s => {
+      s.classList.remove('ring-2', 'ring-primary', 'ring-offset-2', 'ring-offset-surface');
+    });
+    btn.classList.add('ring-2', 'ring-primary', 'ring-offset-2', 'ring-offset-surface');
+  }
+
+  function selectSize(btn, sizeName, price) {
+    currentSize = sizeName;
+    currentBasePrice = price;
+
+    const pills = document.querySelectorAll('#size-options .size-pill');
+    pills.forEach(p => {
+      p.className = 'size-pill py-3 rounded text-center font-label-md text-label-md bg-surface-container hover:bg-surface-variant transition-colors flex flex-col items-center';
+      const titleSpan = p.querySelector('span:first-child');
+      const priceSpan = p.querySelector('span:last-child');
+      if (titleSpan) titleSpan.className = 'font-medium text-primary';
+      if (priceSpan) priceSpan.className = 'text-[10px] text-on-surface-variant mt-0.5';
+    });
+
+    btn.className = 'size-pill py-3 rounded text-center font-label-md text-label-md bg-primary text-on-primary transition-colors flex flex-col items-center shadow-sm';
+    const activeTitle = btn.querySelector('span:first-child');
+    const activePrice = btn.querySelector('span:last-child');
+    if (activeTitle) activeTitle.className = 'font-medium text-on-primary';
+    if (activePrice) activePrice.className = 'text-[10px] text-primary-fixed-dim mt-0.5';
+
+    updateTotals();
+  }
+
+  function updateQty(delta) {
+    currentQty = Math.max(1, currentQty + delta);
+    document.getElementById('qty-counter').innerText = currentQty;
+    updateTotals();
+  }
+
+  function updateTotals() {
+    const total = currentBasePrice * currentQty;
+    const installment = (total / 4).toFixed(2);
+
+    document.getElementById('price-display').innerText = '$' + total;
+    document.getElementById('installment-price').innerText = '$' + installment;
+    document.getElementById('btn-text').innerText = 'Add to Cart — $' + total;
+  }
+
+  function toggleAccordion(contentId, triggerBtn) {
+    const content = document.getElementById(contentId);
+    const icon = triggerBtn.querySelector('.acc-icon');
+    const isHidden = content.classList.contains('hidden');
+
+    if (isHidden) {
+      content.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    } else {
+      content.classList.add('hidden');
+      icon.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function toggleSizeModal(show) {
+    const modal = document.getElementById('size-modal');
+    if (show) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    } else {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  function toggleWishlist(btn) {
+    const icon = btn.querySelector('#wishlist-icon');
+    if (icon.innerText === 'favorite_border') {
+      icon.innerText = 'favorite';
+      icon.classList.add('text-secondary');
+      icon.style.fontVariationSettings = "'FILL' 1";
+    } else {
+      icon.innerText = 'favorite_border';
+      icon.classList.remove('text-secondary');
+      icon.style.fontVariationSettings = "'FILL' 0";
+    }
+  }
+
+  function triggerCartToast(customMessage) {
+    const toast = document.getElementById('cart-toast');
+    const msg = document.getElementById('toast-message');
+    const total = currentBasePrice * currentQty;
+
+    msg.innerText = customMessage || `The French Flax Linen Set — ${currentSize} (${currentColor}) × ${currentQty}`;
+
+    toast.classList.remove('translate-y-24', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.add('translate-y-24', 'opacity-0');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 3800);
+  }
+
+  function quickAdd(productName, price) {
+    triggerCartToast(`${productName} — $${price}`);
+  }
+</script></div></main><footer class="w-full bg-surface-container-low border-t border-surface-variant/50 pt-space-xl pb-space-lg text-on-surface mt-space-xl"><div class="max-w-[1440px] mx-auto px-margin"><div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg pb-space-xl border-b border-surface-variant/60"><div class="lg:col-span-5 flex flex-col justify-between pr-0 lg:pr-space-lg"><div class="space-y-4"><p class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">EDITORIAL JOURNAL &amp; ARCHIVE</p><h3 class="font-headline-md text-headline-md text-primary max-w-md">Awaken gently.</h3><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Receive private collection previews, seasonal palettes, and linen care journals delivered unhurriedly to your inbox.</p></div><form class="mt-8 max-w-md"><div class="flex items-stretch border-b border-primary/40 focus-within:border-secondary transition-colors pb-1"><input class="w-full bg-transparent font-body-sm text-body-sm placeholder:text-on-surface-variant/60 focus:outline-none text-on-surface py-2" placeholder="Your email address" type="email"/><button class="font-label-md text-label-md uppercase tracking-wider text-primary hover:text-secondary transition-colors whitespace-nowrap pl-4 flex items-center gap-1" type="submit">Subscribe <span class="material-symbols-outlined text-[16px]">arrow_forward</span></button></div></form></div><div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8"><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">Shop</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Bedsheets</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Duvet Sets</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Pillow Protectors</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Silk Pillowcases</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Gift Cards</a></li></ul></div><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">The Craft</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Our French Flax</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Organic Percale</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">OEKO-TEX® Certified</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">30-Night Guarantee</a></li></ul></div><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">Service</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Concierge Care</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Track Order</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Shipping &amp; Returns</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Hospitality Inquiries</a></li></ul></div></div></div><div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 font-body-sm text-body-sm text-on-surface-variant"><div class="flex flex-wrap items-center gap-6"><p>© 2025 LOOMSDAY Inc. Sleep, elevated.</p><div class="flex items-center gap-4 text-[12px] uppercase tracking-wider"><a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="#">Accessibility</a></div></div><div class="flex items-center gap-4 text-on-surface-variant/80 font-label-sm text-[11px] tracking-widest uppercase"><span class="px-2 py-1 bg-surface-container rounded">Visa</span><span class="px-2 py-1 bg-surface-container rounded">Mastercard</span><span class="px-2 py-1 bg-surface-container rounded">Amex</span><span class="px-2 py-1 bg-surface-container rounded">Apple Pay</span><span class="px-2 py-1 bg-surface-container rounded">Klarna</span></div></div></div></footer></body></html>

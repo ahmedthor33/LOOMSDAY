@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>LOOMSDAY | Elevated Sleep</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#fcf9f4", "tertiary-fixed": "#eae1d2", "outline": "#747878", "on-surface": "#1c1c19", "surface-container-high": "#ebe8e3", "primary-fixed-dim": "#c8c6c5", "inverse-primary": "#c8c6c5", "on-primary-fixed-variant": "#474746", "primary": "#010101", "tertiary-container": "#201c13", "primary-container": "#1c1c1c", "on-secondary": "#ffffff", "on-tertiary-container": "#8b8477", "on-secondary-container": "#775f33", "on-background": "#1c1c19", "secondary": "#735b30", "surface-variant": "#e5e2dd", "on-primary": "#ffffff", "on-secondary-fixed-variant": "#59431b", "on-tertiary-fixed-variant": "#4b463b", "on-primary-container": "#858484", "tertiary": "#030200", "error": "#ba1a1a", "tertiary-fixed-dim": "#cec5b7", "surface-tint": "#5f5e5e", "on-tertiary": "#ffffff", "inverse-on-surface": "#f3f0eb", "error-container": "#ffdad6", "surface-container": "#f0ede9", "on-error-container": "#93000a", "primary-fixed": "#e5e2e1", "outline-variant": "#c4c7c7", "on-surface-variant": "#444748", "surface-container-lowest": "#ffffff", "surface-container-low": "#f6f3ee", "surface-container-highest": "#e5e2dd", "on-error": "#ffffff", "surface-bright": "#fcf9f4", "surface-dim": "#dcdad5", "on-tertiary-fixed": "#1f1b12", "surface": "#fcf9f4", "secondary-fixed": "#ffdea8", "inverse-surface": "#31302d", "on-primary-fixed": "#1b1b1b", "on-secondary-fixed": "#271900", "secondary-container": "#fcdba5", "secondary-fixed-dim": "#e2c28e" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "gutter-mobile": "1rem", "space-xl": "4rem", "gutter": "1.5rem", "margin": "3.5rem", "space-lg": "2.5rem", "space-sm": "0.75rem", "space-md": "1.5rem", "margin-mobile": "1.25rem", "space-xs": "0.375rem" }, "fontFamily": { "label-sm": ["Inter"], "display-hero-mobile": ["Playfair Display"], "headline-lg": ["Playfair Display"], "label-md": ["Inter"], "body-md": ["Inter"], "headline-md": ["Playfair Display"], "body-lg": ["Inter"], "label-eyebrow": ["Inter"], "headline-sm": ["Playfair Display"], "display-hero": ["Playfair Display"], "body-sm": ["Inter"], "headline-lg-mobile": ["Playfair Display"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.12em", "fontWeight": "500" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.08em", "fontWeight": "500" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "300" }], "label-eyebrow": ["11px", { "lineHeight": "16px", "letterSpacing": "0.2em", "fontWeight": "500" }], "headline-sm": ["22px", { "lineHeight": "30px", "fontWeight": "500" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,28,28,0.04)]"><div class="bg-surface-container text-on-surface-variant flex items-center justify-center py-2 px-margin text-center tracking-widest uppercase font-label-eyebrow text-label-eyebrow border-b border-surface-variant/40"><span class="text-secondary mr-2">✦</span>COMPLIMENTARY SHIPPING ON ORDERS OVER $100<span class="text-secondary ml-2">✦</span></div><div class="h-20 max-w-[1440px] mx-auto px-margin flex items-center justify-between gap-8"><div class="flex items-center gap-10"><a class="flex items-center gap-3 group" data-path="landing" href="#"><img alt="LOOMSDAY Wordmark Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XkbhpO4WI8CcTsRczmmW-eOD2FFFbmj329t-TFWFhNHl_SYCAPrmxKeexJ1BL5I5JGK5FdOfuxGH72_cACdMMJn-odKjvQSqpAJIG1sl21mEPGuENElECzui7MbkNzMocVwvfGmFN16h3N7V_bWuB9v9wfj5YHq9cnz5yH5YCUHVIDoyG-uOHoVPhcfnUyvKf-IIfBOiQU4Tc5kAhu7TWU3ln4tEnn7qd9LF4rldRRhvzAdWEJRMbKl2kV"/><span class="font-headline-sm text-headline-sm tracking-tight text-primary uppercase">LOOMSDAY</span></a><nav class="hidden xl:flex items-center gap-8" data-active-classes="text-primary font-medium border-b border-primary pb-1"><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="plp" href="#">Bedsheets</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="plp" href="#">Pillows &amp; Covers</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="plp" href="#">Duvets</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="landing" href="#">Craft &amp; About</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="landing" href="#">Journal</a></nav></div><div class="flex items-center gap-6"><div class="hidden md:flex items-center text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase cursor-pointer hover:text-on-surface transition-colors"><span>USD $</span></div><button aria-label="Search" class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[22px]">search</span></button><a aria-label="Wishlist" class="relative text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" data-path="wishlist" href="#"><span class="material-symbols-outlined text-[22px]">favorite</span><span class="absolute -top-1.5 -right-2 bg-secondary text-on-secondary font-label-sm text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium leading-none">2</span></a><a aria-label="Shopping Cart" class="relative text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" data-path="cart" href="#"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute -top-1.5 -right-2 bg-primary text-on-primary font-label-sm text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium leading-none">3</span></a><a aria-label="Account" class="flex items-center gap-2 pl-2" data-path="signin" href="#"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant/80 hover:ring-secondary transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSH3AertD5W5cFYCtpMGdVC3IQpLZsROJxCWpRUtyd9hGo1dZblcdD2lCbrIUW1vtEqFP701DqqMjuEhB_AqOyZg-Hqw_BlSEpklNh8qE3PH5WD24qxQrGoXi9SA7jsfhQCw69uqP8g2E-A2igpPgKLlhDXRY_hRimeyFa9xoqoKje8immHKT0ApV4z7QD06GBnK0YA4a6GCbvcNCj4oA0_o7XdgKpztJH34GmfPocL3uzl6rvomWiwQ"/></a></div></div></header><main class="w-full pt-28 bg-surface flex-1"><div class="max-w-[1440px] mx-auto px-margin"><div class="flex flex-col w-full">
+<!-- Toast Feedback Notification -->
+<div class="fixed bottom-8 right-8 z-50 bg-primary text-on-primary px-6 py-4 rounded shadow-2xl flex items-center gap-4 transition-all duration-300 opacity-0 pointer-events-none translate-y-4" id="wishlist-toast">
+<span class="material-symbols-outlined text-[20px] text-secondary-container">check_circle</span>
+<span class="font-body-sm text-body-sm tracking-wide" id="toast-message">Item transferred to your cart</span>
+</div>
+<!-- Share Wishlist Modal Dialog -->
+<div class="fixed inset-0 z-50 bg-primary/40 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none" id="share-modal">
+<div class="bg-surface-container-lowest max-w-lg w-full p-space-lg rounded shadow-2xl relative">
+<button class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors" onclick="toggleShareModal(false)">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+<div class="space-y-2 mb-6">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary">LOOMSDAY PRIVATE CURATION</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Share Your Bedroom Sanctuary</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Send your handpicked selection to an interior designer, partner, or save it to your registry archive.</p>
+</div>
+<div class="bg-surface-container p-4 rounded flex items-center justify-between gap-4 mb-6">
+<span class="font-body-sm text-body-sm text-on-surface truncate select-all">https://loomsday.luxury/curation/a749-restful-dawn</span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded font-label-sm text-label-sm uppercase tracking-wider hover:bg-on-surface-variant transition-colors whitespace-nowrap" onclick="copyShareLink(this)">
+          Copy Link
+        </button>
+</div>
+<div class="flex items-center gap-6 text-on-surface-variant font-label-sm text-label-sm uppercase">
+<button class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">mail</span> Email Curated List</button>
+<button class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chat</span> SMS Sanctuary Link</button>
+</div>
+</div>
+</div>
+<!-- Editorial Top Banner & Header -->
+<section class="w-full pb-space-lg">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-space-md">
+<div class="space-y-4 max-w-2xl">
+<div class="flex items-center gap-3">
+<span class="font-label-eyebrow text-label-eyebrow uppercase tracking-widest text-secondary">PERSONAL CURATION ARCHIVE</span>
+<span class="h-1 w-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant" id="header-count-badge">3 Reserved Items</span>
+</div>
+<h1 class="font-display-hero text-headline-lg lg:text-display-hero text-primary tracking-tight">Your Saved Sanctuary</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Pieces you’ve curated for your dream bedroom. Saved items remain reserved for 14 days under your boutique concierge profile.
+        </p>
+</div>
+<!-- Action Row -->
+<div class="flex flex-wrap items-center gap-4">
+<button class="flex items-center gap-2 px-5 py-3.5 rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow" onclick="toggleShareModal(true)">
+<span class="material-symbols-outlined text-[18px]">share</span>
+          Share Wishlist
+        </button>
+<button class="flex items-center gap-2.5 px-7 py-3.5 rounded bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md uppercase tracking-wider transition-all duration-200 shadow-md hover:-translate-y-0.5" id="move-all-btn" onclick="moveAllToCart()">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+          Move All to Cart
+        </button>
+</div>
+</div>
+<!-- Sanctuary Meta Bar -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded bg-surface-container-low text-on-surface-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">lock_clock</span>
+<span class="font-body-sm text-body-sm">Complimentary 14-Day Reserve</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">local_shipping</span>
+<span class="font-body-sm text-body-sm">White Glove Delivery Eligible</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">eco</span>
+<span class="font-body-sm text-body-sm">OEKO-TEX® &amp; Flax Certified</span>
+</div>
+<div class="flex items-center justify-start sm:justify-end gap-2">
+<button class="font-label-sm text-label-sm uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 underline underline-offset-4" onclick="toggleEmptyStateSimulation()">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+          Toggle Quiet State
+        </button>
+</div>
+</div>
+</section>
+<!-- Main Active Wishlist Section -->
+<section class="w-full space-y-space-md" id="active-wishlist-view">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Product 1: The French Flax Linen Sheet Set -->
+<article class="group relative flex flex-col bg-surface-container-lowest rounded-lg shadow-sm hover:shadow-xl transition-all duration-300" id="item-flax-sheets">
+<!-- Visual Presentation -->
+<div class="relative aspect-[4/5] w-full overflow-hidden rounded-t-lg bg-surface-container">
+<img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" data-alt="Editorial close up shot of pristine cream French flax linen bedding draped smoothly on a low minimalist oak bed frame, basking in quiet morning sunlight with subtle shadows and natural fabric wrinkling, styled with warm ivory and earth tones, architectural luxury atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNHfLXU2kXULSF8fP_zeB6Ei1a_IUr3YTy5x3rRhW0Jl0a6gnJ4kQEYbFuRe7E3LpmKnfLvcuiFIa36kvj7VumZSDz3S5CDXPy_Ym-utttCXg0D-XNiZYY4Ec_wl-luavEHTX0XgnWeJhO4l5AC5eo0J8EMynMk0kODgkoxVg48uJIDYaCRWl_7mQqj23ssYDZs0Nm24fJ4SQDVJUqYhsn46xQOMNb3ezPuc-k80wgg85_P90gzyoDOQ"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded font-label-eyebrow text-label-eyebrow tracking-widest text-primary uppercase shadow-sm">
+              French Flax
+            </span>
+</div>
+<!-- Low Stock Indicator -->
+<div class="absolute bottom-4 left-4">
+<span class="px-2.5 py-1 bg-secondary text-on-secondary rounded font-label-sm text-[10px] tracking-widest uppercase flex items-center gap-1 shadow-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-white animate-pulse"></span>
+              Only 4 Left
+            </span>
+</div>
+<!-- Quick Remove Button Top Corner -->
+<button aria-label="Remove item from curation" class="absolute top-4 right-4 h-9 w-9 rounded-full bg-surface-container-lowest/90 backdrop-blur text-on-surface hover:text-error hover:bg-error-container/40 transition-colors flex items-center justify-center shadow-sm" onclick="removeItem('item-flax-sheets', 'The French Flax Linen Sheet Set')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Product Meta & Configuration -->
+<div class="p-6 flex flex-col flex-1 justify-between gap-6">
+<div class="space-y-3">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm text-primary">The French Flax Linen Sheet Set</h3>
+<span class="font-body-lg text-body-lg text-primary font-medium">$285</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+              Woven from unhurried Normandy flax fibers, pre-washed with volcanic stones for immediate buttery softness and year-round breathability.
+            </p>
+<div class="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1.5">
+<span class="h-3 w-3 rounded-full bg-[#EFECE6] shadow-inner"></span>
+                Warm Ivory
+              </span>
+<span class="text-surface-variant">•</span>
+<span>Size: Queen</span>
+<span class="text-surface-variant">•</span>
+<span class="text-secondary font-medium">In Stock</span>
+</div>
+</div>
+<!-- Card Actions -->
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 py-3 px-4 rounded bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2" onclick="moveToCart('item-flax-sheets', 'The French Flax Linen Sheet Set')">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              Move to Cart
+            </button>
+<button class="h-11 w-11 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-error transition-colors flex items-center justify-center" onclick="removeItem('item-flax-sheets', 'The French Flax Linen Sheet Set')" title="Remove item">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Product 2: Cloud Goose Down Duvet Insert -->
+<article class="group relative flex flex-col bg-surface-container-lowest rounded-lg shadow-sm hover:shadow-xl transition-all duration-300" id="item-cloud-duvet">
+<!-- Visual Presentation -->
+<div class="relative aspect-[4/5] w-full overflow-hidden rounded-t-lg bg-surface-container">
+<img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" data-alt="Sumptuous cloud-like all-season goose down duvet folded with majestic loft and soft pillowy texture on an unmade minimalist modern platform bed, soft ambient natural morning illumination highlighting subtle down baffles and pure off-white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGvbMEQI8kk6IWWJQfjvfQccztUVCLoIiPzYqslpMSlvRCAeiMq4AxHTY94Kbss9LriH3okqIjLS3vG0iNERd8N0vdVsUoyf7Uo8Kl_tTTFvKVur1tfD3mW2SHdrnr_deuPkA4ZgBTexcG6lyMIcXRRhCsldKnD2ZgJ4rc4Hui1uLNnB4P4McQgdY4c6CQN6-52-apz-BucRu_Y6gm4QV0RnF09UK1gDS1UqPsxhuGwOXR7NTJQFxOmg"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded font-label-eyebrow text-label-eyebrow tracking-widest text-primary uppercase shadow-sm">
+              Ethical Down
+            </span>
+</div>
+<div class="absolute bottom-4 left-4">
+<span class="px-2.5 py-1 bg-surface-container-highest/90 backdrop-blur rounded font-label-sm text-[10px] tracking-widest text-on-surface uppercase shadow-sm">
+              750 Fill Power
+            </span>
+</div>
+<button aria-label="Remove item from curation" class="absolute top-4 right-4 h-9 w-9 rounded-full bg-surface-container-lowest/90 backdrop-blur text-on-surface hover:text-error hover:bg-error-container/40 transition-colors flex items-center justify-center shadow-sm" onclick="removeItem('item-cloud-duvet', 'Cloud Goose Down Duvet Insert')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Product Meta & Configuration -->
+<div class="p-6 flex flex-col flex-1 justify-between gap-6">
+<div class="space-y-3">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm text-primary">Cloud Goose Down Duvet Insert</h3>
+<span class="font-body-lg text-body-lg text-primary font-medium">$340</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+              Engineered with baffled box stitching preventing cold spots, encased in a silky 400TC organic cambric cotton shell for weightless buoyancy.
+            </p>
+<div class="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-on-surface-variant font-body-sm text-body-sm">
+<span>Weight: All-Season</span>
+<span class="text-surface-variant">•</span>
+<span>Size: King</span>
+<span class="text-surface-variant">•</span>
+<span class="text-secondary font-medium">In Stock</span>
+</div>
+</div>
+<!-- Card Actions -->
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 py-3 px-4 rounded bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2" onclick="moveToCart('item-cloud-duvet', 'Cloud Goose Down Duvet Insert')">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              Move to Cart
+            </button>
+<button class="h-11 w-11 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-error transition-colors flex items-center justify-center" onclick="removeItem('item-cloud-duvet', 'Cloud Goose Down Duvet Insert')" title="Remove item">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Product 3: Pure Silk & Linen Pillow Pair -->
+<article class="group relative flex flex-col bg-surface-container-lowest rounded-lg shadow-sm hover:shadow-xl transition-all duration-300" id="item-silk-pillows">
+<!-- Visual Presentation -->
+<div class="relative aspect-[4/5] w-full overflow-hidden rounded-t-lg bg-surface-container">
+<img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" data-alt="Editorial macro detail of two bespoke luxury sleeping pillows in soft sand color, displaying fine weave contrast between organic matte linen and shimmering mulberry silk piping, resting gracefully on a textured travertine bedside plinth in daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC11xftVs31gtuzmSDadZYgxe3opWhxXzgJPfpfxzcPLPnLaONU1UYHNuzq6Y38fCEZQz9CU6O8K8_FYax-hi-f-8kZzbx1O8PD2-j3pCA34vUuBHqnmJHq1y78GiJpQubbYbgMePAXl058lWoOJcY0J-u1p3qDOO1eBNl0xi-rIByTjttPzfMiS8piBzVVHD1KQfkife81clBwuFBtIP3puTy7VY5Qncb2dCzDcyebRVpJHP4VCNUWMQ"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded font-label-eyebrow text-label-eyebrow tracking-widest text-primary uppercase shadow-sm">
+              Mulberry Silk &amp; Linen
+            </span>
+</div>
+<button aria-label="Remove item from curation" class="absolute top-4 right-4 h-9 w-9 rounded-full bg-surface-container-lowest/90 backdrop-blur text-on-surface hover:text-error hover:bg-error-container/40 transition-colors flex items-center justify-center shadow-sm" onclick="removeItem('item-silk-pillows', 'Pure Silk &amp; Linen Pillow Pair')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Product Meta & Configuration -->
+<div class="p-6 flex flex-col flex-1 justify-between gap-6">
+<div class="space-y-3">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm text-primary">Pure Silk &amp; Linen Pillow Pair</h3>
+<span class="font-body-lg text-body-lg text-primary font-medium">$110</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+              Reversible artisan design combining temperature-regulating French linen on one flank with 22-Momme silk on the reverse to care for hair and skin.
+            </p>
+<div class="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1.5">
+<span class="h-3 w-3 rounded-full bg-[#D7C9B8] shadow-inner"></span>
+                Soft Sand
+              </span>
+<span class="text-surface-variant">•</span>
+<span>Size: Standard (Pair of 2)</span>
+<span class="text-surface-variant">•</span>
+<span class="text-secondary font-medium">In Stock</span>
+</div>
+</div>
+<!-- Card Actions -->
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 py-3 px-4 rounded bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2" onclick="moveToCart('item-silk-pillows', 'Pure Silk &amp; Linen Pillow Pair')">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              Move to Cart
+            </button>
+<button class="h-11 w-11 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-error transition-colors flex items-center justify-center" onclick="removeItem('item-silk-pillows', 'Pure Silk &amp; Linen Pillow Pair')" title="Remove item">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Empty State Sanctuary View (Toggled or Activated When Items are 0) -->
+<section class="w-full hidden py-space-xl px-4" id="empty-wishlist-view">
+<div class="max-w-2xl mx-auto flex flex-col items-center text-center space-y-6">
+<!-- Minimalist SVG Illustration: An Unmade Linen Bed in Quiet Repose -->
+<div class="relative w-48 h-36 flex items-center justify-center mb-2">
+<svg class="w-full h-full text-secondary/60" fill="none" viewbox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+<!-- Headboard Line -->
+<path d="M20 50 C20 40 180 40 180 50" stroke="currentColor" stroke-dasharray="2 3" stroke-linecap="round" stroke-width="1.5"></path>
+<path d="M25 50 L25 110 M175 50 L175 110" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+<!-- Pillow Silhouettes -->
+<rect fill="currentColor" fill-opacity="0.08" height="26" rx="4" stroke="currentColor" stroke-width="1.2" width="55" x="35" y="44"></rect>
+<path d="M42 56 Q62 58 82 56" stroke="currentColor" stroke-linecap="round" stroke-width="0.8"></path>
+<rect fill="currentColor" fill-opacity="0.08" height="26" rx="4" stroke="currentColor" stroke-width="1.2" width="55" x="110" y="44"></rect>
+<path d="M117 56 Q137 58 157 56" stroke="currentColor" stroke-linecap="round" stroke-width="0.8"></path>
+<!-- Draped Linen Duvet -->
+<path d="M24 78 C38 74 65 72 90 76 C115 80 145 74 176 80 L172 120 C140 125 110 118 90 122 C60 126 35 120 28 118 Z" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-width="1.2"></path>
+<!-- Delicate Wrinkle Lines -->
+<path d="M50 88 Q75 96 105 90 Q135 84 155 94" stroke="currentColor" stroke-linecap="round" stroke-width="0.9"></path>
+<path d="M40 102 Q80 110 120 104 Q145 100 162 108" stroke="currentColor" stroke-linecap="round" stroke-width="0.75"></path>
+<!-- Sun ray spark -->
+<circle cx="100" cy="22" fill="currentColor" r="1.5"></circle>
+<path d="M100 12 L100 16 M100 28 L100 32 M90 22 L94 22 M106 22 L110 22" stroke="currentColor" stroke-linecap="round" stroke-width="1"></path>
+</svg>
+</div>
+<div class="space-y-3">
+<span class="font-label-eyebrow text-label-eyebrow uppercase tracking-widest text-secondary">WHEN YOUR WISHLIST IS QUIET</span>
+<h2 class="font-headline-md text-headline-md text-primary">Your sanctuary awaits its first pieces.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mx-auto">
+          Explore our slow-crafted bedding collections and tap the heart icon on any piece to curate your serene bedroom retreat.
+        </p>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+<a class="px-8 py-3.5 rounded bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md uppercase tracking-wider transition-all duration-200" data-path="plp" href="#">
+          Explore Bedsheets
+        </a>
+<a class="px-8 py-3.5 rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md uppercase tracking-wider transition-all duration-200" data-path="plp" href="#">
+          Discover Duvets
+        </a>
+</div>
+</div>
+</section>
+<!-- Curated In-Tandem Inspiration: Recommended For You -->
+<section class="w-full pt-space-xl pb-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-space-md">
+<div class="space-y-2">
+<span class="font-label-eyebrow text-label-eyebrow uppercase tracking-widest text-secondary">HARMONIOUS ACCOMPANIMENTS</span>
+<h2 class="font-headline-md text-headline-md text-primary">Pairs Beautifully With Your Taste</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+        Textile weights, hues, and weave structures hand-selected by our sleep stylists to complement your current archive.
+      </p>
+</div>
+<!-- 3 Curated In-Tandem Products -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Recommendation 1: Heavy Linen Waffle Bed Blanket -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg p-4 transition-all duration-300 hover:bg-surface-container">
+<div class="relative aspect-[4/5] w-full overflow-hidden rounded bg-surface-container">
+<img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Sculptural heavy linen waffle weave bed throw in rich taupe sand folded across natural cedar bedside stool, exhibiting intricate deep tactile honeycomb weave structure in gentle indirect bedroom light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWebx9TaR6jNDx2Ln4IsoijR1FBMRgG6CsiPvj8HgY6G5GHRDMIvpmGk0yuo2gWGyPhef2KwnUMIEgWSrtsqeWkfLQMfOZ4pkxf6PzGozGleLI0nOben7Lgw1OPa46eero4OVdetvqIc7Z1ZdpIAHJK3IhFM57w3daIEwYJA_I1YXCXt4oW9Ak-lynvaTmXkDAit7jhLVsfp_NChoahFzkQhScy9kbt23H-OYa0N0vVrCj-eHN2JIugg"/>
+<button class="absolute top-3 right-3 h-9 w-9 rounded-full bg-surface-container-lowest/90 backdrop-blur text-on-surface hover:text-secondary transition-colors flex items-center justify-center shadow-sm" onclick="addRecommendationToWishlist(this, 'Heavy Linen Waffle Bed Blanket', '$195')" title="Save to Sanctuary">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<div class="pt-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-eyebrow text-label-eyebrow uppercase tracking-wider">
+<span>Layers &amp; Throws</span>
+<span>$195</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary pt-1">Heavy Waffle Linen Blanket</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-1">380 GSM European flax weave</p>
+</div>
+<button class="w-full py-2.5 rounded bg-surface-container-highest hover:bg-primary hover:text-on-primary text-primary font-label-sm text-label-sm uppercase tracking-wider transition-colors duration-200" onclick="quickAddRecommendation(this, 'Heavy Waffle Linen Blanket')">
+            + Add To Sanctuary
+          </button>
+</div>
+</div>
+<!-- Recommendation 2: Organic Percale Flat Sheet -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg p-4 transition-all duration-300 hover:bg-surface-container">
+<div class="relative aspect-[4/5] w-full overflow-hidden rounded bg-surface-container">
+<img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Crisp cool organic long-staple cotton percale flat sheet in soft morning mist hue, showcasing tailored hemstitch finish folded neatly on minimal warm stone shelf, luxury boutique hotel aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChcqyeYiB8OvTNF5dZt5eYH-gHyYqyR_AT3NKQDWZonIzzQzseIiGw6M846skocZTOnyi-mbtNLSdKV8Qy-rNtLQ9oZK9M7p8ZfX-g04z6QA3R6GmV9ke4mOnKLyQ_Gwp-ACzlfrhWq-p-LYQOAu4kdmxSn_ISjFGCV6AWCSrCLah5vqYYSEzDMDzLs7RJu3uKoELI70mJEI-9080l78gZ0eWQg0_m1IjKWeLGN2WXE6-PhylpEs92kQ"/>
+<button class="absolute top-3 right-3 h-9 w-9 rounded-full bg-surface-container-lowest/90 backdrop-blur text-on-surface hover:text-secondary transition-colors flex items-center justify-center shadow-sm" onclick="addRecommendationToWishlist(this, 'Organic Percale Flat Sheet', '$145')" title="Save to Sanctuary">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<div class="pt-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-eyebrow text-label-eyebrow uppercase tracking-wider">
+<span>Crisp Weave</span>
+<span>$145</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary pt-1">Organic Percale Flat Sheet</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-1">Cooling 300 Thread Count</p>
+</div>
+<button class="w-full py-2.5 rounded bg-surface-container-highest hover:bg-primary hover:text-on-primary text-primary font-label-sm text-label-sm uppercase tracking-wider transition-colors duration-200" onclick="quickAddRecommendation(this, 'Organic Percale Flat Sheet')">
+            + Add To Sanctuary
+          </button>
+</div>
+</div>
+<!-- Recommendation 3: French Lavender & Cedar Pillow Mist -->
+<div class="group flex flex-col bg-surface-container-low rounded-lg p-4 transition-all duration-300 hover:bg-surface-container">
+<div class="relative aspect-[4/5] w-full overflow-hidden rounded bg-surface-container">
+<img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Amber apothecary glass spray bottle with minimal label for botanical sleep mist resting beside a fresh dried sprig of French lavender on an unpolished travertine block bathed in soft natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIqvaQsij1y5Tws3q6LnB2TWOWvI6NLNiQ1fjgnq9FMV2MzRbs3TP52zpn5F7KDNX6RZShJ2tfOH6PkrPhMu60GgPHGPmdhKp2JHMcL-3g2QvTpFp0rJi81QMuBJ8a-tlnF-iQA-aJHG2I5_JA-mM0WVCYi_-Hgi5AdUeLfiXlpVNrkib0A4M8JJ9S0WOWH8qfIUp-duFYVpywH4C8tGJdU8o1J3d5cTmywyUimXhn5vAlYRfsI55azQ"/>
+<button class="absolute top-3 right-3 h-9 w-9 rounded-full bg-surface-container-lowest/90 backdrop-blur text-on-surface hover:text-secondary transition-colors flex items-center justify-center shadow-sm" onclick="addRecommendationToWishlist(this, 'Aromatherapy Pillow Mist', '$42')" title="Save to Sanctuary">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<div class="pt-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-eyebrow text-label-eyebrow uppercase tracking-wider">
+<span>Sleep Ritual</span>
+<span>$42</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary pt-1">Provence Linen Sleep Mist</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-1">100ml Organic botanical extract</p>
+</div>
+<button class="w-full py-2.5 rounded bg-surface-container-highest hover:bg-primary hover:text-on-primary text-primary font-label-sm text-label-sm uppercase tracking-wider transition-colors duration-200" onclick="quickAddRecommendation(this, 'Provence Linen Sleep Mist')">
+            + Add To Sanctuary
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Editorial Note On Fabric Longevity -->
+<section class="my-space-xl p-space-lg rounded-xl bg-surface-container-low">
+<div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+<div class="h-16 w-16 rounded-full bg-secondary-container/40 flex items-center justify-center flex-shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[32px]">bed</span>
+</div>
+<div class="space-y-2 text-center md:text-left">
+<h4 class="font-headline-sm text-headline-sm text-primary">Uncompromising Restorative Standards</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Every piece saved in your LOOMSDAY sanctuary is loomed from long-staple natural fibers without formaldehyde resins or synthetic softening agents. If your curated pieces sell through, our atelier concierge will notify your account before release.
+        </p>
+</div>
+<div class="flex-shrink-0">
+<a class="px-6 py-3 rounded bg-surface-container-highest hover:bg-primary hover:text-on-primary text-primary font-label-sm text-label-sm uppercase tracking-wider transition-colors inline-block whitespace-nowrap" data-path="landing" href="#">
+          Our Craftsmanship
+        </a>
+</div>
+</div>
+</section>
+<!-- Interactive Wishlist Logic -->
+<script>
+    let activeItemCount = 3;
+
+    function showToast(text) {
+      const toast = document.getElementById('wishlist-toast');
+      const message = document.getElementById('toast-message');
+      if (toast && message) {
+        message.innerText = text;
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 3200);
+      }
+    }
+
+    function updateItemCount(newCount) {
+      activeItemCount = Math.max(0, newCount);
+      const countBadge = document.getElementById('header-count-badge');
+      if (countBadge) {
+        countBadge.innerText = activeItemCount === 1 ? '1 Reserved Item' : `${activeItemCount} Reserved Items`;
+      }
+      
+      const activeView = document.getElementById('active-wishlist-view');
+      const emptyView = document.getElementById('empty-wishlist-view');
+      const moveAllBtn = document.getElementById('move-all-btn');
+
+      if (activeItemCount === 0) {
+        if (activeView) activeView.classList.add('hidden');
+        if (emptyView) emptyView.classList.remove('hidden');
+        if (moveAllBtn) {
+          moveAllBtn.classList.add('opacity-50', 'pointer-events-none');
+        }
+      } else {
+        if (activeView) activeView.classList.remove('hidden');
+        if (emptyView) emptyView.classList.add('hidden');
+        if (moveAllBtn) {
+          moveAllBtn.classList.remove('opacity-50', 'pointer-events-none');
+        }
+      }
+    }
+
+    function removeItem(elementId, productName) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.style.opacity = '0';
+        element.style.transform = 'scale(0.95)';
+        element.style.transition = 'all 0.35s ease-out';
+        setTimeout(() => {
+          element.remove();
+          updateItemCount(activeItemCount - 1);
+          showToast(`Removed "${productName}" from your curation`);
+        }, 350);
+      }
+    }
+
+    function moveToCart(elementId, productName) {
+      removeItem(elementId, productName);
+      showToast(`Added "${productName}" to your shopping bag`);
+    }
+
+    function moveAllToCart() {
+      if (activeItemCount > 0) {
+        const items = document.querySelectorAll('#active-wishlist-view article');
+        items.forEach((item, index) => {
+          setTimeout(() => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(12px)';
+            item.style.transition = 'all 0.3s ease-out';
+          }, index * 80);
+        });
+
+        setTimeout(() => {
+          items.forEach(el => el.remove());
+          updateItemCount(0);
+          showToast('All reserved sanctuary items moved to cart');
+        }, (items.length * 80) + 300);
+      }
+    }
+
+    function toggleShareModal(open) {
+      const modal = document.getElementById('share-modal');
+      if (modal) {
+        if (open) {
+          modal.classList.remove('opacity-0', 'pointer-events-none');
+          modal.classList.add('opacity-100');
+        } else {
+          modal.classList.add('opacity-0', 'pointer-events-none');
+          modal.classList.remove('opacity-100');
+        }
+      }
+    }
+
+    function copyShareLink(button) {
+      navigator.clipboard?.writeText('https://loomsday.luxury/curation/a749-restful-dawn');
+      const originalText = button.innerText;
+      button.innerText = 'Copied!';
+      button.classList.add('bg-secondary');
+      setTimeout(() => {
+        button.innerText = originalText;
+        button.classList.remove('bg-secondary');
+        toggleShareModal(false);
+        showToast('Private curation link copied to clipboard');
+      }, 1200);
+    }
+
+    function toggleEmptyStateSimulation() {
+      const activeView = document.getElementById('active-wishlist-view');
+      const emptyView = document.getElementById('empty-wishlist-view');
+      if (activeView && emptyView) {
+        const isHidden = emptyView.classList.contains('hidden');
+        if (isHidden) {
+          activeView.classList.add('hidden');
+          emptyView.classList.remove('hidden');
+          showToast('Previewing calm empty state');
+        } else {
+          activeView.classList.remove('hidden');
+          emptyView.classList.add('hidden');
+          showToast('Restored curated collection view');
+        }
+      }
+    }
+
+    function quickAddRecommendation(button, title) {
+      button.innerText = '✓ Added to Sanctuary';
+      button.classList.add('bg-primary', 'text-on-primary');
+      updateItemCount(activeItemCount + 1);
+      showToast(`Added "${title}" to your sanctuary`);
+      setTimeout(() => {
+        button.innerText = '+ Add To Sanctuary';
+        button.classList.remove('bg-primary', 'text-on-primary');
+      }, 2500);
+    }
+
+    function addRecommendationToWishlist(button, title, price) {
+      const icon = button.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.innerText = 'favorite';
+        icon.classList.add('text-secondary');
+      }
+      updateItemCount(activeItemCount + 1);
+      showToast(`Saved "${title}" (${price}) to your private reserve`);
+    }
+  </script>
+</div></div></main><footer class="w-full bg-surface-container-low border-t border-surface-variant/50 pt-space-xl pb-space-lg text-on-surface mt-space-xl"><div class="max-w-[1440px] mx-auto px-margin"><div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg pb-space-xl border-b border-surface-variant/60"><div class="lg:col-span-5 flex flex-col justify-between pr-0 lg:pr-space-lg"><div class="space-y-4"><p class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">EDITORIAL JOURNAL &amp; ARCHIVE</p><h3 class="font-headline-md text-headline-md text-primary max-w-md">Awaken gently.</h3><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Receive private collection previews, seasonal palettes, and linen care journals delivered unhurriedly to your inbox.</p></div><form class="mt-8 max-w-md"><div class="flex items-stretch border-b border-primary/40 focus-within:border-secondary transition-colors pb-1"><input class="w-full bg-transparent font-body-sm text-body-sm placeholder:text-on-surface-variant/60 focus:outline-none text-on-surface py-2" placeholder="Your email address" type="email"/><button class="font-label-md text-label-md uppercase tracking-wider text-primary hover:text-secondary transition-colors whitespace-nowrap pl-4 flex items-center gap-1" type="submit">Subscribe <span class="material-symbols-outlined text-[16px]">arrow_forward</span></button></div></form></div><div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8"><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">Shop</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Bedsheets</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Duvet Sets</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Pillow Protectors</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Silk Pillowcases</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Gift Cards</a></li></ul></div><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">The Craft</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Our French Flax</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Organic Percale</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">OEKO-TEX® Certified</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">30-Night Guarantee</a></li></ul></div><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">Service</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Concierge Care</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Track Order</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Shipping &amp; Returns</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Hospitality Inquiries</a></li></ul></div></div></div><div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 font-body-sm text-body-sm text-on-surface-variant"><div class="flex flex-wrap items-center gap-6"><p>© 2025 LOOMSDAY Inc. Sleep, elevated.</p><div class="flex items-center gap-4 text-[12px] uppercase tracking-wider"><a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="#">Accessibility</a></div></div><div class="flex items-center gap-4 text-on-surface-variant/80 font-label-sm text-[11px] tracking-widest uppercase"><span class="px-2 py-1 bg-surface-container rounded">Visa</span><span class="px-2 py-1 bg-surface-container rounded">Mastercard</span><span class="px-2 py-1 bg-surface-container rounded">Amex</span><span class="px-2 py-1 bg-surface-container rounded">Apple Pay</span><span class="px-2 py-1 bg-surface-container rounded">Klarna</span></div></div></div></footer></body></html>

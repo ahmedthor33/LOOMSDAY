@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>LOOMSDAY | Elevated Sleep</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#fcf9f4", "tertiary-fixed": "#eae1d2", "outline": "#747878", "on-surface": "#1c1c19", "surface-container-high": "#ebe8e3", "primary-fixed-dim": "#c8c6c5", "inverse-primary": "#c8c6c5", "on-primary-fixed-variant": "#474746", "primary": "#010101", "tertiary-container": "#201c13", "primary-container": "#1c1c1c", "on-secondary": "#ffffff", "on-tertiary-container": "#8b8477", "on-secondary-container": "#775f33", "on-background": "#1c1c19", "secondary": "#735b30", "surface-variant": "#e5e2dd", "on-primary": "#ffffff", "on-secondary-fixed-variant": "#59431b", "on-tertiary-fixed-variant": "#4b463b", "on-primary-container": "#858484", "tertiary": "#030200", "error": "#ba1a1a", "tertiary-fixed-dim": "#cec5b7", "surface-tint": "#5f5e5e", "on-tertiary": "#ffffff", "inverse-on-surface": "#f3f0eb", "error-container": "#ffdad6", "surface-container": "#f0ede9", "on-error-container": "#93000a", "primary-fixed": "#e5e2e1", "outline-variant": "#c4c7c7", "on-surface-variant": "#444748", "surface-container-lowest": "#ffffff", "surface-container-low": "#f6f3ee", "surface-container-highest": "#e5e2dd", "on-error": "#ffffff", "surface-bright": "#fcf9f4", "surface-dim": "#dcdad5", "on-tertiary-fixed": "#1f1b12", "surface": "#fcf9f4", "secondary-fixed": "#ffdea8", "inverse-surface": "#31302d", "on-primary-fixed": "#1b1b1b", "on-secondary-fixed": "#271900", "secondary-container": "#fcdba5", "secondary-fixed-dim": "#e2c28e" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "gutter-mobile": "1rem", "space-xl": "4rem", "gutter": "1.5rem", "margin": "3.5rem", "space-lg": "2.5rem", "space-sm": "0.75rem", "space-md": "1.5rem", "margin-mobile": "1.25rem", "space-xs": "0.375rem" }, "fontFamily": { "label-sm": ["Inter"], "display-hero-mobile": ["Playfair Display"], "headline-lg": ["Playfair Display"], "label-md": ["Inter"], "body-md": ["Inter"], "headline-md": ["Playfair Display"], "body-lg": ["Inter"], "label-eyebrow": ["Inter"], "headline-sm": ["Playfair Display"], "display-hero": ["Playfair Display"], "body-sm": ["Inter"], "headline-lg-mobile": ["Playfair Display"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.12em", "fontWeight": "500" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.08em", "fontWeight": "500" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "300" }], "label-eyebrow": ["11px", { "lineHeight": "16px", "letterSpacing": "0.2em", "fontWeight": "500" }], "headline-sm": ["22px", { "lineHeight": "30px", "fontWeight": "500" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,28,28,0.04)]"><div class="bg-surface-container text-on-surface-variant flex items-center justify-center py-2 px-margin text-center tracking-widest uppercase font-label-eyebrow text-label-eyebrow border-b border-surface-variant/40"><span class="text-secondary mr-2">✦</span>COMPLIMENTARY SHIPPING ON ORDERS OVER $100<span class="text-secondary ml-2">✦</span></div><div class="h-20 max-w-[1440px] mx-auto px-margin flex items-center justify-between gap-8"><div class="flex items-center gap-10"><a class="flex items-center gap-3 group" data-path="landing" href="#"><img alt="LOOMSDAY Wordmark Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XkbhpO4WI8CcTsRczmmW-eOD2FFFbmj329t-TFWFhNHl_SYCAPrmxKeexJ1BL5I5JGK5FdOfuxGH72_cACdMMJn-odKjvQSqpAJIG1sl21mEPGuENElECzui7MbkNzMocVwvfGmFN16h3N7V_bWuB9v9wfj5YHq9cnz5yH5YCUHVIDoyG-uOHoVPhcfnUyvKf-IIfBOiQU4Tc5kAhu7TWU3ln4tEnn7qd9LF4rldRRhvzAdWEJRMbKl2kV"/><span class="font-headline-sm text-headline-sm tracking-tight text-primary uppercase">LOOMSDAY</span></a><nav class="hidden xl:flex items-center gap-8" data-active-classes="text-primary font-medium border-b border-primary pb-1"><a aria-current="page" class="uppercase transition-colors duration-200 text-primary font-medium border-b border-primary pb-1" data-path="plp" href="#">Bedsheets</a><a aria-current="page" class="uppercase transition-colors duration-200 text-primary font-medium border-b border-primary pb-1" data-path="plp" href="#">Pillows &amp; Covers</a><a aria-current="page" class="uppercase transition-colors duration-200 text-primary font-medium border-b border-primary pb-1" data-path="plp" href="#">Duvets</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="landing" href="#">Craft &amp; About</a><a class="font-label-md text-label-md uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="landing" href="#">Journal</a></nav></div><div class="flex items-center gap-6"><div class="hidden md:flex items-center text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase cursor-pointer hover:text-on-surface transition-colors"><span>USD $</span></div><button aria-label="Search" class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[22px]">search</span></button><a aria-label="Wishlist" class="relative text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" data-path="wishlist" href="#"><span class="material-symbols-outlined text-[22px]">favorite</span><span class="absolute -top-1.5 -right-2 bg-secondary text-on-secondary font-label-sm text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium leading-none">2</span></a><a aria-label="Shopping Cart" class="relative text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" data-path="cart" href="#"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute -top-1.5 -right-2 bg-primary text-on-primary font-label-sm text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium leading-none">3</span></a><a aria-label="Account" class="flex items-center gap-2 pl-2" data-path="signin" href="#"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant/80 hover:ring-secondary transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSH3AertD5W5cFYCtpMGdVC3IQpLZsROJxCWpRUtyd9hGo1dZblcdD2lCbrIUW1vtEqFP701DqqMjuEhB_AqOyZg-Hqw_BlSEpklNh8qE3PH5WD24qxQrGoXi9SA7jsfhQCw69uqP8g2E-A2igpPgKLlhDXRY_hRimeyFa9xoqoKje8immHKT0ApV4z7QD06GBnK0YA4a6GCbvcNCj4oA0_o7XdgKpztJH34GmfPocL3uzl6rvomWiwQ"/></a></div></div></header><main class="w-full pt-28 bg-surface flex-1"><div class="max-w-[1440px] mx-auto px-margin"><div class="flex flex-col w-full">
+<!-- Top Editorial Header & Breadcrumbs -->
+<section class="mb-12">
+<!-- Breadcrumb Hierarchy -->
+<nav class="flex items-center gap-2 mb-6 font-label-eyebrow text-label-eyebrow tracking-widest uppercase text-on-surface-variant/80">
+<a class="hover:text-primary transition-colors" data-path="landing" href="#">Home</a>
+<span class="text-[10px] text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Bedding</span>
+<span class="text-[10px] text-outline-variant">/</span>
+<span class="text-primary font-medium">All Collections</span>
+</nav>
+<!-- Editorial Header Block -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+<div class="lg:col-span-8 space-y-4">
+<div class="flex items-center gap-3">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">Slow-Crafted Linens</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">24 Pieces</span>
+</div>
+<h1 class="font-display-hero text-display-hero text-primary tracking-tight">The Bedding Collection</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          Spun from slow-harvested French flax and organic Aegean cotton. Naturally thermoregulating, hypoallergenic, and consciously tailored to soften gracefully over decades.
+        </p>
+</div>
+<!-- Quick Trust Indicators -->
+<div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end lg:items-end">
+<div class="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-body-sm font-body-sm shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+<span>OEKO-TEX® Standard 100 Guaranteed</span>
+</div>
+<div class="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-body-sm font-body-sm shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">hotel</span>
+<span>30-Night Restful Slumber Trial</span>
+</div>
+</div>
+</div>
+<!-- Active Filters & Controls Strip -->
+<div class="mt-10 pt-6 pb-4 bg-surface-container-low/60 rounded-xl px-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<!-- Left: Active Filter Chips -->
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-label-eyebrow text-label-eyebrow uppercase tracking-wider text-on-surface-variant mr-1">Active:</span>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm hover:bg-surface-variant transition-colors group" type="button">
+<span>Sheets</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant group-hover:text-primary">close</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm hover:bg-surface-variant transition-colors group" type="button">
+<span>100% French Flax</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant group-hover:text-primary">close</span>
+</button>
+<button class="font-label-sm text-label-sm text-secondary hover:text-primary underline ml-2 transition-colors" id="clearAllFilters" type="button">
+          Clear All
+        </button>
+</div>
+<!-- Right: Sort, View Grid Toggles & Mobile Filter Trigger -->
+<div class="flex items-center gap-4 self-end md:self-auto">
+<!-- Mobile Filter Button (hidden on desktop) -->
+<button class="lg:hidden inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container text-primary font-label-sm text-label-sm uppercase tracking-wider" id="mobileFilterToggle" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Refine</span>
+</button>
+<!-- Sorting Select -->
+<div class="flex items-center gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider hidden sm:inline" for="sortDropdown">Sort:</label>
+<div class="relative">
+<select class="appearance-none bg-surface-container-highest/60 hover:bg-surface-container-highest text-on-surface font-body-sm text-body-sm pl-3 pr-8 py-2 rounded-lg cursor-pointer focus:outline-none transition-colors" id="sortDropdown">
+<option value="featured">Featured Curations</option>
+<option value="best_selling">Best Selling</option>
+<option value="price_asc">Price: Low to High</option>
+<option value="price_desc">Price: High to Low</option>
+<option value="rating">Highest Rated</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- View Density Toggle -->
+<div class="hidden xl:flex items-center bg-surface-container-highest/60 p-1 rounded-lg">
+<button class="p-1.5 rounded bg-surface text-primary shadow-sm transition-all" id="view3Col" title="3-Column View" type="button">
+<span class="material-symbols-outlined text-[20px] block">view_module</span>
+</button>
+<button class="p-1.5 rounded text-on-surface-variant hover:text-primary transition-all" id="view4Col" title="4-Column View" type="button">
+<span class="material-symbols-outlined text-[20px] block">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Catalog Layout (25% Sidebar | 75% Product Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+<!-- LEFT FILTER SIDEBAR (lg:col-span-3) -->
+<aside class="lg:col-span-3 bg-surface-container-low/70 lg:bg-transparent rounded-2xl p-6 lg:p-0 transition-all duration-300" id="filterSidebar">
+<div class="flex items-center justify-between pb-4 lg:hidden">
+<h3 class="font-headline-sm text-headline-sm text-primary">Filter By</h3>
+<button class="text-on-surface-variant hover:text-primary" id="closeMobileFilters" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-6">
+<!-- Accordion 1: Categories -->
+<div class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<button class="w-full flex items-center justify-between text-left group" onclick="toggleAccordion('cat-group', 'cat-icon')" type="button">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">Category</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform duration-200" id="cat-icon">remove</span>
+</button>
+<div class="mt-4 space-y-2.5" id="cat-group">
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex items-center gap-3">
+<input checked="" class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-primary font-medium">All Bedding</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">24</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex items-center gap-3">
+<input checked="" class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Bedsheet Sets</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">8</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Fitted Sheets</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">4</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Duvet Covers</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">6</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Pillowcase Pairs</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">4</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Down &amp; Feather Inserts</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">2</span>
+</label>
+</div>
+</div>
+<!-- Accordion 2: Bed Size -->
+<div class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<button class="w-full flex items-center justify-between text-left group" onclick="toggleAccordion('size-group', 'size-icon')" type="button">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">Bed Size</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform duration-200" id="size-icon">remove</span>
+</button>
+<div class="mt-4 grid grid-cols-2 gap-2" id="size-group">
+<button class="py-2.5 px-3 rounded-lg text-center font-label-sm text-label-sm uppercase bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors" type="button">Twin / XL</button>
+<button class="py-2.5 px-3 rounded-lg text-center font-label-sm text-label-sm uppercase bg-primary text-on-primary font-medium shadow-sm transition-colors" type="button">Full / Queen</button>
+<button class="py-2.5 px-3 rounded-lg text-center font-label-sm text-label-sm uppercase bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors" type="button">King</button>
+<button class="py-2.5 px-3 rounded-lg text-center font-label-sm text-label-sm uppercase bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors" type="button">Cal King</button>
+</div>
+</div>
+<!-- Accordion 3: Color Palette Swatches -->
+<div class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<button class="w-full flex items-center justify-between text-left group" onclick="toggleAccordion('color-group', 'color-icon')" type="button">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">Color Palette</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform duration-200" id="color-icon">remove</span>
+</button>
+<div class="mt-4" id="color-group">
+<div class="grid grid-cols-3 gap-3">
+<!-- Swatch 1 -->
+<div class="flex flex-col items-center gap-1.5 cursor-pointer group">
+<span class="w-8 h-8 rounded-full shadow-inner ring-2 ring-primary/80 transition-transform group-hover:scale-110" style="background-color: #FAF7F2;"></span>
+<span class="font-body-sm text-[11px] text-center text-on-surface truncate w-full">Warm Ivory</span>
+</div>
+<!-- Swatch 2 -->
+<div class="flex flex-col items-center gap-1.5 cursor-pointer group">
+<span class="w-8 h-8 rounded-full shadow-inner ring-1 ring-surface-variant transition-transform group-hover:scale-110" style="background-color: #E8DFD0;"></span>
+<span class="font-body-sm text-[11px] text-center text-on-surface-variant truncate w-full">Natural Flax</span>
+</div>
+<!-- Swatch 3 -->
+<div class="flex flex-col items-center gap-1.5 cursor-pointer group">
+<span class="w-8 h-8 rounded-full shadow-inner ring-1 ring-surface-variant transition-transform group-hover:scale-110" style="background-color: #9DA899;"></span>
+<span class="font-body-sm text-[11px] text-center text-on-surface-variant truncate w-full">Muted Sage</span>
+</div>
+<!-- Swatch 4 -->
+<div class="flex flex-col items-center gap-1.5 cursor-pointer group">
+<span class="w-8 h-8 rounded-full shadow-inner ring-1 ring-surface-variant transition-transform group-hover:scale-110" style="background-color: #C89D88;"></span>
+<span class="font-body-sm text-[11px] text-center text-on-surface-variant truncate w-full">Terracotta</span>
+</div>
+<!-- Swatch 5 -->
+<div class="flex flex-col items-center gap-1.5 cursor-pointer group">
+<span class="w-8 h-8 rounded-full shadow-inner ring-1 ring-surface-variant transition-transform group-hover:scale-110" style="background-color: #2E3133;"></span>
+<span class="font-body-sm text-[11px] text-center text-on-surface-variant truncate w-full">Charcoal</span>
+</div>
+<!-- Swatch 6 -->
+<div class="flex flex-col items-center gap-1.5 cursor-pointer group">
+<span class="w-8 h-8 rounded-full shadow-inner ring-1 ring-surface-variant transition-transform group-hover:scale-110" style="background-color: #FFFFFF;"></span>
+<span class="font-body-sm text-[11px] text-center text-on-surface-variant truncate w-full">Cloud White</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion 4: Fabric & Weave -->
+<div class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<button class="w-full flex items-center justify-between text-left group" onclick="toggleAccordion('fabric-group', 'fabric-icon')" type="button">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">Fabric &amp; Weave</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform duration-200" id="fabric-icon">remove</span>
+</button>
+<div class="mt-4 space-y-2.5" id="fabric-group">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-primary font-medium">100% Washed French Flax</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">400TC Organic Percale</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">500TC Cotton Sateen</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">22-Momme Mulberry Silk</span>
+</label>
+</div>
+</div>
+<!-- Accordion 5: Price Range Dual Slider -->
+<div class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<button class="w-full flex items-center justify-between text-left group" onclick="toggleAccordion('price-group', 'price-icon')" type="button">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">Price Range</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform duration-200" id="price-icon">remove</span>
+</button>
+<div class="mt-4 space-y-4" id="price-group">
+<div class="relative w-full h-1.5 bg-surface-container-highest rounded-full">
+<div class="absolute left-[15%] right-[20%] h-full bg-primary rounded-full"></div>
+</div>
+<div class="flex items-center justify-between gap-3">
+<div class="flex-1">
+<span class="font-label-eyebrow text-[10px] text-on-surface-variant uppercase">Min ($)</span>
+<input class="w-full px-3 py-1.5 rounded bg-surface-container font-body-sm text-body-sm text-on-surface focus:outline-none" max="450" min="50" type="number" value="50"/>
+</div>
+<span class="text-on-surface-variant mt-3">—</span>
+<div class="flex-1">
+<span class="font-label-eyebrow text-[10px] text-on-surface-variant uppercase">Max ($)</span>
+<input class="w-full px-3 py-1.5 rounded bg-surface-container font-body-sm text-body-sm text-on-surface focus:outline-none" max="450" min="50" type="number" value="340"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion 6: Sustainability -->
+<div class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<button class="w-full flex items-center justify-between text-left group" onclick="toggleAccordion('sust-group', 'sust-icon')" type="button">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">Conscious Making</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform duration-200" id="sust-icon">remove</span>
+</button>
+<div class="mt-4 space-y-2.5" id="sust-group">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">OEKO-TEX® Certified</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">GOTS Certified Organic</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded text-primary accent-primary bg-surface cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Fair Trade™ Certified</span>
+</label>
+</div>
+</div>
+<!-- Sidebar Promo Card -->
+<div class="p-6 rounded-2xl bg-secondary-container/40 text-on-secondary-container relative overflow-hidden space-y-3">
+<span class="material-symbols-outlined text-secondary text-[28px]">bedtime</span>
+<h4 class="font-headline-sm text-headline-sm text-primary">Need Linen Advice?</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Our sleep stylists are on hand to curate fabric pairings suited to your room's natural climate.
+          </p>
+<a class="inline-flex items-center gap-1 font-label-md text-label-md uppercase tracking-wider text-primary hover:text-secondary font-medium pt-1 group" href="#">
+            Consult Concierge
+            <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- RIGHT PRODUCT CATALOG (lg:col-span-9) -->
+<main class="lg:col-span-9 flex flex-col">
+<!-- Product Grid Container with dynamic class toggle -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8" id="catalogGrid">
+<!-- CARD 1 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<!-- Image Box with hover dual image -->
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<!-- Badges -->
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-surface/90 backdrop-blur text-primary font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Best Seller</span>
+</div>
+<!-- Wishlist Button -->
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<!-- Primary Image -->
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Luxurious sunlit primary bedroom with relaxed French flax linen sheets in warm ivory on a low wooden platform bed, bathed in soft morning light, editorial minimalism style, warm earth tones, serene and peaceful interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqxpkiJ5dzlKKDVTO6yFWC5mW9OPoQ2GU06Nlau5kGq9XM0ZDoe1NXCY4fbPvSFh2ZkUkztV_2KOWcngKL3GvVfeWkOtRaVOYmB-CNpoJOO-LNUZthjZyEvEqd9rtxJ-mLx9v0Xr3WiUIFia7J-InFGPt3F-v9r9FMOhRULydqgTxJNLx7pjgHChszMz-SCRQJlWPBsd1Oc2hYDXTPiYLXgwrHyQrnmVzAyb7LcyJ__dLrNg8BoNcAJA"/>
+<!-- Secondary Macro Texture Image (Revealed on Hover) -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Macro close-up photograph of 100 percent natural French flax linen fabric weave, showing airy textured slubs, tactile softness, creamy warm ivory daylight illumination, editorial textile styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWWzbZQsybiWF9xQ3cWXdRletMGduUM3GdRLrC1N7PHBBIQZhGnjhjMjLjQSOCzZH-s2UYAWMdT00JPjsKQbyJJz6dJgfM5GG0Ua98UtUBqFSClgRPVZTK0bNWzPGVQ9dmEtUKfyb7-V0vHnJq8MEYMjwS2eSNB99cMZfkuvMKgAee1IY-RdWNmZFkTnVjF0250oxxNmJpDBYClpMbHwZxgCKVV28EpdXc1RtK5cOUyYYZU-wj-GGk9A"/>
+<!-- Hover Quick Add Drawer Button -->
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $280
+              </button>
+</div>
+</div>
+<!-- Card Content -->
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">100% French Flax Linen</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>4.9</span>
+<span class="text-on-surface-variant text-[12px]">(182)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                The Heritage Linen Sheet Set
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Includes flat sheet, fitted sheet &amp; two tailored pillowcases.</p>
+</div>
+<!-- Price & Swatches Row -->
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$280</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Queen</span>
+</div>
+<!-- Swatch Dots -->
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #FAF7F2;" title="Warm Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #E8DFD0;" title="Natural Flax"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #9DA899;" title="Muted Sage"></span>
+<span class="font-label-sm text-[11px] text-on-surface-variant ml-1">+3</span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 2 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed font-label-eyebrow text-label-eyebrow uppercase tracking-widest">New Season</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Editorial bedroom setting showing draped duvet cover in soft terracotta earth tone, draped gracefully across an unmade king mattress in warm morning dawn light, minimalist interior styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfbjSMWyKR4Kr9kFSqLzF2ojnCMPOmnC0zfZNxN4eosnkA-FICmcCqbT3wKhTmo5kMqcBunr2b39WjCNQyUl8640u5FVxMVeXg7mNoejiJjmt8KoWxNksUid49o6b6VLAnsZRC-iIMm5kxO1PSGfv79kyt10C52pW_kumZ2FFosdr5jbkFSgKqBZiE8CkqHtT5hF-gsVBOyFcmOU-zIIGIXTdpHX4hgGAuAcQbRtndXkRnU8d3GJayYg"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Macro detail of organic washed linen duvet cover edge with hidden mother-of-pearl buttons and corner tie loops, warm daylight, terracotta mist tint, high thread texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf2YVAQ6YeAn3zYHrVYkZlAk6diSsSOSLg4oN8bgUZinSq3sCQX9LZbI_LuvxBuVruxsqSfVK3Qv8VJZ3dYZZAhJ_K5QTReeZPiFXryeLZKI_chS4g7dCKt3nsU4pXBje4k1An1h0vifjFno1CEyZDSodYErYlJWDqkse5DE0A8hYyPgISz-ePWWBrLjSsNBi6_fOpRx_nr1DKw3GgTtzn5BkHBdTCYnFW5BaZ0uY4RtC9hqw8c2LbHg"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $240
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">Pure French Linen</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>5.0</span>
+<span class="text-on-surface-variant text-[12px]">(94)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                Washed Linen Duvet Cover
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Concealed button closure with internal corner ties for zero slip.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$240</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Queen / King</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #C89D88;" title="Terracotta Mist"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #FAF7F2;" title="Warm Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #2E3133;" title="Charcoal"></span>
+<span class="font-label-sm text-[11px] text-on-surface-variant ml-1">+2</span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 3 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-surface/90 backdrop-blur text-primary font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Certified Organic</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Crisp cloud white hotel-style bedding in 400 thread count organic percale, folded neatly on a wooden stool beside a sun-drenched window with sheer curtains, warm architectural minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMmpzNtJzJz798jrKtc5_8RS6PHZCZ1vtpNvxD7mGztLC-FkKEdCW9RIshVmFlVENhRQiWzDWriApzeTTgAUwjMsAxoBRkf5iivENMxmaRU8lLUwuInJkrtthtvEIiJyLQka5duYutMuZdRIbHgQT5zogk3E6GDqJkE1vhxqgFHBOV8dYKIOtbrKlr3izk-a57e6VGb9RdsasSb_YPR84jcbkLnCGjlSf_3qYdk4w0j5jK6zhEE3YEIw"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Detailed macro of tight organic cotton percale weave with matte finish, showing subtle natural weave luster and smooth cool touch texture under pure daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA18YSwdI1V1SiIa3xwVoBh9vRTlMGzQHuzXSI0QXIVSCkWBXlz49vyAPAoCY_yGy6VzLz4E0L90Onnc3a8_Jo44R4LWBZ9kDpRko6uFuBEY2mCgUCc29lL7Zvv2BjPEpr6x_s3g8NuGR3s5hIjc5rrpsVknJS2V1xJVkrfxdQVRlEaC8m097FJsk33-LDLWtyf0fKXwuZFwQVZ3JsQXwjg1RidCUU_x04YqVbfT648r8fDYwzbzxhzGQ"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $190
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">400TC Organic Percale</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>4.8</span>
+<span class="text-on-surface-variant text-[12px]">(215)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                Crisp Percale Core Set
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cool to the touch. Engineered for warm sleepers who desire hotel crispness.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$190</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Full / Queen</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #FFFFFF;" title="Cloud White"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #FAF7F2;" title="Warm Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #E8DFD0;" title="Oatmeal"></span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 4 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-surface/90 backdrop-blur text-primary font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Pure Mulberry</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Editorial pair of 22 momme pure silk pillowcases resting on a soft duvet in gentle morning light, luminous pearlescent sheen, subtle warm undertones, serene quiet luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDthHdiCgRu-4OmazhkEVLl7wdXrcu8W2mnj5C15FUSwJwzDUs65JKL9BWsda-mwsWDJhCmDQQEEhcqoJ_EfHYqboYDC4enspd9ls622HjbHzkCdCkyRh0PwSz_8D3WmEwJ4h4Hea21ZNLpcOkt64xS_BZVF94bN1_z8Kw0DIVF0saA95KBWKT1fLwuvtK9ACfxynFBYYxO9D6UzwylJNk-VzuQ65kBnq7RNtZl0FgaVgQDkz__HjYn8g"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="High detailed zoom of silk pillowcase zipper seam and delicate edge stitching, showing iridescent natural silk luster and buttery smooth texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaeB4vSN3HbrBh31q6kX79VL2zFe4t-mCFrJB7HuaK0ARhWIOJWrYp5XPvUL4dgVKFmfC60UmXv2uP8hFSBd7S7qa51_p8Bd7TYq0ieSjwwd7HFkCIdJT2eaGloCNj848gCRIdiXol-exxO5E5KUm3wA-Y5rDjumerUO5Ld47_7veWTatGHRznuQdlM8uVHeor3Sdw8MyA_lkBLOuK5biHTh5NSN1-ScNwj5ic8np5NDAgEsomGl6FjA"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $130
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">22 Momme Silk</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>4.9</span>
+<span class="text-on-surface-variant text-[12px]">(320)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                Silk Pillowcase Duo
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Protects hair hydration and delicate facial skin while you rest.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$130</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Pair (Standard)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #FAF7F2;" title="Champagne Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #9DA899;" title="Sage"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #2E3133;" title="Charcoal"></span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 5 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-surface/90 backdrop-blur text-primary font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Deep Pocket</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Editorial photo of a deep pocket fitted bedsheet in muted sage green hugging mattress corners seamlessly, soft dawn lighting in Scandinavian bedroom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKD5Z5wFFBQCf7EyhxF49Y5MB4wo-RhWt-v79xy-Wyhtnkmw6-gNe9JTLOJ-_xUVxNDnFwMslnmGO7216bju8QOnPk0XcUVK2KFw-9xCfAz14FnL6NqVCZsr9sBKoVEN7y2shY1u-R9gFer39q5VfddfXeidFts6bHRGgtprGAWdUmQL6NqBwMzsQTwscJlOD8wMeww_Mc5SahyDKRWTqvL4o8F4rH6Hv-rZlwqrlsgtuiWYtBvDWPWg"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Close up shot of 360 degree heavy duty elastic hem on French flax fitted sheet, showcasing bespoke craftsmanship and durable stitching." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdzhqXtTaw2ELv3jEN7DePoxcMDJODPwZxdCrOnbMopttYcCn2wEXTzRAdgWYzRhngKeVlsSkENAeV3ucmsFE8ssScUgSHaPsNelRVEyM__vT8iar6JsJ__qy3837WQbzRQKv_VccwnSK_CwR72bDxB-FoHHybkaYgZAJqELQ0nl3vlE7Xqa9MqN00gS2bq19oBOX7J095kTSxy1MqjAqtsuDHfLZBK_y-CNfIPEB76hzQXulitC9bNg"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $120
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">100% French Flax</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>4.9</span>
+<span class="text-on-surface-variant text-[12px]">(88)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                Linen Fitted Sheet Solo
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Generous 16" deep pockets with all-around continuous elastic hem.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$120</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Queen</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #9DA899;" title="Muted Sage"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #FAF7F2;" title="Warm Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #E8DFD0;" title="Natural Flax"></span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 6 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-surface/90 backdrop-blur text-primary font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Lustrous Sateen</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Opulent bedroom styling featuring 500 thread count organic sateen duvet and sheets in champagne warm sand tone, glossy drape, soft diffused studio light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr0epvCX5RFYcf-WA8mzweNGWstVQyBT2b3sc7W6DKYfbejrmCo2uoctRzpIqJBVxM2U7-07CVWMAM48iVqolA4LEiLIiG5AQuqToB9-N79oBCgsgITsIvGuETNxcxAfIAssk77IeULRr9hJgdFFW6BRgKhwQeNND4QF3F9Bf9gPltS3c1P27JhXmOCKjlUb1gbOst78aj-E60s6vIwYnk8MfD02o7Gkbp91UDIGIHpAri2X0fkfIIRg"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Micro textural photo of 500 thread count sateen weave catching ambient glow with soft golden highlights, extreme high quality silky finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnRRWxSdnTbqxwUV2maEPyH58IJWchAZ6bkxPckjM5w-j4xhpXpWswK4_Wdwf-y9DSN8dIbBEN0ZZ-ILzUxebX5y9YYkiA-QatzE2dJXLmXtrtscjE_xzR-N1pi29Fy67gNpnqkZgnW_F7yI68N-6-XQKtpg9iYWikGCHEb9J_7eiQcfdeCPJbIZhsFhvY3iV_CAcHHTtSgQwTISDJ4aL6ojnKHfesTiqMKvd1oI0cNJvOcmKuE6dFyg"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $230
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">500TC Organic Sateen</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>4.9</span>
+<span class="text-on-surface-variant text-[12px]">(147)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                The Silk-Lustre Sateen Set
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Subtly luminous four-over-one weave crafted from organic Aegean yarn.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$230</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Queen</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #E8DFD0;" title="Natural Flax"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #FAF7F2;" title="Warm Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #2E3133;" title="Slate Charcoal"></span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 7 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-surface/90 backdrop-blur text-primary font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Ethical Down</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Cloud-like white European goose down bed pillow propped against an organic headboard in serene morning daylight, tranquil luxury bedroom atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5DTcqhyuXs9WryxKAtaiWDHqn9hxvowMByyLAAuntJDjoquxsLCLSTzE22lsJxFXaCoR__dMQgGHDIqSP7ZeWcmxfP3_8wQQG8QMVBgrs4hs1MyU92ebVztS52KwSAi8ZF1Fc1pmW6IbW15Ws3_UyAT465E1zgOwEvryvePZ1VZyWIlnYn3c0y0t-7-FFdZdsp0OB3AkAGFTzUTmHhQdIlpITglX2CVL9WKHLszltyRcAiPpis0WPmg"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Macro of double-stitched piped perimeter seam of down pillow with breathable 300TC organic cambric cotton shell, featherproof construction." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB35lRpFWClW4_FLQa2AwriUCyMr5cUIUQjubuBXg9LB8svolb4-yUv3ymitzxHxz_ASxPZvVYHB7kBMYgVbJtmJfavJoDz-QPQ_tryVnmwpVsLBS7clSgf2idtLYAXih2DKDg-0cJL7NpoDqk1-Kr3-tOaEzK1NlkD3wJfOPIh0gUjvej0_S-wEZW5pLDBEs9bR_eeNQ7aJLPokJ27ypyBZEe9jGBLDxp5HW5eGPxHOs-P-nHRjBWn4A"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $160
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">700 Fill Power</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>5.0</span>
+<span class="text-on-surface-variant text-[12px]">(76)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                European White Down Pillow
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">RDS certified, medium-firm loft tailored for optimal cervical spine alignment.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$160</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Standard</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #FFFFFF;" title="Cloud White"></span>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 8 -->
+<article class="group relative flex flex-col bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+<span class="px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed font-label-eyebrow text-label-eyebrow uppercase tracking-widest">Curated Bundle</span>
+</div>
+<button aria-label="Add to wishlist" class="wishlist-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-surface/80 backdrop-blur hover:bg-surface flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<img class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" data-alt="Complete bed bundle display featuring charcoal linen sheets paired with warm ivory duvet and muted sage accent throw in a master bedroom setting with architectural timber accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvIDBh9hEDzCwiRIv_QxNY6pJGdkkJwUULesZuLjwcL2CZMcaJX_E2i4PTltCeAY9oM8pSvt_p_BiVTrk4mRjje6Ssj8M2eNH3rcz0_UyY_3FIlc8_F7_2DhXrDMv8pmVcadL8PU1IjyPeCgH1k5Kt_8kt61mA1IpFEKhpThW5ITyLuyozl-6dOfCEmOd9T7srnY-aW4HPsX7cXtAP1ZySOZQvL-4FlGQV4G-G2lAtyq9OfUbntbQZSA"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" data-alt="Stylized layer stack of flat sheet, duvet cover, and four pillowcases tied with unbleached organic linen ribbon on a cedar bench." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtQ6lY_ICk0f8diDptYwBhrJ4nAJAkKeRj-7z1qtvwa4N3_xqlN2B6-5cFfDxTaXeCXuR82zbhQVenlNojYbDsjlXEJyeAaad-rPIDWOIIelcxCj3MV-46hhz8h7y2Ukjx70ACAElW1Cjy2pi6dMVePp9JNFuBbP61aXZq2X5PQINSkT10v7iIJLrXlqCAsdh1QT4UfSBOHCfdfASds99yQiA4hVs_PkfzFvGCcRt5-p2R9zXsT4XwCg"/>
+<div class="absolute inset-x-4 bottom-4 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Quick Add • $340
+              </button>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">Complete Sleep System</span>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-on-surface">
+<span class="text-secondary">★</span>
+<span>4.9</span>
+<span class="text-on-surface-variant text-[12px]">(240)</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary group-hover:text-secondary transition-colors">
+                The Master Linen Suite Bundle
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Includes Duvet Cover, Fitted Sheet, Flat Sheet, and 4 Matching Pillowcases.</p>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-[20px] font-semibold text-primary">$340</span>
+<span class="font-body-sm text-[12px] line-through text-on-surface-variant">$410</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full ring-1 ring-primary shadow-sm" style="background-color: #2E3133;" title="Slate Charcoal"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #FAF7F2;" title="Warm Ivory"></span>
+<span class="w-4 h-4 rounded-full shadow-sm hover:scale-110 transition-transform" style="background-color: #E8DFD0;" title="Natural Flax"></span>
+<span class="font-label-sm text-[11px] text-on-surface-variant ml-1">+2</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Catalog Pagination & Loading Footer -->
+<div class="mt-16 flex flex-col items-center justify-center gap-6">
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+          Showing 8 of 24 pieces
+        </p>
+<!-- Progress Indicator -->
+<div class="w-64 h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/3 rounded-full transition-all duration-500"></div>
+</div>
+<button class="px-8 py-3.5 rounded-full bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md uppercase tracking-widest font-medium transition-all shadow-sm hover:shadow" type="button">
+          Load More Pieces
+        </button>
+<p class="font-body-sm text-body-sm text-on-surface-variant pt-2">
+          Seeking a tailored size or swatch sample? 
+          <a class="text-secondary hover:text-primary underline ml-1 font-medium transition-colors" href="#">Inquire with our atelier concierge</a>
+</p>
+</div>
+</main>
+</div>
+</div>
+<script>
+  // Accordion Toggle Utility
+  function toggleAccordion(groupId, iconId) {
+    const group = document.getElementById(groupId);
+    const icon = document.getElementById(iconId);
+    if (!group || !icon) return;
+
+    if (group.classList.contains('hidden')) {
+      group.classList.remove('hidden');
+      icon.textContent = 'remove';
+    } else {
+      group.classList.add('hidden');
+      icon.textContent = 'add';
+    }
+  }
+
+  // Wishlist Heart Interaction
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const isFilled = icon.getAttribute('style')?.includes("'FILL' 1");
+      if (isFilled) {
+        icon.removeAttribute('style');
+        btn.classList.remove('text-error');
+        btn.classList.add('text-on-surface');
+      } else {
+        icon.setAttribute('style', "font-variation-settings: 'FILL' 1;");
+        btn.classList.remove('text-on-surface');
+        btn.classList.add('text-error');
+      }
+    });
+  });
+
+  // View Grid Toggle (3-col vs 4-col)
+  const view3Btn = document.getElementById('view3Col');
+  const view4Btn = document.getElementById('view4Col');
+  const catalogGrid = document.getElementById('catalogGrid');
+
+  if (view3Btn && view4Btn && catalogGrid) {
+    view3Btn.addEventListener('click', () => {
+      catalogGrid.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8';
+      view3Btn.classList.add('bg-surface', 'text-primary', 'shadow-sm');
+      view3Btn.classList.remove('text-on-surface-variant');
+      view4Btn.classList.remove('bg-surface', 'text-primary', 'shadow-sm');
+      view4Btn.classList.add('text-on-surface-variant');
+    });
+
+    view4Btn.addEventListener('click', () => {
+      catalogGrid.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6';
+      view4Btn.classList.add('bg-surface', 'text-primary', 'shadow-sm');
+      view4Btn.classList.remove('text-on-surface-variant');
+      view3Btn.classList.remove('bg-surface', 'text-primary', 'shadow-sm');
+      view3Btn.classList.add('text-on-surface-variant');
+    });
+  }
+
+  // Mobile Filter Drawer Toggle
+  const mobileToggle = document.getElementById('mobileFilterToggle');
+  const closeFilterBtn = document.getElementById('closeMobileFilters');
+  const filterSidebar = document.getElementById('filterSidebar');
+
+  if (mobileToggle && closeFilterBtn && filterSidebar) {
+    mobileToggle.addEventListener('click', () => {
+      filterSidebar.classList.remove('hidden');
+      filterSidebar.scrollIntoView({ behavior: 'smooth' });
+    });
+    closeFilterBtn.addEventListener('click', () => {
+      filterSidebar.classList.add('hidden');
+    });
+  }
+</script></div></main><footer class="w-full bg-surface-container-low border-t border-surface-variant/50 pt-space-xl pb-space-lg text-on-surface mt-space-xl"><div class="max-w-[1440px] mx-auto px-margin"><div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg pb-space-xl border-b border-surface-variant/60"><div class="lg:col-span-5 flex flex-col justify-between pr-0 lg:pr-space-lg"><div class="space-y-4"><p class="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">EDITORIAL JOURNAL &amp; ARCHIVE</p><h3 class="font-headline-md text-headline-md text-primary max-w-md">Awaken gently.</h3><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Receive private collection previews, seasonal palettes, and linen care journals delivered unhurriedly to your inbox.</p></div><form class="mt-8 max-w-md"><div class="flex items-stretch border-b border-primary/40 focus-within:border-secondary transition-colors pb-1"><input class="w-full bg-transparent font-body-sm text-body-sm placeholder:text-on-surface-variant/60 focus:outline-none text-on-surface py-2" placeholder="Your email address" type="email"/><button class="font-label-md text-label-md uppercase tracking-wider text-primary hover:text-secondary transition-colors whitespace-nowrap pl-4 flex items-center gap-1" type="submit">Subscribe <span class="material-symbols-outlined text-[16px]">arrow_forward</span></button></div></form></div><div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8"><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">Shop</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Bedsheets</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Duvet Sets</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Pillow Protectors</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Silk Pillowcases</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="plp" href="#">Gift Cards</a></li></ul></div><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">The Craft</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Our French Flax</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Organic Percale</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">OEKO-TEX® Certified</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">30-Night Guarantee</a></li></ul></div><div class="space-y-4"><p class="font-label-md text-label-md uppercase tracking-widest text-primary font-medium">Service</p><ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Concierge Care</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Track Order</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Shipping &amp; Returns</a></li><li class="hover:text-on-surface transition-colors cursor-pointer"><a data-path="landing" href="#">Hospitality Inquiries</a></li></ul></div></div></div><div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 font-body-sm text-body-sm text-on-surface-variant"><div class="flex flex-wrap items-center gap-6"><p>© 2025 LOOMSDAY Inc. Sleep, elevated.</p><div class="flex items-center gap-4 text-[12px] uppercase tracking-wider"><a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="#">Accessibility</a></div></div><div class="flex items-center gap-4 text-on-surface-variant/80 font-label-sm text-[11px] tracking-widest uppercase"><span class="px-2 py-1 bg-surface-container rounded">Visa</span><span class="px-2 py-1 bg-surface-container rounded">Mastercard</span><span class="px-2 py-1 bg-surface-container rounded">Amex</span><span class="px-2 py-1 bg-surface-container rounded">Apple Pay</span><span class="px-2 py-1 bg-surface-container rounded">Klarna</span></div></div></div></footer></body></html>
