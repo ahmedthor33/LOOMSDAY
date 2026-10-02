@@ -147,9 +147,6 @@ export default function HomePage() {
                       "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBUZzpp8szKlCaNHPJemnC7kx29DdEaV7E3I1TFOfneVOOybqWHexi6-MoM23vQoMPe-EnSSE2tUyGvgGr3ZTPpE86VvolITvNzUwRts0j1NCnviBoNlO5_6V-s6-RXuAB6NH9REQV0N-tMe6dClU48x6HFueH2sf_aGFB8ibRlDUBD9_BgcAkh1KkDa1a4b1KRICZQhiy1Da8CrR9z0C0iGTVN7zluXFgR4S8CVkA8M_avPXvxdVssvw')",
                   }}
                 />
-                <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1 text-on-surface font-label-sm text-label-sm uppercase tracking-widest rounded-sm">
-                  From $160
-                </div>
               </div>
               <div className="p-8 flex flex-col justify-between flex-grow space-y-4">
                 <div className="space-y-2">
@@ -183,9 +180,6 @@ export default function HomePage() {
                       "url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5mg_88uP4_dY0StskHnUAypeSbRoucIm9WT-4HR0oAhnQmLZpvQryGp9dRkRHXbywiF4rdugLcuMoRPigGYCT36DBSF4ZqUkql1Fvbv4FsJR7Z-jb_ZTKaPbn0S4wcKo0yT-u5NMEYIs4dhebchIyjiGTZhd7fCuNLNWfKcX7zNv15mR39syvFaPaBGXjvgohAlrO-ORZS36KvAyWx90TvMz_SjFMWmkOvTp5qjbh_7YVesL5Hn00kw')",
                   }}
                 />
-                <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1 text-on-surface font-label-sm text-label-sm uppercase tracking-widest rounded-sm">
-                  From $75
-                </div>
               </div>
               <div className="p-8 flex flex-col justify-between flex-grow space-y-4">
                 <div className="space-y-2">
@@ -219,9 +213,6 @@ export default function HomePage() {
                       "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDiBCnikRLwnd_4Wsq2BV_wVpZaf2My8kvlRPBh3KSFqnjtzRILf4fjs0dPkKD450bxrZH7e861saDA3s6fi430jIcrvFomHmJ1oJU4UYdCmvwbz_FqXd6HYLM4L31NphUK7SlVEgJpOYsVajd7SbfUezj8omF6M9yskA3anvoBdPz7uH_qwNTjuJ2iZVgdlf5XF5jHKDFyRtQD5j2GsNoxvU_yFqfHBI1ldpcLIHZXhmgDsax5tSQKwA')",
                   }}
                 />
-                <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1 text-on-surface font-label-sm text-label-sm uppercase tracking-widest rounded-sm">
-                  From $240
-                </div>
               </div>
               <div className="p-8 flex flex-col justify-between flex-grow space-y-4">
                 <div className="space-y-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { formatCurrency } from "@/lib/utils";
 
 export interface FilterState {
   category: string;
@@ -244,7 +245,7 @@ export function ProductFilters({
           className="w-full flex items-center justify-between text-left group"
         >
           <span className="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">
-            Max Price: ${filters.maxPrice}
+            Max Price: {formatCurrency(filters.maxPrice)}
           </span>
           <span className="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform">
             {openSections.price ? "remove" : "add"}
@@ -264,8 +265,8 @@ export function ProductFilters({
               className="w-full accent-primary cursor-pointer"
             />
             <div className="flex justify-between text-xs text-on-surface-variant font-label-sm">
-              <span>$50</span>
-              <span>$400</span>
+              <span>{formatCurrency(50)}</span>
+              <span>{formatCurrency(400)}</span>
             </div>
           </div>
         )}

@@ -46,7 +46,7 @@ export function Footer() {
               Complimentary Delivery
             </h4>
             <p className="font-body-sm text-xs text-on-surface-variant">
-              Free expedited shipping on all orders over $100.
+              Free expedited shipping on all orders over Rs. 5,000.
             </p>
           </div>
 

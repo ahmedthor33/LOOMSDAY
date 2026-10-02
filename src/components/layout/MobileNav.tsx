@@ -76,7 +76,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
             <span>OEKO-TEX 100 Certified</span>
           </div>
           <p className="font-body-sm text-xs text-on-surface-variant">
-            Complimentary shipping on orders over $100.
+            Complimentary shipping on orders over Rs. 5,000.
           </p>
         </div>
       </div>

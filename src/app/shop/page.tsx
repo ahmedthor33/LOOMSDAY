@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
+import { formatCurrency } from "@/lib/utils";
 
 export default function ShopPage() {
   const { products } = useAdminStore();
@@ -71,7 +72,7 @@ export default function ShopPage() {
   if (filters.size) activeChips.push({ label: `Size: ${filters.size}`, key: "size" });
   if (filters.color) activeChips.push({ label: `Color: ${filters.color}`, key: "color" });
   if (filters.material) activeChips.push({ label: filters.material, key: "material" });
-  if (filters.maxPrice < 400) activeChips.push({ label: `Under $${filters.maxPrice}`, key: "price" });
+  if (filters.maxPrice < 400) activeChips.push({ label: `Under ${formatCurrency(filters.maxPrice)}`, key: "price" });
 
   const clearAllFilters = () => {
     setFilters({
