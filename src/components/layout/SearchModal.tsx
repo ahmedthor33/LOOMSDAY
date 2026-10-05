@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/types";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
+import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
 import { idbGet } from "@/lib/robust-storage";
@@ -54,7 +55,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   const allProducts = (storeProducts && storeProducts.length > 0)
     ? storeProducts
-    : (localProducts.length > 0 ? localProducts : DEMO_PRODUCTS);
+    : (localProducts.length > 0 ? localProducts : (PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS));
 
   useEffect(() => {
     if (isOpen) {

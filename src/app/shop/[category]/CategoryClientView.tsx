@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
+import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
@@ -112,7 +113,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
   const allProducts = useMemo(() => {
     if (products && products.length > 0) return products;
     if (localProducts.length > 0) return localProducts;
-    return DEMO_PRODUCTS;
+    return PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS;
   }, [products, localProducts]);
 
   const meta = CATEGORY_META[activeSlug] || {

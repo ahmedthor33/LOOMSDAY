@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
+import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
@@ -93,7 +94,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     if (Array.isArray(localProducts) && localProducts.length > 0) {
       return localProducts;
     }
-    return DEMO_PRODUCTS;
+    return PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS;
   }, [products, localProducts]);
 
   // Strict matching by slug, ID, or slugified title (NO substring bleeding!)

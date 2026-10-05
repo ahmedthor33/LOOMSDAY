@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
+import { fetchSupabaseProducts, sanitizeCatalogProducts } from "@/lib/catalog-service";
 import {
   idbGet,
   idbSet,
@@ -72,6 +73,11 @@ interface AdminState {
   resetPaymentMethods: () => void;
   transactions: AdminTransaction[];
   refundTransaction: (id: string) => void;
+
+  // Catalog Cloud Sync & Data Migration
+  syncWithSupabase: () => Promise<{ success: boolean; count: number }>;
+  importCatalog: (products: Product[]) => { success: boolean; count: number };
+  loadFactoryCatalog: () => void;
 
   // Reset to initial demo factory state if needed
   resetToFactoryDefaults: () => void;
@@ -225,7 +231,7 @@ export const INITIAL_PAYMENT_METHODS: PaymentMethodConfig[] = [
 export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
-      products: [],
+      products: PRODUCTS,
       orders: [],
       coupons: INITIAL_COUPONS,
       shippingSettings: INITIAL_SHIPPING,
@@ -409,6 +415,52 @@ export const useAdminStore = create<AdminState>()(
         notifyStoreUpdated();
       },
 
+      loadFactoryCatalog: () => {
+        set({
+          products: PRODUCTS,
+        });
+        notifyStoreUpdated();
+      },
+
+      syncWithSupabase: async () => {
+        try {
+          const cloudProds = await fetchSupabaseProducts();
+          if (cloudProds && cloudProds.length > 0) {
+            set((state) => {
+              const currentList = Array.isArray(state.products) ? state.products : [];
+              const mergedMap = new Map<string, Product>();
+              cloudProds.forEach((p) => mergedMap.set(p.slug || p.id, p));
+              currentList.forEach((p) => {
+                if (!mergedMap.has(p.slug || p.id)) {
+                  mergedMap.set(p.slug || p.id, p);
+                }
+              });
+              return { products: Array.from(mergedMap.values()) };
+            });
+            notifyStoreUpdated();
+            return { success: true, count: cloudProds.length };
+          }
+          return { success: false, count: 0 };
+        } catch (e) {
+          console.warn("[LOOMSDAY Store] Cloud sync failed:", e);
+          return { success: false, count: 0 };
+        }
+      },
+
+      importCatalog: (importedProducts: Product[]) => {
+        const sanitized = sanitizeCatalogProducts(importedProducts);
+        if (sanitized.length === 0) return { success: false, count: 0 };
+        set((state) => {
+          const currentList = Array.isArray(state.products) ? state.products : [];
+          const mergedMap = new Map<string, Product>();
+          currentList.forEach((p) => mergedMap.set(p.slug || p.id, p));
+          sanitized.forEach((p) => mergedMap.set(p.slug || p.id, p));
+          return { products: Array.from(mergedMap.values()) };
+        });
+        notifyStoreUpdated();
+        return { success: true, count: sanitized.length };
+      },
+
       // Orders
       updateOrderStatus: (orderId, status) => {
         set((state) => ({
@@ -563,6 +615,13 @@ export const useAdminStore = create<AdminState>()(
           try {
             const idbVal = await idbGet(key);
             if (idbVal && typeof idbVal === "string" && idbVal.length > 10) {
+              try {
+                const parsed = JSON.parse(idbVal);
+                if (!Array.isArray(parsed?.state?.products) || parsed.state.products.length === 0) {
+                  parsed.state.products = PRODUCTS;
+                  return JSON.stringify(parsed);
+                }
+              } catch {}
               return idbVal;
             }
           } catch (e) {
@@ -573,6 +632,15 @@ export const useAdminStore = create<AdminState>()(
           try {
             const localVal = localStorage.getItem(key);
             if (localVal) {
+              try {
+                const parsed = JSON.parse(localVal);
+                if (!Array.isArray(parsed?.state?.products) || parsed.state.products.length === 0) {
+                  parsed.state.products = PRODUCTS;
+                  const healed = JSON.stringify(parsed);
+                  idbSet(key, healed).catch(() => {});
+                  return healed;
+                }
+              } catch {}
               // Background sync to IndexedDB for next load
               idbSet(key, localVal).catch(() => {});
               return localVal;

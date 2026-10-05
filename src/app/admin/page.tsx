@@ -9,6 +9,8 @@ import { OrderDetailModal } from "@/components/admin/OrderDetailModal";
 import { CouponModal } from "@/components/admin/CouponModal";
 import { DragDropImageUpload } from "@/components/admin/DragDropImageUpload";
 import { PaymentMethodModal } from "@/components/admin/PaymentMethodModal";
+import { ImportCatalogModal } from "@/components/admin/ImportCatalogModal";
+import { exportCatalogToJson } from "@/lib/catalog-service";
 import { useAdminStore, SUPER_ADMIN_EMAIL } from "@/store/useAdminStore";
 import { Product, Order, AdminCoupon, PaymentMethodConfig } from "@/types";
 import { formatCurrency } from "@/lib/utils";
@@ -66,6 +68,9 @@ function AdminContent() {
     transactions,
     refundTransaction,
     resetToFactoryDefaults,
+    syncWithSupabase,
+    importCatalog,
+    loadFactoryCatalog,
   } = useAdminStore();
 
   const { showToast } = useToast();
@@ -87,6 +92,9 @@ function AdminContent() {
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [paymentMethodToEdit, setPaymentMethodToEdit] = useState<PaymentMethodConfig | null>(null);
+
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isSyncingCloud, setIsSyncingCloud] = useState(false);
 
   // CMS form local state
   const [announcementText, setAnnouncementText] = useState(cms.announcement.text);
@@ -611,17 +619,64 @@ function AdminContent() {
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setProductToEdit(null);
-                  setIsProductModalOpen(true);
-                }}
-                className="px-4 py-2.5 rounded bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors shadow-sm flex items-center gap-2"
-              >
-                <span className="material-symbols-outlined text-sm">add</span>
-                <span>Craft New Linen</span>
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  disabled={isSyncingCloud}
+                  onClick={async () => {
+                    setIsSyncingCloud(true);
+                    const res = await syncWithSupabase();
+                    setIsSyncingCloud(false);
+                    if (res.success) {
+                      showToast(`Synced ${res.count} products from Supabase cloud.`);
+                    } else {
+                      showToast("Cloud sync completed (up to date).");
+                    }
+                  }}
+                  className="px-3.5 py-2.5 rounded-lg border border-surface-variant hover:border-primary text-xs font-label-md uppercase tracking-wider text-primary transition-colors flex items-center gap-1.5 bg-surface-container-low"
+                  title="Sync products with Supabase cloud database"
+                >
+                  <span className={`material-symbols-outlined text-sm ${isSyncingCloud ? "animate-spin" : ""}`}>
+                    cloud_sync
+                  </span>
+                  <span>{isSyncingCloud ? "Syncing..." : "Sync Cloud"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsImportModalOpen(true)}
+                  className="px-3.5 py-2.5 rounded-lg border border-surface-variant hover:border-primary text-xs font-label-md uppercase tracking-wider text-primary transition-colors flex items-center gap-1.5 bg-surface-container-low"
+                  title="Transfer products from localhost:3000 or JSON file"
+                >
+                  <span className="material-symbols-outlined text-sm">sync_alt</span>
+                  <span>Import / Transfer</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    exportCatalogToJson(products);
+                    showToast("Catalog backup downloaded as JSON.");
+                  }}
+                  className="px-3.5 py-2.5 rounded-lg border border-surface-variant hover:border-primary text-xs font-label-md uppercase tracking-wider text-primary transition-colors flex items-center gap-1.5 bg-surface-container-low"
+                  title="Export catalog as JSON backup"
+                >
+                  <span className="material-symbols-outlined text-sm">download</span>
+                  <span>Export</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProductToEdit(null);
+                    setIsProductModalOpen(true);
+                  }}
+                  className="px-4 py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors shadow-sm flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-sm">add</span>
+                  <span>Craft New Linen</span>
+                </button>
+              </div>
             </div>
 
             {/* Notice if demo product is present */}
@@ -700,28 +755,44 @@ function AdminContent() {
                             <span className="material-symbols-outlined text-4xl text-neutral-300">inventory_2</span>
                             <h4 className="font-headline-sm text-base text-primary font-medium">Boutique Catalog is Clean</h4>
                             <p className="text-xs text-on-surface-variant max-w-md">
-                              All testing products and variants have been cleared. Click &ldquo;Craft New Linen&rdquo; above to list your real collections, or load demo pieces anytime.
+                              Your domain partition is currently empty. If you listed products earlier on localhost, you can restore them instantly, or sync with Supabase cloud.
                             </p>
-                            <div className="flex items-center gap-3 pt-2">
+                            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                               <button
                                 type="button"
-                                onClick={() => {
-                                  setProductToEdit(null);
-                                  setIsProductModalOpen(true);
+                                onClick={async () => {
+                                  setIsSyncingCloud(true);
+                                  const res = await syncWithSupabase();
+                                  setIsSyncingCloud(false);
+                                  if (res.success) {
+                                    showToast(`Loaded ${res.count} products from Supabase cloud!`);
+                                  } else {
+                                    loadFactoryCatalog();
+                                    showToast("Loaded official LOOMSDAY master catalog (12 products).");
+                                  }
                                 }}
-                                className="px-3.5 py-1.5 rounded bg-primary text-on-primary text-xs font-label-md uppercase tracking-wider hover:bg-neutral-800 transition-colors"
+                                className="px-3.5 py-1.5 rounded bg-primary text-on-primary text-xs font-label-md uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center gap-1.5"
                               >
-                                + Craft New Linen
+                                <span className="material-symbols-outlined text-sm">cloud_sync</span>
+                                <span>Sync Cloud Catalog</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setIsImportModalOpen(true)}
+                                className="px-3.5 py-1.5 rounded border border-surface-variant hover:border-primary text-xs font-label-md uppercase tracking-wider text-primary transition-colors flex items-center gap-1.5"
+                              >
+                                <span className="material-symbols-outlined text-sm">sync_alt</span>
+                                <span>Transfer from Localhost</span>
                               </button>
                               <button
                                 type="button"
                                 onClick={() => {
-                                  loadDemoCatalog();
-                                  showToast("Demo catalog re-seeded successfully.");
+                                  loadFactoryCatalog();
+                                  showToast("Master catalog restored.");
                                 }}
                                 className="px-3.5 py-1.5 rounded border border-surface-variant hover:border-primary text-xs font-label-md uppercase tracking-wider text-primary transition-colors"
                               >
-                                Load Demo Catalog
+                                Restore Master Catalog
                               </button>
                             </div>
                           </div>
@@ -1824,6 +1895,20 @@ function AdminContent() {
           } else {
             addPaymentMethod(data);
             showToast(`Added new payment channel: ${data.name}`);
+          }
+        }}
+      />
+
+      {/* Catalog Import & Transfer Modal */}
+      <ImportCatalogModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImport={(importedProducts) => {
+          const res = importCatalog(importedProducts);
+          if (res.success) {
+            showToast(`Successfully imported ${res.count} products into your catalog!`);
+          } else {
+            showToast("Import failed: No valid products found in data.");
           }
         }}
       />
