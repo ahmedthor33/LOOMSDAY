@@ -22,6 +22,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://loomsday.store"),
   title: "LOOMSDAY | Quiet Luxury Bedding & Elevated Rest",
   description:
     "Woven from slow-harvested 100% certified organic French flax and Aegean cotton. Pre-washed with volcanic stones for impossibly soft rest from night one.",
@@ -34,11 +35,14 @@ export const metadata: Metadata = {
     "quiet luxury",
     "sleep sanctuary",
   ],
+  alternates: {
+    canonical: "https://loomsday.store",
+  },
   openGraph: {
     title: "LOOMSDAY | Quiet Luxury Bedding & Elevated Rest",
     description:
       "Woven in Northern France from 100% certified organic flax. Impossibly soft from night one, tailored for a lifetime of quiet rest.",
-    url: "https://loomsday.luxury",
+    url: "https://loomsday.store",
     siteName: "LOOMSDAY",
     type: "website",
   },

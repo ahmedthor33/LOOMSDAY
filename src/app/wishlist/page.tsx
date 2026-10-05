@@ -60,7 +60,7 @@ export default function WishlistPage() {
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://loomsday.luxury/curation/a749-restful-dawn");
+    navigator.clipboard.writeText("https://loomsday.store/curation/a749-restful-dawn");
     setIsCopied(true);
     showToast("Sanctuary link copied to clipboard.");
     setTimeout(() => setIsCopied(false), 2500);
@@ -267,7 +267,7 @@ export default function WishlistPage() {
 
             <div className="bg-surface-container p-3.5 rounded flex items-center justify-between gap-3 mt-4 border border-surface-variant/30">
               <span className="font-body-sm text-xs text-on-surface truncate select-all">
-                https://loomsday.luxury/curation/a749-restful-dawn
+                https://loomsday.store/curation/a749-restful-dawn
               </span>
               <button
                 type="button"

@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { PRODUCTS } from "@/lib/products-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://loomsday.luxury";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://loomsday.store";
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
