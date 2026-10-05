@@ -61,35 +61,15 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     }
   }, []);
 
-  // Combine user products: Zustand store + localStorage
+  // Authoritative user products: Zustand store first, then localStorage
   const allProducts = useMemo(() => {
-    const list: Product[] = [];
-    const seenIds = new Set<string>();
-
     if (Array.isArray(products) && products.length > 0) {
-      for (const p of products) {
-        if (p?.id && !seenIds.has(p.id)) {
-          seenIds.add(p.id);
-          list.push(p);
-        }
-      }
+      return products;
     }
-
     if (Array.isArray(localProducts) && localProducts.length > 0) {
-      for (const p of localProducts) {
-        if (p?.id && !seenIds.has(p.id)) {
-          seenIds.add(p.id);
-          list.push(p);
-        }
-      }
+      return localProducts;
     }
-
-    // ONLY fallback to demo catalog if the store has ZERO user products
-    if (list.length === 0) {
-      return DEMO_PRODUCTS;
-    }
-
-    return list;
+    return DEMO_PRODUCTS;
   }, [products, localProducts]);
 
   // Strict matching by slug, ID, or slugified title (NO substring bleeding!)

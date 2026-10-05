@@ -38,6 +38,7 @@ function AdminContent() {
     addProduct,
     updateProduct,
     deleteProduct,
+    clearDemoProducts,
     updateVariantStock,
     restockProduct,
     clearAllTestData,
@@ -313,17 +314,15 @@ function AdminContent() {
               <div className="p-5 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-2">
                 <div className="flex items-center justify-between text-on-surface-variant text-xs">
                   <span className="font-label-eyebrow uppercase tracking-widest text-[10px]">
-                    INVENTORY HEALTH
+                    CATALOG PRODUCTS
                   </span>
-                  <span className="material-symbols-outlined text-secondary text-lg">inventory</span>
+                  <span className="material-symbols-outlined text-secondary text-lg">inventory_2</span>
                 </div>
                 <p className="font-headline-md text-2xl font-semibold text-primary">
-                  {totalUnitsInStock} Units
+                  {products.length} {products.length === 1 ? "Product" : "Products"} Listed
                 </p>
-                <p className={`text-[11px] font-medium ${lowStockVariantsCount > 0 ? "text-amber-600" : "text-emerald-600"}`}>
-                  {lowStockVariantsCount > 0
-                    ? `${lowStockVariantsCount} variant SKUs require restock`
-                    : "Optimal inventory across all collections"}
+                <p className="text-[11px] text-on-surface-variant">
+                  {totalUnitsInStock} total units across {products.reduce((acc, p) => acc + (p.variants?.length || 0), 0)} sizes
                 </p>
               </div>
 
@@ -390,6 +389,120 @@ function AdminContent() {
                   <span>Create Coupon</span>
                 </button>
               </div>
+            </div>
+
+            {/* Catalog Pieces Summary Preview */}
+            <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h3 className="font-headline-sm text-lg text-primary font-medium">
+                    Catalog Products ({products.length})
+                  </h3>
+                  <p className="font-body-sm text-xs text-on-surface-variant">
+                    All pieces currently active in your LOOMSDAY boutique.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {products.some((p) => p.id === "prod-1" || p.slug === "french-flax-linen-sheet-set") && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Remove the demo 'French Flax Linen Sheet Set' from your catalog?")) {
+                          clearDemoProducts();
+                          showToast("Demo piece removed from catalog.");
+                        }
+                      }}
+                      className="px-3 py-1.5 rounded border border-error/40 text-error hover:bg-error/10 text-xs font-medium transition-colors"
+                    >
+                      Remove Demo Piece
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setCurrentTab("products")}
+                    className="text-xs text-secondary hover:underline font-medium"
+                  >
+                    Manage Products →
+                  </button>
+                </div>
+              </div>
+
+              {products.length === 0 ? (
+                <div className="py-8 text-center text-on-surface-variant">
+                  <p className="text-sm font-medium text-primary">No products listed yet</p>
+                  <p className="text-xs text-on-surface-variant mt-1">
+                    Click &ldquo;Add Product&rdquo; above to list your first piece.
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-surface-variant/40 text-[11px] uppercase tracking-wider text-on-surface-variant font-label-eyebrow">
+                        <th className="py-2.5 px-3">Product</th>
+                        <th className="py-2.5 px-3">Category</th>
+                        <th className="py-2.5 px-3">Selling Price</th>
+                        <th className="py-2.5 px-3">Stock Units</th>
+                        <th className="py-2.5 px-3 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-surface-variant/20">
+                      {products.map((prod) => {
+                        const totalStock = prod.variants?.reduce((s, v) => s + v.stock, 0) || 0;
+                        return (
+                          <tr key={prod.id} className="hover:bg-surface-container-low transition-colors">
+                            <td className="py-2.5 px-3">
+                              <div className="flex items-center gap-2.5">
+                                <div className="w-9 h-9 rounded overflow-hidden bg-surface-container-highest shrink-0 border border-surface-variant">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={prod.images?.[0]?.url || "/images/hero-bedding.jpg"}
+                                    alt={prod.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-primary">{prod.name}</p>
+                                  <span className="text-[10px] text-on-surface-variant font-mono">/{prod.slug}</span>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="py-2.5 px-3 capitalize text-on-surface-variant">{prod.categoryLabel || prod.category}</td>
+                            <td className="py-2.5 px-3 font-semibold text-primary">{formatCurrency(prod.basePrice)}</td>
+                            <td className="py-2.5 px-3 text-on-surface-variant">{totalStock} units</td>
+                            <td className="py-2.5 px-3 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setProductToEdit(prod);
+                                    setIsProductModalOpen(true);
+                                  }}
+                                  className="text-xs text-primary hover:text-secondary font-medium underline"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (confirm(`Remove ${prod.name} from catalog?`)) {
+                                      deleteProduct(prod.id);
+                                      showToast(`Removed ${prod.name}`);
+                                    }
+                                  }}
+                                  className="text-xs text-error hover:underline"
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
 
             {/* Recent Orders Ledger Preview */}
@@ -510,6 +623,26 @@ function AdminContent() {
                 <span>Craft New Linen</span>
               </button>
             </div>
+
+            {/* Notice if demo product is present */}
+            {products.some((p) => p.id === "prod-1" || p.slug === "french-flax-linen-sheet-set") && (
+              <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-amber-700 text-base">info</span>
+                  <span>Demo product &ldquo;The French Flax Linen Sheet Set&rdquo; is present in your store catalog.</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearDemoProducts();
+                    showToast("Demo piece removed from catalog.");
+                  }}
+                  className="px-2.5 py-1 rounded bg-amber-200 hover:bg-amber-300 text-amber-950 font-medium transition-colors"
+                >
+                  Remove Demo Piece
+                </button>
+              </div>
+            )}
 
             {/* Filter Bar */}
             <div className="p-4 rounded-xl bg-surface-container-lowest border border-surface-variant/40 flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -1624,12 +1757,17 @@ function AdminContent() {
         }}
         productToEdit={productToEdit}
         onSave={(data) => {
-          if (productToEdit) {
-            updateProduct(data.id, data);
-            showToast(`Updated ${data.name}`);
-          } else {
-            addProduct(data);
-            showToast(`Created new product: ${data.name}`);
+          try {
+            if (productToEdit) {
+              updateProduct(data.id, data);
+              showToast(`Updated ${data.name}`);
+            } else {
+              addProduct(data);
+              showToast(`Created new product: ${data.name}`);
+            }
+          } catch (err: any) {
+            console.error("Save error:", err);
+            showToast(err?.message || "Failed to save product", "error");
           }
         }}
       />

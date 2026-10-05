@@ -29,33 +29,13 @@ export default function HomePage() {
   }, []);
 
   const allProducts = useMemo(() => {
-    const list: Product[] = [];
-    const seenIds = new Set<string>();
-
-    if (Array.isArray(products)) {
-      for (const p of products) {
-        if (p?.id && !seenIds.has(p.id)) {
-          seenIds.add(p.id);
-          list.push(p);
-        }
-      }
+    if (Array.isArray(products) && products.length > 0) {
+      return products;
     }
-
-    if (Array.isArray(localProducts)) {
-      for (const p of localProducts) {
-        if (p?.id && !seenIds.has(p.id)) {
-          seenIds.add(p.id);
-          list.push(p);
-        }
-      }
+    if (Array.isArray(localProducts) && localProducts.length > 0) {
+      return localProducts;
     }
-
-    // ONLY fallback to demo catalog if user has ZERO products in store and localStorage
-    if (list.length === 0) {
-      return DEMO_PRODUCTS;
-    }
-
-    return list;
+    return DEMO_PRODUCTS;
   }, [products, localProducts]);
 
   const filterProducts = () => {

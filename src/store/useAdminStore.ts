@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
@@ -17,6 +17,7 @@ interface AdminState {
   addProduct: (product: Product) => void;
   updateProduct: (id: string, updates: Partial<Product>) => void;
   deleteProduct: (id: string) => void;
+  clearDemoProducts: () => void;
   updateVariantStock: (productId: string, variantId: string, stock: number) => void;
   restockProduct: (productId: string, amount: number) => void;
   clearAllTestData: () => void;
@@ -222,45 +223,68 @@ export const useAdminStore = create<AdminState>()(
           price: product.basePrice,
           retailPrice: product.retailPrice,
         }));
-        const normalizedProduct = {
+        const normalizedProduct: Product = {
           ...product,
-          variants: normalizedVariants.length > 0 ? normalizedVariants : product.variants,
+          variants: normalizedVariants.length > 0 ? normalizedVariants : (product.variants || []),
         };
-        set((state) => ({
-          products: [normalizedProduct, ...state.products],
-        }));
+        set((state) => {
+          const currentList = Array.isArray(state.products) ? state.products : [];
+          // If a product with the same ID or same slug already exists, update it in place to prevent duplicate rows
+          const existingIndex = currentList.findIndex(
+            (p) => p.id === product.id || (p.slug && p.slug === product.slug)
+          );
+          if (existingIndex >= 0) {
+            const updated = [...currentList];
+            updated[existingIndex] = normalizedProduct;
+            return { products: updated };
+          }
+          return {
+            products: [normalizedProduct, ...currentList],
+          };
+        });
       },
 
       updateProduct: (id, updates) => {
-        set((state) => ({
-          products: state.products.map((p) => {
-            if (p.id !== id) return p;
-            const updated = { ...p, ...updates };
-            if (updates.basePrice !== undefined) {
-              updated.variants = (updated.variants || []).map((v) => ({
-                ...v,
-                price: updated.basePrice,
-                retailPrice: updated.retailPrice,
-              }));
-            }
-            return updated;
-          }),
-        }));
+        set((state) => {
+          const currentList = Array.isArray(state.products) ? state.products : [];
+          return {
+            products: currentList.map((p) => {
+              if (p.id !== id) return p;
+              const updated = { ...p, ...updates };
+              if (updates.basePrice !== undefined) {
+                updated.variants = (updated.variants || []).map((v) => ({
+                  ...v,
+                  price: updated.basePrice,
+                  retailPrice: updated.retailPrice,
+                }));
+              }
+              return updated;
+            }),
+          };
+        });
       },
 
       deleteProduct: (id) => {
         set((state) => ({
-          products: state.products.filter((p) => p.id !== id),
+          products: (Array.isArray(state.products) ? state.products : []).filter((p) => p.id !== id),
+        }));
+      },
+
+      clearDemoProducts: () => {
+        set((state) => ({
+          products: (Array.isArray(state.products) ? state.products : []).filter(
+            (p) => p.id !== "prod-1" && p.slug !== "french-flax-linen-sheet-set"
+          ),
         }));
       },
 
       updateVariantStock: (productId, variantId, stock) => {
         set((state) => ({
-          products: state.products.map((p) => {
+          products: (Array.isArray(state.products) ? state.products : []).map((p) => {
             if (p.id !== productId) return p;
             return {
               ...p,
-              variants: p.variants.map((v) =>
+              variants: (p.variants || []).map((v) =>
                 v.id === variantId ? { ...v, stock: Math.max(0, stock) } : v
               ),
             };
@@ -270,11 +294,11 @@ export const useAdminStore = create<AdminState>()(
 
       restockProduct: (productId, amount) => {
         set((state) => ({
-          products: state.products.map((p) => {
+          products: (Array.isArray(state.products) ? state.products : []).map((p) => {
             if (p.id !== productId) return p;
             return {
               ...p,
-              variants: p.variants.map((v) => ({
+              variants: (p.variants || []).map((v) => ({
                 ...v,
                 stock: v.stock + amount,
               })),
@@ -441,6 +465,51 @@ export const useAdminStore = create<AdminState>()(
     }),
     {
       name: "loomsday-admin-storage-v5",
+      storage: createJSONStorage(() => ({
+        getItem: (key) => {
+          if (typeof window === "undefined") return null;
+          try {
+            return localStorage.getItem(key);
+          } catch (e) {
+            console.error("Storage getItem failed:", e);
+            return null;
+          }
+        },
+        setItem: (key, value) => {
+          if (typeof window === "undefined") return;
+          try {
+            localStorage.setItem(key, value);
+          } catch (e) {
+            console.warn("Storage quota exceeded or write failed; attempting payload optimization:", e);
+            try {
+              const parsed = JSON.parse(value);
+              if (parsed?.state?.products && Array.isArray(parsed.state.products)) {
+                // If quota exceeded, downscale any base64 image strings to standard fallback to preserve core product data
+                parsed.state.products = parsed.state.products.map((p: any) => ({
+                  ...p,
+                  images: (p.images || []).map((img: any) => ({
+                    ...img,
+                    url: typeof img.url === "string" && img.url.length > 50000
+                      ? "/images/hero-bedding.jpg"
+                      : img.url,
+                  })),
+                }));
+                localStorage.setItem(key, JSON.stringify(parsed));
+              }
+            } catch (err2) {
+              console.error("Storage recovery failed:", err2);
+            }
+          }
+        },
+        removeItem: (key) => {
+          if (typeof window === "undefined") return;
+          try {
+            localStorage.removeItem(key);
+          } catch (e) {
+            console.error("Storage removeItem failed:", e);
+          }
+        },
+      })),
     }
   )
 );
