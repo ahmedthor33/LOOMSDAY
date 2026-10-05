@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/types";
-import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
@@ -28,7 +27,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         const raw = localStorage.getItem("loomsday-admin-storage-v5");
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -38,7 +37,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         const idbRaw = await idbGet("loomsday-admin-storage-v5");
         if (idbRaw) {
           const parsed = JSON.parse(idbRaw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -55,7 +54,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   const allProducts = (storeProducts && storeProducts.length > 0)
     ? storeProducts
-    : (localProducts.length > 0 ? localProducts : (PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS));
+    : (localProducts.length > 0 ? localProducts : (PRODUCTS.length > 0 ? PRODUCTS : []));
 
   useEffect(() => {
     if (isOpen) {

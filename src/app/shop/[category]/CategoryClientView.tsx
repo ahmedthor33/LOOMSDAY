@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
-import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -82,7 +81,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
         const raw = localStorage.getItem("loomsday-admin-storage-v5");
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -93,7 +92,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
         const idbRaw = await idbGet("loomsday-admin-storage-v5");
         if (idbRaw) {
           const parsed = JSON.parse(idbRaw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -113,7 +112,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
   const allProducts = useMemo(() => {
     if (products && products.length > 0) return products;
     if (localProducts.length > 0) return localProducts;
-    return PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS;
+    return PRODUCTS.length > 0 ? PRODUCTS : [];
   }, [products, localProducts]);
 
   const meta = CATEGORY_META[activeSlug] || {

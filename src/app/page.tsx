@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
-import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useAdminStore } from "@/store/useAdminStore";
 import { idbGet } from "@/lib/robust-storage";
@@ -24,7 +23,7 @@ export default function HomePage() {
         const raw = localStorage.getItem("loomsday-admin-storage-v5");
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -35,7 +34,7 @@ export default function HomePage() {
         const idbRaw = await idbGet("loomsday-admin-storage-v5");
         if (idbRaw) {
           const parsed = JSON.parse(idbRaw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -59,7 +58,7 @@ export default function HomePage() {
     if (Array.isArray(localProducts) && localProducts.length > 0) {
       return localProducts;
     }
-    return PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS;
+    return PRODUCTS.length > 0 ? PRODUCTS : [];
   }, [products, localProducts]);
 
   const filterProducts = () => {

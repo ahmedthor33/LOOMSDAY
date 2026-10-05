@@ -4,7 +4,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
-import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
@@ -58,7 +57,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
         const raw = localStorage.getItem("loomsday-admin-storage-v5");
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -69,7 +68,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
         const idbRaw = await idbGet("loomsday-admin-storage-v5");
         if (idbRaw) {
           const parsed = JSON.parse(idbRaw);
-          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+          if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
         }
@@ -94,7 +93,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     if (Array.isArray(localProducts) && localProducts.length > 0) {
       return localProducts;
     }
-    return PRODUCTS.length > 0 ? PRODUCTS : DEMO_PRODUCTS;
+    return PRODUCTS.length > 0 ? PRODUCTS : [];
   }, [products, localProducts]);
 
   // Strict matching by slug, ID, or slugified title (NO substring bleeding!)
@@ -102,8 +101,8 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     if (!activeSlug) return null;
     const cleanTarget = activeSlug.toLowerCase().trim();
 
-    // 1. Search in user's products
-    const found = allProducts.find((p) => {
+    // Search in user's products
+    return allProducts.find((p) => {
       const s = (p.slug || "").toLowerCase().trim();
       const id = (p.id || "").toLowerCase().trim();
       const nameSlug = (p.name || "")
@@ -112,21 +111,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
         .replace(/(^-|-$)+/g, "");
 
       return s === cleanTarget || id === cleanTarget || nameSlug === cleanTarget;
-    });
-
-    if (found) return found;
-
-    // 2. Only if user has zero products and demo catalog is loaded, check demo products
-    if (allProducts.length === 0 || allProducts === DEMO_PRODUCTS) {
-      return (
-        DEMO_PRODUCTS.find((p) => {
-          const s = (p.slug || "").toLowerCase().trim();
-          return s === cleanTarget;
-        }) || null
-      );
-    }
-
-    return null;
+    }) || null;
   }, [allProducts, activeSlug]);
 
   const { addItem } = useCartStore();
