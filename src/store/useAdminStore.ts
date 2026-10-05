@@ -21,6 +21,31 @@ export function isSuperAdminEmail(email?: string | null): boolean {
   return email.trim().toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
 }
 
+export function isDemoProduct(p: any): boolean {
+  if (!p) return false;
+  const id = String(p.id || "");
+  if (id.startsWith("prod-") && !id.includes("-import-") && !id.includes("-custom-")) {
+    const num = Number(id.replace("prod-", ""));
+    if (!isNaN(num) && num <= 12) return true;
+  }
+  if (id.startsWith("a0000000-0000-0000-0000-0000000000")) return true;
+  const demoSlugs = [
+    "french-flax-linen-sheet-set",
+    "washed-linen-sheet-set",
+    "organic-percale-crisp-sheet-set",
+    "lustrous-sateen-luxe-bedding-set",
+    "heirloom-belgian-flax-fitted-sheet",
+    "cloud-goose-down-duvet-insert",
+    "heirloom-linen-duvet-cover",
+    "lightweight-summer-down-alternative-duvet",
+    "pure-silk-french-linen-pillow-pair",
+    "linen-pillow-shams-set-of-2",
+    "cloud-loft-goose-down-pillow",
+    "ergonomic-memory-latex-contour-pillow",
+  ];
+  return demoSlugs.includes(p.slug);
+}
+
 function notifyStoreUpdated() {
   if (typeof window !== "undefined") {
     try {
@@ -231,7 +256,7 @@ export const INITIAL_PAYMENT_METHODS: PaymentMethodConfig[] = [
 export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
-      products: PRODUCTS,
+      products: [],
       orders: [],
       coupons: INITIAL_COUPONS,
       shippingSettings: INITIAL_SHIPPING,
@@ -354,7 +379,9 @@ export const useAdminStore = create<AdminState>()(
 
       deleteProduct: (id) => {
         set((state) => ({
-          products: (Array.isArray(state.products) ? state.products : []).filter((p) => p.id !== id),
+          products: (Array.isArray(state.products) ? state.products : []).filter(
+            (p) => p.id !== id && p.slug !== id
+          ),
         }));
         notifyStoreUpdated();
       },
@@ -362,7 +389,7 @@ export const useAdminStore = create<AdminState>()(
       clearDemoProducts: () => {
         set((state) => ({
           products: (Array.isArray(state.products) ? state.products : []).filter(
-            (p) => p.id !== "prod-1" && p.slug !== "french-flax-linen-sheet-set"
+            (p) => !isDemoProduct(p)
           ),
         }));
         notifyStoreUpdated();
@@ -615,13 +642,6 @@ export const useAdminStore = create<AdminState>()(
           try {
             const idbVal = await idbGet(key);
             if (idbVal && typeof idbVal === "string" && idbVal.length > 10) {
-              try {
-                const parsed = JSON.parse(idbVal);
-                if (!Array.isArray(parsed?.state?.products) || parsed.state.products.length === 0) {
-                  parsed.state.products = PRODUCTS;
-                  return JSON.stringify(parsed);
-                }
-              } catch {}
               return idbVal;
             }
           } catch (e) {
@@ -632,15 +652,6 @@ export const useAdminStore = create<AdminState>()(
           try {
             const localVal = localStorage.getItem(key);
             if (localVal) {
-              try {
-                const parsed = JSON.parse(localVal);
-                if (!Array.isArray(parsed?.state?.products) || parsed.state.products.length === 0) {
-                  parsed.state.products = PRODUCTS;
-                  const healed = JSON.stringify(parsed);
-                  idbSet(key, healed).catch(() => {});
-                  return healed;
-                }
-              } catch {}
               // Background sync to IndexedDB for next load
               idbSet(key, localVal).catch(() => {});
               return localVal;

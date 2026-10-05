@@ -12,7 +12,7 @@ import { PaymentMethodModal } from "@/components/admin/PaymentMethodModal";
 import { ImportCatalogModal } from "@/components/admin/ImportCatalogModal";
 import { BulkAddModal } from "@/components/admin/BulkAddModal";
 import { exportCatalogToJson } from "@/lib/catalog-service";
-import { useAdminStore, SUPER_ADMIN_EMAIL } from "@/store/useAdminStore";
+import { useAdminStore, SUPER_ADMIN_EMAIL, isDemoProduct } from "@/store/useAdminStore";
 import { Product, Order, AdminCoupon, PaymentMethodConfig } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { useToast } from "@/components/ui/Toast";
@@ -692,21 +692,21 @@ function AdminContent() {
             </div>
 
             {/* Notice if demo product is present */}
-            {products.some((p) => p.id === "prod-1" || p.slug === "french-flax-linen-sheet-set") && (
+            {products.some((p) => isDemoProduct(p)) && (
               <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-amber-700 text-base">info</span>
-                  <span>Demo product &ldquo;The French Flax Linen Sheet Set&rdquo; is present in your store catalog.</span>
+                  <span>Demo test linens are currently present in your store catalog.</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
                     clearDemoProducts();
-                    showToast("Demo piece removed from catalog.");
+                    showToast("All demo pieces permanently removed from catalog.");
                   }}
                   className="px-2.5 py-1 rounded bg-amber-200 hover:bg-amber-300 text-amber-950 font-medium transition-colors"
                 >
-                  Remove Demo Piece
+                  Remove All Demo Pieces
                 </button>
               </div>
             )}
