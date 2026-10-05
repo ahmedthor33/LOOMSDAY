@@ -1,7 +1,7 @@
 export interface ProductVariant {
   id: string;
   productId: string;
-  size: 'Twin' | 'Full' | 'Queen' | 'King' | 'Cal King' | 'Full / Queen' | 'King / Cal King' | 'Standard' | 'Standard Pair' | 'One Size' | string;
+  size: 'Single' | 'Double' | 'Queen' | 'King' | 'Twin' | 'Full' | 'Cal King' | 'Full / Queen' | 'King / Cal King' | 'Standard' | 'Standard Pair' | 'One Size' | string;
   colorName: string;
   colorHex: string;
   price: number;

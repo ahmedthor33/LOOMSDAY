@@ -890,27 +890,27 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
                   </thead>
                   <tbody className="divide-y divide-surface-variant">
                     <tr>
-                      <td className="p-2.5 font-medium text-primary">Full</td>
-                      <td className="p-2.5">54&quot; × 75&quot;</td>
-                      <td className="p-2.5">84&quot; × 96&quot;</td>
+                      <td className="p-2.5 font-medium text-primary">Single</td>
+                      <td className="p-2.5">42&quot; × 78&quot; + 14&quot;</td>
+                      <td className="p-2.5">66&quot; × 100&quot;</td>
+                      <td className="p-2.5">Standard (1)</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2.5 font-medium text-primary">Double</td>
+                      <td className="p-2.5">54&quot; × 78&quot; + 14&quot;</td>
+                      <td className="p-2.5">90&quot; × 100&quot;</td>
                       <td className="p-2.5">Standard (2)</td>
                     </tr>
                     <tr>
                       <td className="p-2.5 font-medium text-primary">Queen</td>
-                      <td className="p-2.5">60&quot; × 80&quot;</td>
+                      <td className="p-2.5">60&quot; × 80&quot; + 16&quot;</td>
                       <td className="p-2.5">96&quot; × 108&quot;</td>
                       <td className="p-2.5">Standard (2)</td>
                     </tr>
                     <tr>
                       <td className="p-2.5 font-medium text-primary">King</td>
-                      <td className="p-2.5">76&quot; × 80&quot;</td>
-                      <td className="p-2.5">110&quot; × 108&quot;</td>
-                      <td className="p-2.5">King (2)</td>
-                    </tr>
-                    <tr>
-                      <td className="p-2.5 font-medium text-primary">Cal King</td>
-                      <td className="p-2.5">72&quot; × 84&quot;</td>
-                      <td className="p-2.5">108&quot; × 114&quot;</td>
+                      <td className="p-2.5">72&quot; × 78&quot; + 16&quot;</td>
+                      <td className="p-2.5">108&quot; × 112&quot;</td>
                       <td className="p-2.5">King (2)</td>
                     </tr>
                   </tbody>

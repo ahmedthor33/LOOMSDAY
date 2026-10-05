@@ -45,7 +45,7 @@ export function ProductFilters({
     { label: "Duvets & Inserts", value: "duvets", count: 3 },
   ];
 
-  const sizes = ["Twin", "Full", "Queen", "King", "Cal King"];
+  const sizes = ["Single", "Double", "Queen", "King"];
 
   const colors = [
     { name: "Warm Ivory", hex: "#FAF7F2" },

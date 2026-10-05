@@ -11,11 +11,14 @@ interface ProductModalProps {
   onSave: (productData: Product) => void;
 }
 
+export const STANDARD_BEDDING_SIZES = ["Single", "Double", "Queen", "King"];
+
 export function ProductModal({ isOpen, onClose, productToEdit, onSave }: ProductModalProps) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [tagline, setTagline] = useState("");
   const [category, setCategory] = useState<"bedsheets" | "pillows" | "duvets">("bedsheets");
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(["Single", "Double", "Queen", "King"]);
   const [retailPrice, setRetailPrice] = useState<number | string>("");
   const [basePrice, setBasePrice] = useState<number | string>(28500);
   const [material, setMaterial] = useState("100% French Flax Linen");
@@ -37,6 +40,11 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       setSlug(productToEdit.slug);
       setTagline(productToEdit.tagline || "");
       setCategory(productToEdit.category);
+      setSelectedSizes(
+        productToEdit.availableSizes && productToEdit.availableSizes.length > 0
+          ? productToEdit.availableSizes
+          : ["Single", "Double", "Queen", "King"]
+      );
       setRetailPrice(productToEdit.retailPrice ?? "");
       setBasePrice(productToEdit.basePrice);
       setMaterial(productToEdit.material);
@@ -50,6 +58,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       setSlug("");
       setTagline("Stone-Washed Normandy Flax • Impossibly Soft");
       setCategory("bedsheets");
+      setSelectedSizes(["Single", "Double", "Queen", "King"]);
       setRetailPrice(34500);
       setBasePrice(28500);
       setMaterial("100% French Flax Linen");
@@ -60,6 +69,18 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     }
     setImageError(null);
   }, [productToEdit, isOpen]);
+
+  const toggleSize = (sz: string) => {
+    if (selectedSizes.includes(sz)) {
+      if (selectedSizes.length === 1) return; // Maintain at least 1 size
+      setSelectedSizes(selectedSizes.filter((s) => s !== sz));
+    } else {
+      const ordered = STANDARD_BEDDING_SIZES.filter(
+        (s) => selectedSizes.includes(s) || s === sz
+      );
+      setSelectedSizes(ordered);
+    }
+  };
 
   const handleNameChange = (val: string) => {
     setName(val);
@@ -196,7 +217,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       origin: productToEdit?.origin || "",
       isBestSeller,
       isNewArrival,
-      availableSizes: productToEdit?.availableSizes || (category === "pillows" ? ["Standard Pair"] : ["Full", "Queen", "King", "Cal King"]),
+      availableSizes: selectedSizes.length > 0 ? selectedSizes : ["Single", "Double", "Queen", "King"],
       availableColors: productToEdit?.availableColors || [
         { name: "Warm Ivory", hex: "#FAF7F2" },
         { name: "Soft Sand", hex: "#E8DFD0" },
@@ -212,43 +233,24 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
           isPrimary: true,
         },
       ],
-      variants: productToEdit?.variants?.length
-        ? productToEdit.variants
-        : [
-            {
-              id: `var-${Date.now()}-1`,
-              productId: productToEdit?.id || `prod-${Date.now()}`,
-              size: "Queen",
-              colorName: "Warm Ivory",
-              colorHex: "#FAF7F2",
-              price: finalBasePrice,
-              retailPrice: finalRetailPrice,
-              stock: 30,
-              sku: `${finalSlug.slice(0, 4).toUpperCase()}-Q-WIV`,
-            },
-            {
-              id: `var-${Date.now()}-2`,
-              productId: productToEdit?.id || `prod-${Date.now()}`,
-              size: "King",
-              colorName: "Warm Ivory",
-              colorHex: "#FAF7F2",
-              price: finalBasePrice + 2000,
-              retailPrice: finalRetailPrice ? finalRetailPrice + 2000 : undefined,
-              stock: 20,
-              sku: `${finalSlug.slice(0, 4).toUpperCase()}-K-WIV`,
-            },
-            {
-              id: `var-${Date.now()}-3`,
-              productId: productToEdit?.id || `prod-${Date.now()}`,
-              size: "Queen",
-              colorName: "Muted Sage",
-              colorHex: "#C2C9BC",
-              price: finalBasePrice,
-              retailPrice: finalRetailPrice,
-              stock: 15,
-              sku: `${finalSlug.slice(0, 4).toUpperCase()}-Q-MSG`,
-            },
-          ],
+      variants: (selectedSizes.length > 0 ? selectedSizes : ["Single", "Double", "Queen", "King"]).map((sz, idx) => {
+        let sizeDelta = 0;
+        if (sz.toLowerCase() === "double") sizeDelta = 1200;
+        if (sz.toLowerCase() === "queen") sizeDelta = 2200;
+        if (sz.toLowerCase() === "king") sizeDelta = 3500;
+
+        return {
+          id: `var-${Date.now()}-${idx + 1}`,
+          productId: productToEdit?.id || `prod-${Date.now()}`,
+          size: sz,
+          colorName: "Warm Ivory",
+          colorHex: "#FAF7F2",
+          price: finalBasePrice + sizeDelta,
+          retailPrice: finalRetailPrice ? finalRetailPrice + sizeDelta : undefined,
+          stock: 30,
+          sku: `${finalSlug.slice(0, 4).toUpperCase()}-${sz.slice(0, 2).toUpperCase()}-IVR`,
+        };
+      }),
     };
 
     onSave(finalProduct);
@@ -390,7 +392,52 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
             </div>
           )}
 
-          {/* Row 3: Material & Tagline (Thread Count and Geographic Origin Removed) */}
+          {/* Row 3: Available Bedding Sizes (Single, Double, Queen, King) */}
+          <div className="space-y-2 p-3.5 rounded-lg bg-surface-container-low border border-surface-variant/40">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-semibold text-primary flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[16px] text-secondary">straighten</span>
+                Available Bedding Sizes *
+              </label>
+              <span className="text-[11px] text-on-surface-variant">
+                Click to toggle sizes available for this piece
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+              {STANDARD_BEDDING_SIZES.map((sz) => {
+                const isSelected = selectedSizes.includes(sz);
+                return (
+                  <button
+                    key={sz}
+                    type="button"
+                    onClick={() => toggleSize(sz)}
+                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-label-md transition-all border ${
+                      isSelected
+                        ? "bg-primary text-on-primary border-primary shadow-sm font-semibold"
+                        : "bg-surface text-on-surface border-surface-variant/80 hover:border-secondary/60 hover:bg-surface-container"
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[16px] opacity-80">
+                        {sz === "Single" ? "single_bed" : sz === "Double" ? "bed" : sz === "Queen" ? "hotel" : "king_bed"}
+                      </span>
+                      <span>{sz}</span>
+                    </span>
+                    <span className="material-symbols-outlined text-[16px]">
+                      {isSelected ? "check_circle" : "radio_button_unchecked"}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="flex items-center justify-between pt-1 text-[11px] text-on-surface-variant">
+              <span>Standard dimensions: Single (42&quot;×78&quot;), Double (54&quot;×78&quot;), Queen (60&quot;×80&quot;), King (72&quot;×78&quot;)</span>
+              <span className="text-primary font-medium">{selectedSizes.length} {selectedSizes.length === 1 ? "size" : "sizes"} active</span>
+            </div>
+          </div>
+
+          {/* Row 4: Material & Tagline (Thread Count and Geographic Origin Removed) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-primary mb-1">Material Composition *</label>
