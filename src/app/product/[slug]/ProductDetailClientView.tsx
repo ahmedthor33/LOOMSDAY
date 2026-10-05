@@ -192,8 +192,8 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     }
   };
 
-  // 1. Loading Skeleton while mounting
-  if (!mounted) {
+  // 1. Loading Skeleton while waiting for client hydration IF product is not yet found
+  if (!product && !mounted) {
     return (
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-12 animate-pulse space-y-8">
         <div className="h-4 bg-surface-container w-48 rounded" />
@@ -211,7 +211,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     );
   }
 
-  // 2. Piece Not Found Fallback View
+  // 2. Piece Not Found Fallback View (after client hydration completes)
   if (!product) {
     return (
       <div className="w-full max-w-2xl mx-auto px-4 py-28 text-center space-y-6">
