@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Product } from "@/types";
 import { sanitizeCatalogProducts } from "@/lib/catalog-service";
+import { deepScanBrowserStorage, ScanResult } from "@/lib/storage-recovery";
 
 interface ImportCatalogModalProps {
   isOpen: boolean;
@@ -17,8 +18,10 @@ export function ImportCatalogModal({
 }: ImportCatalogModalProps) {
   const [jsonText, setJsonText] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"paste" | "upload" | "localhost">("localhost");
+  const [activeTab, setActiveTab] = useState<"scan" | "localhost" | "upload" | "paste">("scan");
   const [copiedCode, setCopiedCode] = useState(false);
+  const [scanResults, setScanResults] = useState<ScanResult[]>([]);
+  const [isScanning, setIsScanning] = useState(false);
 
   if (!isOpen) return null;
 
@@ -92,6 +95,21 @@ export function ImportCatalogModal({
 })();
 `.trim();
 
+  const handleScan = async () => {
+    setIsScanning(true);
+    try {
+      const results = await deepScanBrowserStorage();
+      setScanResults(results);
+    } catch {}
+    setIsScanning(false);
+  };
+
+  React.useEffect(() => {
+    if (isOpen) {
+      handleScan();
+    }
+  }, [isOpen]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div className="bg-surface-container-lowest border border-surface-variant/50 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
@@ -101,10 +119,10 @@ export function ImportCatalogModal({
             <span className="material-symbols-outlined text-primary text-2xl">sync_alt</span>
             <div>
               <h3 className="font-headline-sm text-lg text-primary font-medium">
-                Import & Transfer Products Catalog
+                Import & Recover Products Catalog
               </h3>
               <p className="font-body-sm text-xs text-on-surface-variant">
-                Restore products created on localhost:3000, backup files, or JSON dumps.
+                Auto-scan browser storage, transfer from localhost, or import backup files.
               </p>
             </div>
           </div>
@@ -118,11 +136,26 @@ export function ImportCatalogModal({
         </div>
 
         {/* Tab selection */}
-        <div className="flex border-b border-surface-variant/30 px-6 bg-surface-container-lowest">
+        <div className="flex border-b border-surface-variant/30 px-6 bg-surface-container-lowest overflow-x-auto">
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("scan");
+              handleScan();
+            }}
+            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${
+              activeTab === "scan"
+                ? "border-primary text-primary font-semibold"
+                : "border-transparent text-on-surface-variant hover:text-primary"
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm">travel_explore</span>
+            <span>Deep Storage Scanner</span>
+          </button>
           <button
             type="button"
             onClick={() => setActiveTab("localhost")}
-            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 ${
+            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${
               activeTab === "localhost"
                 ? "border-primary text-primary font-semibold"
                 : "border-transparent text-on-surface-variant hover:text-primary"
@@ -134,7 +167,7 @@ export function ImportCatalogModal({
           <button
             type="button"
             onClick={() => setActiveTab("upload")}
-            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 ${
+            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${
               activeTab === "upload"
                 ? "border-primary text-primary font-semibold"
                 : "border-transparent text-on-surface-variant hover:text-primary"
@@ -146,7 +179,7 @@ export function ImportCatalogModal({
           <button
             type="button"
             onClick={() => setActiveTab("paste")}
-            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 ${
+            className={`py-3 px-4 text-xs font-label-md uppercase tracking-wider border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${
               activeTab === "paste"
                 ? "border-primary text-primary font-semibold"
                 : "border-transparent text-on-surface-variant hover:text-primary"
@@ -163,6 +196,85 @@ export function ImportCatalogModal({
             <div className="p-3.5 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
               <span className="material-symbols-outlined text-red-600 text-sm">error</span>
               <span>{errorMsg}</span>
+            </div>
+          )}
+
+          {activeTab === "scan" && (
+            <div className="space-y-4 text-xs">
+              <div className="flex items-center justify-between pb-2 border-b border-surface-variant/30">
+                <div>
+                  <h4 className="font-semibold text-primary text-sm flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-primary text-base">saved_search</span>
+                    <span>Browser Storage Deep Scan</span>
+                  </h4>
+                  <p className="text-on-surface-variant text-[11px]">
+                    Inspects all localStorage keys and IndexedDB databases on this origin.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleScan}
+                  disabled={isScanning}
+                  className="px-3 py-1.5 rounded-lg border border-surface-variant hover:border-primary text-xs font-medium text-primary transition-colors flex items-center gap-1.5 bg-surface-container-low"
+                >
+                  <span className={`material-symbols-outlined text-sm ${isScanning ? "animate-spin" : ""}`}>
+                    refresh
+                  </span>
+                  <span>{isScanning ? "Scanning..." : "Re-Scan"}</span>
+                </button>
+              </div>
+
+              {isScanning ? (
+                <div className="p-8 text-center text-on-surface-variant space-y-2">
+                  <span className="material-symbols-outlined text-3xl animate-spin text-primary">
+                    hourglass_top
+                  </span>
+                  <p>Searching all browser partitions for saved product catalogs...</p>
+                </div>
+              ) : scanResults.length === 0 ? (
+                <div className="p-6 rounded-xl bg-surface-container-low border border-surface-variant/30 text-center space-y-2">
+                  <span className="material-symbols-outlined text-3xl text-neutral-400">
+                    inventory_2
+                  </span>
+                  <p className="font-medium text-primary text-sm">No secondary storage partitions found on this origin.</p>
+                  <p className="text-on-surface-variant text-xs max-w-md mx-auto">
+                    If you created products in an incognito window, another browser (Edge, Firefox, Safari), or another device, open that browser window to export your catalog!
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-on-surface-variant font-medium">Discovered Collections in this Browser:</p>
+                  {scanResults.map((res, idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-xl border border-surface-variant/50 bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hover:border-primary/60 transition-colors"
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-primary text-sm font-mono">{res.source}</span>
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold">
+                            {res.count} Products Found
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-on-surface-variant">
+                          Sample items: {res.sampleNames.join(", ")}
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onImport(res.products);
+                          onClose();
+                        }}
+                        className="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-label-md uppercase tracking-wider hover:bg-neutral-800 transition-colors shrink-0"
+                      >
+                        Restore These {res.count} Items
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
