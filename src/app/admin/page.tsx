@@ -10,6 +10,7 @@ import { CouponModal } from "@/components/admin/CouponModal";
 import { DragDropImageUpload } from "@/components/admin/DragDropImageUpload";
 import { PaymentMethodModal } from "@/components/admin/PaymentMethodModal";
 import { ImportCatalogModal } from "@/components/admin/ImportCatalogModal";
+import { BulkAddModal } from "@/components/admin/BulkAddModal";
 import { exportCatalogToJson } from "@/lib/catalog-service";
 import { useAdminStore, SUPER_ADMIN_EMAIL } from "@/store/useAdminStore";
 import { Product, Order, AdminCoupon, PaymentMethodConfig } from "@/types";
@@ -94,6 +95,7 @@ function AdminContent() {
   const [paymentMethodToEdit, setPaymentMethodToEdit] = useState<PaymentMethodConfig | null>(null);
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [isSyncingCloud, setIsSyncingCloud] = useState(false);
 
   // CMS form local state
@@ -663,6 +665,16 @@ function AdminContent() {
                 >
                   <span className="material-symbols-outlined text-sm">download</span>
                   <span>Export</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsBulkModalOpen(true)}
+                  className="px-3.5 py-2.5 rounded-lg border border-primary text-primary hover:bg-primary/5 text-xs font-label-md uppercase tracking-wider transition-colors flex items-center gap-1.5 bg-surface-container-low"
+                  title="Quickly add dozens of products by pasting names and prices"
+                >
+                  <span className="material-symbols-outlined text-sm">playlist_add</span>
+                  <span>Bulk Fast Add</span>
                 </button>
 
                 <button
@@ -1909,6 +1921,18 @@ function AdminContent() {
             showToast(`Successfully imported ${res.count} products into your catalog!`);
           } else {
             showToast("Import failed: No valid products found in data.");
+          }
+        }}
+      />
+
+      {/* Bulk Add Products Modal */}
+      <BulkAddModal
+        isOpen={isBulkModalOpen}
+        onClose={() => setIsBulkModalOpen(false)}
+        onAddProducts={(newProducts) => {
+          const res = importCatalog(newProducts);
+          if (res.success) {
+            showToast(`Added ${newProducts.length} new products to your boutique catalog!`);
           }
         }}
       />
