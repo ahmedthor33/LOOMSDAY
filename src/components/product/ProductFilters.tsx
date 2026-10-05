@@ -255,9 +255,9 @@ export function ProductFilters({
           <div className="mt-4 space-y-3">
             <input
               type="range"
-              min="50"
-              max="400"
-              step="10"
+              min="2000"
+              max="100000"
+              step="1000"
               value={filters.maxPrice}
               onChange={(e) =>
                 onFilterChange({ ...filters, maxPrice: Number(e.target.value) })
@@ -265,8 +265,8 @@ export function ProductFilters({
               className="w-full accent-primary cursor-pointer"
             />
             <div className="flex justify-between text-xs text-on-surface-variant font-label-sm">
-              <span>{formatCurrency(50)}</span>
-              <span>{formatCurrency(400)}</span>
+              <span>{formatCurrency(2000)}</span>
+              <span>{formatCurrency(100000)}</span>
             </div>
           </div>
         )}

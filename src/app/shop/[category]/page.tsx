@@ -42,7 +42,7 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
     size: "",
     color: "",
     material: "",
-    maxPrice: 400,
+    maxPrice: 100000,
   });
 
   const [sortOption, setSortOption] = useState<
@@ -98,7 +98,7 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
       size: "",
       color: "",
       material: "",
-      maxPrice: 400,
+      maxPrice: 100000,
     });
   };
 

@@ -122,7 +122,7 @@ function AdminContent() {
     const matchesSearch =
       p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
       p.material.toLowerCase().includes(productSearch.toLowerCase()) ||
-      p.origin.toLowerCase().includes(productSearch.toLowerCase());
+      (p.origin ? p.origin.toLowerCase().includes(productSearch.toLowerCase()) : false);
     const matchesCategory =
       productCategoryFilter === "all" || p.category === productCategoryFilter;
     return matchesSearch && matchesCategory;
@@ -552,8 +552,8 @@ function AdminContent() {
                     <tr className="border-b border-surface-variant/40 text-[11px] uppercase tracking-wider text-on-surface-variant font-label-eyebrow bg-surface-container-low">
                       <th className="py-3 px-4">Item & Silhouette</th>
                       <th className="py-3 px-4">Category</th>
-                      <th className="py-3 px-4">Material & Origin</th>
-                      <th className="py-3 px-4">Base Price</th>
+                      <th className="py-3 px-4">Material</th>
+                      <th className="py-3 px-4">Price (PKR)</th>
                       <th className="py-3 px-4">Total Stock</th>
                       <th className="py-3 px-4">Badge</th>
                       <th className="py-3 px-4 text-right">Actions</th>
@@ -628,10 +628,17 @@ function AdminContent() {
                           </td>
                           <td className="py-3 px-4">
                             <p className="text-primary font-medium">{prod.material}</p>
-                            <p className="text-[11px] text-on-surface-variant">{prod.origin}</p>
+                            {prod.origin && <p className="text-[11px] text-on-surface-variant">{prod.origin}</p>}
                           </td>
-                          <td className="py-3 px-4 font-semibold text-primary">
-                            {formatCurrency(prod.basePrice)}
+                          <td className="py-3 px-4">
+                            <div className="font-semibold text-primary">
+                              {formatCurrency(prod.basePrice)}
+                            </div>
+                            {prod.retailPrice && prod.retailPrice > prod.basePrice && (
+                              <div className="text-[10px] text-on-surface-variant line-through opacity-75">
+                                Retail: {formatCurrency(prod.retailPrice)}
+                              </div>
+                            )}
                           </td>
                           <td className="py-3 px-4">
                             <span
@@ -747,7 +754,12 @@ function AdminContent() {
                       </div>
                       <div>
                         <h3 className="text-sm font-medium text-primary">{prod.name}</h3>
-                        <p className="text-[11px] text-on-surface-variant">{prod.material} • Base: {formatCurrency(prod.basePrice)}</p>
+                        <p className="text-[11px] text-on-surface-variant">
+                          {prod.material} • Selling: {formatCurrency(prod.basePrice)}
+                          {prod.retailPrice && prod.retailPrice > prod.basePrice
+                            ? ` (Retail: ${formatCurrency(prod.retailPrice)})`
+                            : ""}
+                        </p>
                       </div>
                     </div>
 

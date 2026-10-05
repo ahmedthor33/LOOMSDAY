@@ -16,7 +16,7 @@ export default function ShopPage() {
     size: "",
     color: "",
     material: "",
-    maxPrice: 400,
+    maxPrice: 100000,
   });
 
   const [sortOption, setSortOption] = useState<
@@ -72,7 +72,7 @@ export default function ShopPage() {
   if (filters.size) activeChips.push({ label: `Size: ${filters.size}`, key: "size" });
   if (filters.color) activeChips.push({ label: `Color: ${filters.color}`, key: "color" });
   if (filters.material) activeChips.push({ label: filters.material, key: "material" });
-  if (filters.maxPrice < 400) activeChips.push({ label: `Under ${formatCurrency(filters.maxPrice)}`, key: "price" });
+  if (filters.maxPrice < 100000) activeChips.push({ label: `Under ${formatCurrency(filters.maxPrice)}`, key: "price" });
 
   const clearAllFilters = () => {
     setFilters({
@@ -80,7 +80,7 @@ export default function ShopPage() {
       size: "",
       color: "",
       material: "",
-      maxPrice: 400,
+      maxPrice: 100000,
     });
   };
 

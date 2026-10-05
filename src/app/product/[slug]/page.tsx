@@ -143,12 +143,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             </div>
 
             {/* Material Origin Note */}
-            <div className="absolute bottom-4 left-4 hidden sm:flex items-center gap-2 bg-surface-container-high/85 backdrop-blur-sm px-3.5 py-1.5 rounded">
-              <span className="w-2 h-2 rounded-full bg-secondary" />
-              <span className="font-label-sm text-xs text-on-surface-variant font-medium">
-                {product.origin}
-              </span>
-            </div>
+            {product.origin && (
+              <div className="absolute bottom-4 left-4 hidden sm:flex items-center gap-2 bg-surface-container-high/85 backdrop-blur-sm px-3.5 py-1.5 rounded">
+                <span className="w-2 h-2 rounded-full bg-secondary" />
+                <span className="font-label-sm text-xs text-on-surface-variant font-medium">
+                  {product.origin}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -169,10 +171,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             <h1 className="font-display-hero text-headline-lg text-primary leading-tight font-normal">
               {product.name}
             </h1>
-            <div className="flex items-baseline gap-4 pt-1">
+            <div className="flex flex-wrap items-baseline gap-3 pt-1">
               <span className="font-headline-md text-headline-md text-primary font-medium">
                 {formatCurrency(currentPrice)}
               </span>
+              {product.retailPrice && product.retailPrice > currentPrice && (
+                <>
+                  <span className="font-body-lg text-lg text-on-surface-variant line-through opacity-70">
+                    {formatCurrency(product.retailPrice)}
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-secondary/15 text-secondary uppercase tracking-wider">
+                    Save {Math.round(((product.retailPrice - currentPrice) / product.retailPrice) * 100)}%
+                  </span>
+                </>
+              )}
               <span className="font-body-sm text-xs text-on-surface-variant">Includes taxes &amp; duties</span>
             </div>
 

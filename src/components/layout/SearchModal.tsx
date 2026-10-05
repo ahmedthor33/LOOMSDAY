@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { PRODUCTS } from "@/lib/products-data";
+import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
 
 interface SearchModalProps {
@@ -14,6 +15,8 @@ interface SearchModalProps {
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { products: storeProducts } = useAdminStore();
+  const allProducts = storeProducts && storeProducts.length > 0 ? storeProducts : PRODUCTS;
 
   useEffect(() => {
     if (isOpen) {
@@ -38,13 +41,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   if (!isOpen) return null;
 
   const filtered = query.trim()
-    ? PRODUCTS.filter((p) =>
+    ? allProducts.filter((p) =>
         p.name.toLowerCase().includes(query.toLowerCase()) ||
         p.material.toLowerCase().includes(query.toLowerCase()) ||
         p.category.toLowerCase().includes(query.toLowerCase()) ||
-        p.tagline.toLowerCase().includes(query.toLowerCase())
+        (p.tagline ? p.tagline.toLowerCase().includes(query.toLowerCase()) : false)
       )
-    : PRODUCTS.slice(0, 4);
+    : allProducts.slice(0, 4);
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
@@ -110,10 +113,15 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     {item.name}
                   </h4>
                   <p className="font-body-sm text-xs text-on-surface-variant truncate mt-0.5">
-                    {item.origin} • {item.rating} ★ ({item.reviewCount})
+                    {item.origin ? `${item.origin} • ` : ""}{item.rating} ★ ({item.reviewCount})
                   </p>
                 </div>
                 <div className="text-right">
+                  {item.retailPrice && item.retailPrice > item.basePrice && (
+                    <span className="font-body-sm text-xs text-on-surface-variant line-through block opacity-70">
+                      {formatCurrency(item.retailPrice)}
+                    </span>
+                  )}
                   <span className="font-headline-sm text-sm text-primary font-medium">
                     {formatCurrency(item.basePrice)}
                   </span>

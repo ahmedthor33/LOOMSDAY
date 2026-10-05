@@ -75,6 +75,20 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </Link>
 
+        {/* Floating Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 pointer-events-none z-10">
+          {product.isBestSeller && (
+            <span className="bg-primary/90 text-on-primary text-[10px] font-label-eyebrow uppercase px-2 py-0.5 tracking-wider backdrop-blur-sm">
+              Bestseller
+            </span>
+          )}
+          {product.retailPrice && product.retailPrice > product.basePrice && (
+            <span className="bg-secondary text-on-secondary text-[10px] font-semibold px-2 py-0.5 uppercase tracking-wider backdrop-blur-sm shadow-xs">
+              Save {Math.round(((product.retailPrice - product.basePrice) / product.retailPrice) * 100)}%
+            </span>
+          )}
+        </div>
+
         {/* Wishlist Heart Action */}
         <button
           type="button"
@@ -166,9 +180,16 @@ export function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
           </div>
-          <span className="font-headline-sm text-[17px] text-primary font-medium">
-            {formatCurrency(product.basePrice)}
-          </span>
+          <div className="flex items-baseline gap-2 text-right">
+            {product.retailPrice && product.retailPrice > product.basePrice && (
+              <span className="font-body-sm text-xs text-on-surface-variant line-through opacity-70">
+                {formatCurrency(product.retailPrice)}
+              </span>
+            )}
+            <span className="font-headline-sm text-[17px] text-primary font-medium">
+              {formatCurrency(product.basePrice)}
+            </span>
+          </div>
         </div>
       </div>
     </div>

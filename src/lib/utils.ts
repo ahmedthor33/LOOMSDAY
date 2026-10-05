@@ -6,14 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  // Convert or format to Pakistani Rupee (PKR / Rs.)
-  const pkrValue = amount > 0 && amount < 1000 ? amount * 100 : amount;
-  return `Rs. ${Math.round(pkrValue).toLocaleString("en-PK")}`;
+  if (typeof amount !== "number" || isNaN(amount)) return "Rs. 0";
+  return `Rs. ${Math.round(amount).toLocaleString("en-PK")}`;
 }
 
 export function calculateInstallments(amount: number, count = 4): string {
-  const pkrValue = amount > 0 && amount < 1000 ? amount * 100 : amount;
-  return formatCurrency(pkrValue / count);
+  if (typeof amount !== "number" || isNaN(amount)) return "Rs. 0";
+  return formatCurrency(amount / count);
 }
 
 // Nationwide Pakistan thresholds in PKR

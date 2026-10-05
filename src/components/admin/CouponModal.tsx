@@ -93,13 +93,13 @@ export function CouponModal({ isOpen, onClose, couponToEdit, onSave }: CouponMod
                 className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary"
               >
                 <option value="percentage">Percentage (%)</option>
-                <option value="fixed">Fixed Amount ($)</option>
+                <option value="fixed">Fixed Amount (Rs. PKR)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs font-medium text-primary mb-1">
-                Value ({discountType === "percentage" ? "%" : "$"})
+                Value ({discountType === "percentage" ? "%" : "Rs."})
               </label>
               <input
                 type="number"
@@ -114,7 +114,7 @@ export function CouponModal({ isOpen, onClose, couponToEdit, onSave }: CouponMod
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-primary mb-1">Min Spend ($)</label>
+              <label className="block text-xs font-medium text-primary mb-1">Min Spend (Rs.)</label>
               <input
                 type="number"
                 min="0"

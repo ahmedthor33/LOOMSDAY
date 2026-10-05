@@ -5,6 +5,7 @@ export interface ProductVariant {
   colorName: string;
   colorHex: string;
   price: number;
+  retailPrice?: number;
   stock: number;
   sku: string;
 }
@@ -26,12 +27,13 @@ export interface Product {
   description: string;
   category: 'bedsheets' | 'pillows' | 'duvets';
   categoryLabel: string;
-  basePrice: number;
+  basePrice: number; // Actual Selling Price (PKR)
+  retailPrice?: number; // Retail / Struck-through Price (PKR)
   rating: number;
   reviewCount: number;
   material: string;
   threadCountOrGsm?: string;
-  origin: string;
+  origin?: string;
   isBestSeller?: boolean;
   isNewArrival?: boolean;
   images: ProductImage[];
