@@ -20,7 +20,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
   const [category, setCategory] = useState<"bedsheets" | "pillows" | "duvets">("bedsheets");
   const [selectedSizes, setSelectedSizes] = useState<string[]>(["Single", "Double", "Queen", "King"]);
   const [retailPrice, setRetailPrice] = useState<number | string>("");
-  const [basePrice, setBasePrice] = useState<number | string>(28500);
+  const [basePrice, setBasePrice] = useState<number | string>("");
   const [material, setMaterial] = useState("100% French Flax Linen");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -59,8 +59,8 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       setTagline("Stone-Washed Normandy Flax • Impossibly Soft");
       setCategory("bedsheets");
       setSelectedSizes(["Single", "Double", "Queen", "King"]);
-      setRetailPrice(34500);
-      setBasePrice(28500);
+      setRetailPrice("");
+      setBasePrice("");
       setMaterial("100% French Flax Linen");
       setDescription("Woven from slow-harvested 100% certified organic European flax. Stone-washed for immediate softness and effortless drape.");
       setImageUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ");
@@ -233,24 +233,17 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
           isPrimary: true,
         },
       ],
-      variants: (selectedSizes.length > 0 ? selectedSizes : ["Single", "Double", "Queen", "King"]).map((sz, idx) => {
-        let sizeDelta = 0;
-        if (sz.toLowerCase() === "double") sizeDelta = 1200;
-        if (sz.toLowerCase() === "queen") sizeDelta = 2200;
-        if (sz.toLowerCase() === "king") sizeDelta = 3500;
-
-        return {
-          id: `var-${Date.now()}-${idx + 1}`,
-          productId: productToEdit?.id || `prod-${Date.now()}`,
-          size: sz,
-          colorName: "Warm Ivory",
-          colorHex: "#FAF7F2",
-          price: finalBasePrice + sizeDelta,
-          retailPrice: finalRetailPrice ? finalRetailPrice + sizeDelta : undefined,
-          stock: 30,
-          sku: `${finalSlug.slice(0, 4).toUpperCase()}-${sz.slice(0, 2).toUpperCase()}-IVR`,
-        };
-      }),
+      variants: (selectedSizes.length > 0 ? selectedSizes : ["Single", "Double", "Queen", "King"]).map((sz, idx) => ({
+        id: `var-${Date.now()}-${idx + 1}`,
+        productId: productToEdit?.id || `prod-${Date.now()}`,
+        size: sz,
+        colorName: "Warm Ivory",
+        colorHex: "#FAF7F2",
+        price: finalBasePrice,
+        retailPrice: finalRetailPrice,
+        stock: 30,
+        sku: `${finalSlug.slice(0, 4).toUpperCase()}-${sz.slice(0, 2).toUpperCase()}-IVR`,
+      })),
     };
 
     onSave(finalProduct);

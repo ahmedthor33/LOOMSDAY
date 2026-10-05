@@ -796,7 +796,7 @@ function AdminContent() {
                           />
                           <span>{v.colorName}</span>
                           <span>•</span>
-                          <span className="font-semibold text-primary">{formatCurrency(v.price)}</span>
+                          <span className="font-semibold text-primary">{formatCurrency(prod.basePrice || v.price)}</span>
                         </div>
 
                         {/* Inline Stock Counter */}

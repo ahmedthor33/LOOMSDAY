@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useAdminStore, INITIAL_PAYMENT_METHODS } from "@/store/useAdminStore";
 import { AddressConfirmationModal } from "@/components/cart/AddressConfirmationModal";
 import { Order, PaymentMethodConfig } from "@/types";
-import { formatCurrency, calculateInstallments, MONOGRAM_THRESHOLD, FREE_SHIPPING_THRESHOLD } from "@/lib/utils";
+import { formatCurrency, MONOGRAM_THRESHOLD, FREE_SHIPPING_THRESHOLD } from "@/lib/utils";
 import { useToast } from "@/components/ui/Toast";
 
 export default function CartPage() {
@@ -375,10 +375,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Installments text */}
-            <p className="font-body-sm text-xs text-on-surface-variant bg-surface p-3 rounded border border-surface-variant/40">
-              Or 4 interest-free payments of <strong className="text-primary">{calculateInstallments(currentTotal)}</strong> with Klarna or Afterpay.
-            </p>
+
 
             {/* Promo Code Input */}
             <div className="pt-2">

@@ -217,16 +217,34 @@ export const useAdminStore = create<AdminState>()(
 
       // Product Management
       addProduct: (product) => {
+        const normalizedVariants = (product.variants || []).map((v) => ({
+          ...v,
+          price: product.basePrice,
+          retailPrice: product.retailPrice,
+        }));
+        const normalizedProduct = {
+          ...product,
+          variants: normalizedVariants.length > 0 ? normalizedVariants : product.variants,
+        };
         set((state) => ({
-          products: [product, ...state.products],
+          products: [normalizedProduct, ...state.products],
         }));
       },
 
       updateProduct: (id, updates) => {
         set((state) => ({
-          products: state.products.map((p) =>
-            p.id === id ? { ...p, ...updates } : p
-          ),
+          products: state.products.map((p) => {
+            if (p.id !== id) return p;
+            const updated = { ...p, ...updates };
+            if (updates.basePrice !== undefined) {
+              updated.variants = (updated.variants || []).map((v) => ({
+                ...v,
+                price: updated.basePrice,
+                retailPrice: updated.retailPrice,
+              }));
+            }
+            return updated;
+          }),
         }));
       },
 

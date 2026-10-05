@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
       productName: product.name,
       productSlug: product.slug,
       imageUrl: product.images[0]?.url || "",
-      price: primaryVariant.price || product.basePrice,
+      price: product.basePrice,
       size: primaryVariant.size,
       colorName: selectedColor.name,
       colorHex: selectedColor.hex,

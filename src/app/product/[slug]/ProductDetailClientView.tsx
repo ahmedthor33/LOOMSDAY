@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Product } from "@/types";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { useAdminStore } from "@/store/useAdminStore";
-import { formatCurrency, calculateInstallments } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
 import { useToast } from "@/components/ui/Toast";
@@ -133,7 +133,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     name: "Warm Ivory",
     hex: "#FAF7F2",
   });
-  const [selectedSize, setSelectedSize] = useState("Queen");
+  const [selectedSize, setSelectedSize] = useState("Single");
   const [quantity, setQuantity] = useState(1);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
@@ -144,7 +144,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
         setSelectedColor(product.availableColors[0]);
       }
       if (product.availableSizes && product.availableSizes.length > 0) {
-        setSelectedSize(product.availableSizes[1] || product.availableSizes[0]);
+        setSelectedSize(product.availableSizes[0]);
       }
     }
   }, [product]);
@@ -177,7 +177,9 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     );
   }, [product, selectedSize, selectedColor]);
 
-  const currentPrice = activeVariant?.price || product?.basePrice || 0;
+  // The product's actual entered basePrice is authoritative
+  const currentPrice = product?.basePrice || activeVariant?.price || 0;
+  const currentRetailPrice = product?.retailPrice || activeVariant?.retailPrice;
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -377,15 +379,15 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
               <span className="font-headline-md text-headline-md text-primary font-medium">
                 {formatCurrency(currentPrice)}
               </span>
-              {product.retailPrice && product.retailPrice > currentPrice && (
+              {currentRetailPrice && currentRetailPrice > currentPrice && (
                 <>
                   <span className="font-body-lg text-lg text-on-surface-variant line-through opacity-70">
-                    {formatCurrency(product.retailPrice)}
+                    {formatCurrency(currentRetailPrice)}
                   </span>
                   <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-secondary/15 text-secondary uppercase tracking-wider">
                     Save{" "}
                     {Math.round(
-                      ((product.retailPrice - currentPrice) / product.retailPrice) * 100
+                      ((currentRetailPrice - currentPrice) / currentRetailPrice) * 100
                     )}
                     %
                   </span>
@@ -394,23 +396,6 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
               <span className="font-body-sm text-xs text-on-surface-variant">
                 Includes taxes &amp; duties
               </span>
-            </div>
-
-            {/* Installment Banner */}
-            <div className="flex items-center gap-2 font-body-sm text-xs text-on-surface-variant bg-surface-container-low px-3.5 py-2.5 rounded border border-surface-variant/30">
-              <span className="material-symbols-outlined text-[18px] text-secondary">
-                payments
-              </span>
-              <span>
-                Or 4 interest-free installments of{" "}
-                <strong className="text-primary font-medium">
-                  {calculateInstallments(currentPrice)}
-                </strong>{" "}
-                with
-              </span>
-              <span className="font-label-sm uppercase font-semibold text-primary">Klarna</span>
-              <span>•</span>
-              <span className="font-label-sm uppercase font-semibold text-primary">Afterpay</span>
             </div>
           </div>
 
@@ -496,30 +481,19 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
               <div className="grid grid-cols-4 gap-2">
                 {product.availableSizes.map((size) => {
                   const isSelected = selectedSize === size;
-                  const sizeVariant = product.variants?.find(
-                    (v) => v.size?.toLowerCase() === size.toLowerCase()
-                  );
-                  const sizePrice = sizeVariant ? sizeVariant.price : product.basePrice;
 
                   return (
                     <button
                       key={size}
                       type="button"
                       onClick={() => setSelectedSize(size)}
-                      className={`py-3 rounded text-center font-label-md text-xs flex flex-col items-center transition-colors ${
+                      className={`py-3 px-2 rounded text-center font-label-md text-xs flex items-center justify-center transition-colors ${
                         isSelected
                           ? "bg-primary text-on-primary shadow-sm font-medium"
                           : "bg-surface-container hover:bg-surface-variant text-primary"
                       }`}
                     >
-                      <span>{size}</span>
-                      <span
-                        className={`text-[10px] mt-0.5 ${
-                          isSelected ? "text-primary-fixed-dim" : "text-on-surface-variant"
-                        }`}
-                      >
-                        {formatCurrency(sizePrice)}
-                      </span>
+                      <span className="font-medium tracking-wide">{size}</span>
                     </button>
                   );
                 })}
