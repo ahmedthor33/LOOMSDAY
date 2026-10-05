@@ -39,16 +39,30 @@ interface CategoryClientViewProps {
 }
 
 export function CategoryClientView({ category }: CategoryClientViewProps) {
-  // Determine normalized active category from prop or window location pathname
-  const activeSlug = useMemo(() => {
-    let raw = category || "";
-    if (!raw && typeof window !== "undefined") {
+  // Determine normalized active category from browser URL or prop
+  const [activeSlug, setActiveSlug] = useState<string>(() => {
+    if (typeof window !== "undefined") {
       const parts = window.location.pathname.split("/shop/");
       if (parts[1]) {
-        raw = parts[1].split("/")[0].split("?")[0];
+        const clean = parts[1].split("/")[0].split("?")[0].split("#")[0];
+        if (clean && clean.trim().length > 0) {
+          return normalizeCategory(decodeURIComponent(clean).trim());
+        }
       }
     }
-    return normalizeCategory(decodeURIComponent(raw || "bedsheets"));
+    return normalizeCategory(category || "bedsheets");
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const parts = window.location.pathname.split("/shop/");
+      if (parts[1]) {
+        const clean = parts[1].split("/")[0].split("?")[0].split("#")[0];
+        if (clean && clean.trim().length > 0) {
+          setActiveSlug(normalizeCategory(decodeURIComponent(clean).trim()));
+        }
+      }
+    }
   }, [category]);
 
   const { products } = useAdminStore();

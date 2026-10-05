@@ -16,16 +16,30 @@ interface ProductDetailClientViewProps {
 }
 
 export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) {
-  // Resolve target slug from props or URL pathname
-  const targetSlug = useMemo(() => {
-    let raw = slug || "";
-    if (!raw && typeof window !== "undefined") {
+  // Resolve active slug from current browser URL first (so SPA fallback never forces demo slug)
+  const [activeSlug, setActiveSlug] = useState<string>(() => {
+    if (typeof window !== "undefined") {
       const parts = window.location.pathname.split("/product/");
       if (parts[1]) {
-        raw = parts[1].split("/")[0].split("?")[0];
+        const clean = parts[1].split("/")[0].split("?")[0].split("#")[0];
+        if (clean && clean.trim().length > 0) {
+          return decodeURIComponent(clean).trim();
+        }
       }
     }
-    return decodeURIComponent(raw || "").trim();
+    return (slug || "").trim();
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const parts = window.location.pathname.split("/product/");
+      if (parts[1]) {
+        const clean = parts[1].split("/")[0].split("?")[0].split("#")[0];
+        if (clean && clean.trim().length > 0) {
+          setActiveSlug(decodeURIComponent(clean).trim());
+        }
+      }
+    }
   }, [slug]);
 
   const { products } = useAdminStore();
@@ -47,12 +61,12 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
     }
   }, []);
 
-  // Combine products with priority: Zustand -> localStorage -> DEMO_PRODUCTS
+  // Combine user products: Zustand store + localStorage
   const allProducts = useMemo(() => {
     const list: Product[] = [];
     const seenIds = new Set<string>();
 
-    if (Array.isArray(products)) {
+    if (Array.isArray(products) && products.length > 0) {
       for (const p of products) {
         if (p?.id && !seenIds.has(p.id)) {
           seenIds.add(p.id);
@@ -61,7 +75,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
       }
     }
 
-    if (Array.isArray(localProducts)) {
+    if (Array.isArray(localProducts) && localProducts.length > 0) {
       for (const p of localProducts) {
         if (p?.id && !seenIds.has(p.id)) {
           seenIds.add(p.id);
@@ -70,40 +84,45 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
       }
     }
 
-    for (const p of DEMO_PRODUCTS) {
-      if (p?.id && !seenIds.has(p.id)) {
-        seenIds.add(p.id);
-        list.push(p);
-      }
+    // ONLY fallback to demo catalog if the store has ZERO user products
+    if (list.length === 0) {
+      return DEMO_PRODUCTS;
     }
 
     return list;
   }, [products, localProducts]);
 
-  // Robust product lookup by slug, ID, or slugified name
+  // Strict matching by slug, ID, or slugified title (NO substring bleeding!)
   const product = useMemo(() => {
-    if (!targetSlug) return null;
-    const cleanTarget = targetSlug.toLowerCase();
+    if (!activeSlug) return null;
+    const cleanTarget = activeSlug.toLowerCase().trim();
 
-    return (
-      allProducts.find((p) => {
-        const s = (p.slug || "").toLowerCase().trim();
-        const id = (p.id || "").toLowerCase().trim();
-        const nameSlug = (p.name || "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "");
+    // 1. Search in user's products
+    const found = allProducts.find((p) => {
+      const s = (p.slug || "").toLowerCase().trim();
+      const id = (p.id || "").toLowerCase().trim();
+      const nameSlug = (p.name || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
 
-        return (
-          s === cleanTarget ||
-          id === cleanTarget ||
-          nameSlug === cleanTarget ||
-          (cleanTarget && s.includes(cleanTarget)) ||
-          (cleanTarget && cleanTarget.includes(s))
-        );
-      }) || null
-    );
-  }, [allProducts, targetSlug]);
+      return s === cleanTarget || id === cleanTarget || nameSlug === cleanTarget;
+    });
+
+    if (found) return found;
+
+    // 2. Only if user has zero products and demo catalog is loaded, check demo products
+    if (allProducts.length === 0 || allProducts === DEMO_PRODUCTS) {
+      return (
+        DEMO_PRODUCTS.find((p) => {
+          const s = (p.slug || "").toLowerCase().trim();
+          return s === cleanTarget;
+        }) || null
+      );
+    }
+
+    return null;
+  }, [allProducts, activeSlug]);
 
   const { addItem } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();

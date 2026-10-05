@@ -50,11 +50,9 @@ export default function HomePage() {
       }
     }
 
-    for (const p of DEMO_PRODUCTS) {
-      if (p?.id && !seenIds.has(p.id)) {
-        seenIds.add(p.id);
-        list.push(p);
-      }
+    // ONLY fallback to demo catalog if user has ZERO products in store and localStorage
+    if (list.length === 0) {
+      return DEMO_PRODUCTS;
     }
 
     return list;
