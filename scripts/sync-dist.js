@@ -13,8 +13,14 @@ try {
       fs.mkdirSync(distDir, { recursive: true });
     }
 
-    // 2. Copy all .next raw files into dist for Node runtime compatibility
-    fs.cpSync(nextDir, distDir, { recursive: true });
+    // 2. Copy all .next raw files into dist for Node runtime compatibility (excluding heavy build cache)
+    fs.cpSync(nextDir, distDir, {
+      recursive: true,
+      filter: (src) => {
+        const rel = path.relative(nextDir, src);
+        return !rel.startsWith('cache') && !rel.startsWith('dev');
+      }
+    });
 
     // 3. Copy public assets (images, favicon, etc.) directly into dist/
     if (fs.existsSync(publicDir)) {
