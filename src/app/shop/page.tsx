@@ -1,15 +1,74 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { Product } from "@/types";
+import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { formatCurrency } from "@/lib/utils";
 
+const normalizeCategory = (cat?: string): string => {
+  if (!cat) return "";
+  const c = cat.toLowerCase().trim();
+  if (c.includes("bed") || c.includes("sheet")) return "bedsheets";
+  if (c.includes("pillow") || c.includes("sham")) return "pillows";
+  if (c.includes("duvet") || c.includes("insert") || c.includes("cover")) return "duvets";
+  return c;
+};
+
 export default function ShopPage() {
   const { products } = useAdminStore();
-  const allProducts = products || [];
+  const [localProducts, setLocalProducts] = useState<Product[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      const raw = localStorage.getItem("loomsday-admin-storage-v5");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0) {
+          setLocalProducts(parsed.state.products);
+        }
+      }
+    } catch {
+      // Storage unavailable or parsing error
+    }
+  }, []);
+
+  const allProducts = useMemo(() => {
+    const list: Product[] = [];
+    const seenIds = new Set<string>();
+
+    if (Array.isArray(products)) {
+      for (const p of products) {
+        if (p?.id && !seenIds.has(p.id)) {
+          seenIds.add(p.id);
+          list.push(p);
+        }
+      }
+    }
+
+    if (Array.isArray(localProducts)) {
+      for (const p of localProducts) {
+        if (p?.id && !seenIds.has(p.id)) {
+          seenIds.add(p.id);
+          list.push(p);
+        }
+      }
+    }
+
+    for (const p of DEMO_PRODUCTS) {
+      if (p?.id && !seenIds.has(p.id)) {
+        seenIds.add(p.id);
+        list.push(p);
+      }
+    }
+
+    return list;
+  }, [products, localProducts]);
 
   const [filters, setFilters] = useState<FilterState>({
     category: "all",
@@ -29,8 +88,10 @@ export default function ShopPage() {
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       // Category filter
-      if (filters.category !== "all" && product.category !== filters.category) {
-        return false;
+      if (filters.category !== "all") {
+        const pCat = normalizeCategory(product.category);
+        const fCat = normalizeCategory(filters.category);
+        if (pCat !== fCat) return false;
       }
       // Size filter
       if (
@@ -65,7 +126,7 @@ export default function ShopPage() {
       if (sortOption === "best_selling") return (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0);
       return 0; // featured default
     });
-  }, [filters, sortOption]);
+  }, [allProducts, filters, sortOption]);
 
   const activeChips = [];
   if (filters.category !== "all") activeChips.push({ label: filters.category, key: "category" });
@@ -89,7 +150,7 @@ export default function ShopPage() {
     if (key === "size") setFilters((f) => ({ ...f, size: "" }));
     if (key === "color") setFilters((f) => ({ ...f, color: "" }));
     if (key === "material") setFilters((f) => ({ ...f, material: "" }));
-    if (key === "price") setFilters((f) => ({ ...f, maxPrice: 400 }));
+    if (key === "price") setFilters((f) => ({ ...f, maxPrice: 100000 }));
   };
 
   return (

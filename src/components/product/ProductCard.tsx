@@ -65,7 +65,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="product-card group flex flex-col bg-surface rounded-none overflow-hidden transition-all duration-300 hover:shadow-lg border border-surface-variant/30">
       {/* Visual Image Stage */}
       <div className="relative aspect-[4/5] bg-surface-container-high overflow-hidden">
-        <Link href={`/product/${product.slug}`} className="block w-full h-full">
+        <Link href={`/product/${encodeURIComponent(product.slug || product.id)}`} className="block w-full h-full">
           <Image
             src={product.images[0]?.url || ""}
             alt={product.images[0]?.altText || product.name}
@@ -144,7 +144,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           </div>
 
-          <Link href={`/product/${product.slug}`} className="block">
+          <Link href={`/product/${encodeURIComponent(product.slug || product.id)}`} className="block">
             <h3 className="font-headline-sm text-[18px] leading-snug text-primary mt-1 group-hover:text-secondary transition-colors">
               {product.name}
             </h3>

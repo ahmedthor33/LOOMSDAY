@@ -58,28 +58,53 @@ try {
         }
       }
 
-      // Pre-create category subroutes with index.html for direct 200 responses
+      // Sync dedicated category pages (bedsheets, pillows, duvets)
       const shopHtml = path.join(distDir, 'shop.html');
-      if (fs.existsSync(shopHtml)) {
-        const categories = ['bedsheets', 'pillows', 'duvets'];
-        for (const cat of categories) {
-          const catFolder = path.join(distDir, 'shop', cat);
-          fs.mkdirSync(catFolder, { recursive: true });
+      const categories = ['bedsheets', 'pillows', 'duvets'];
+      for (const cat of categories) {
+        const catSrc = path.join(appServerDir, 'shop', `${cat}.html`);
+        const catFolder = path.join(distDir, 'shop', cat);
+        fs.mkdirSync(catFolder, { recursive: true });
+
+        if (fs.existsSync(catSrc)) {
+          fs.copyFileSync(catSrc, path.join(catFolder, 'index.html'));
+          fs.copyFileSync(catSrc, path.join(distDir, 'shop', `${cat}.html`));
+        } else if (fs.existsSync(shopHtml)) {
           fs.copyFileSync(shopHtml, path.join(catFolder, 'index.html'));
         }
       }
 
-      // Also ensure product/ has index.html
+      // Sync product detail pages & create generic product SPA fallback
       const productFolder = path.join(distDir, 'product');
-      if (!fs.existsSync(productFolder)) {
-        fs.mkdirSync(productFolder, { recursive: true });
+      fs.mkdirSync(productFolder, { recursive: true });
+
+      const productAppDir = path.join(appServerDir, 'product');
+      let sampleProductHtml = null;
+      if (fs.existsSync(productAppDir)) {
+        const pFiles = fs.readdirSync(productAppDir);
+        for (const pf of pFiles) {
+          if (pf.endsWith('.html')) {
+            const pSrc = path.join(productAppDir, pf);
+            const pSlug = pf.replace(/\.html$/, '');
+            sampleProductHtml = pSrc;
+
+            const specificFolder = path.join(distDir, 'product', pSlug);
+            fs.mkdirSync(specificFolder, { recursive: true });
+            fs.copyFileSync(pSrc, path.join(specificFolder, 'index.html'));
+            fs.copyFileSync(pSrc, path.join(distDir, 'product', pf));
+          }
+        }
       }
-      if (fs.existsSync(shopHtml)) {
+
+      // Ensure dist/product/index.html uses a real Product Detail HTML template for SPA fallback
+      if (sampleProductHtml && fs.existsSync(sampleProductHtml)) {
+        fs.copyFileSync(sampleProductHtml, path.join(productFolder, 'index.html'));
+      } else if (fs.existsSync(shopHtml)) {
         fs.copyFileSync(shopHtml, path.join(productFolder, 'index.html'));
       }
     }
 
-    // 6. Generate bulletproof production .htaccess without infinite redirect loops
+    // 6. Generate bulletproof production .htaccess for Apache on Hostinger
     const htaccessContent = `<IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -101,14 +126,22 @@ try {
   RewriteCond %{REQUEST_FILENAME}/index.html -f
   RewriteRule ^(.+)$ $1/index.html [L]
 
-  # 5. Fallback for all other routes to index.html (SPA Fallback)
+  # 5. Route dynamic product detail requests (/product/*) to /product/index.html
+  RewriteCond %{REQUEST_URI} ^/product/ [NC]
+  RewriteRule ^product/.*$ /product/index.html [L]
+
+  # 6. Route dynamic shop category requests (/shop/*) to /shop/index.html if not already matched
+  RewriteCond %{REQUEST_URI} ^/shop/ [NC]
+  RewriteRule ^shop/.*$ /shop/index.html [L]
+
+  # 7. Fallback for all other routes to index.html (SPA Fallback)
   RewriteCond %{REQUEST_URI} !^/index\\.html$
   RewriteRule . /index.html [L]
 </IfModule>
 `;
     fs.writeFileSync(path.join(distDir, '.htaccess'), htaccessContent, 'utf8');
 
-    console.log('✓ Successfully prepared complete dist directory with static subroutes, root index.html, and bulletproof .htaccess.');
+    console.log('✓ Successfully prepared complete dist directory with static category pages, product SPA fallback, and optimized .htaccess.');
   }
 } catch (err) {
   console.warn('Note on dist sync:', err.message);

@@ -611,7 +611,7 @@ function AdminContent() {
                               </div>
                               <div>
                                 <Link
-                                  href={`/product/${prod.slug}`}
+                                  href={`/product/${encodeURIComponent(prod.slug || prod.id)}`}
                                   target="_blank"
                                   className="font-medium text-primary hover:text-secondary hover:underline transition-colors block"
                                 >

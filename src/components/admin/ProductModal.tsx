@@ -165,7 +165,11 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     e.preventDefault();
     if (!name.trim()) return;
 
-    const finalSlug = slug.trim() || name.toLowerCase().replace(/\s+/g, "-");
+    const cleanSlug = (slug.trim() || name.trim())
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+    const finalSlug = cleanSlug || `prod-${Date.now()}`;
     const categoryLabels: Record<string, string> = {
       bedsheets: "Bedsheets",
       pillows: "Pillows & Covers",
@@ -301,7 +305,10 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
                 type="text"
                 required
                 value={slug}
-                onChange={(e) => setSlug(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                  setSlug(val);
+                }}
                 placeholder="e.g. french-flax-linen-sheet-set"
                 className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-mono focus:outline-none focus:border-secondary transition-colors"
               />

@@ -1,18 +1,67 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Product } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
+import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useAdminStore } from "@/store/useAdminStore";
 
 export default function HomePage() {
   const { cms, products } = useAdminStore();
+  const [localProducts, setLocalProducts] = useState<Product[]>([]);
   const [activeFilter, setActiveFilter] = useState<"all" | "linen" | "cotton" | "down">("all");
 
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("loomsday-admin-storage-v5");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0) {
+          setLocalProducts(parsed.state.products);
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const allProducts = useMemo(() => {
+    const list: Product[] = [];
+    const seenIds = new Set<string>();
+
+    if (Array.isArray(products)) {
+      for (const p of products) {
+        if (p?.id && !seenIds.has(p.id)) {
+          seenIds.add(p.id);
+          list.push(p);
+        }
+      }
+    }
+
+    if (Array.isArray(localProducts)) {
+      for (const p of localProducts) {
+        if (p?.id && !seenIds.has(p.id)) {
+          seenIds.add(p.id);
+          list.push(p);
+        }
+      }
+    }
+
+    for (const p of DEMO_PRODUCTS) {
+      if (p?.id && !seenIds.has(p.id)) {
+        seenIds.add(p.id);
+        list.push(p);
+      }
+    }
+
+    return list;
+  }, [products, localProducts]);
+
   const filterProducts = () => {
-    const list = products || [];
+    const list = allProducts;
     if (activeFilter === "linen") {
       return list.filter((p) => p.material.toLowerCase().includes("linen") || p.material.toLowerCase().includes("flax"));
     }
