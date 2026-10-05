@@ -335,7 +335,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
                 <input
                   type="number"
                   min="0"
-                  step="100"
+                  step="any"
                   value={retailPrice}
                   onChange={(e) =>
                     setRetailPrice(e.target.value === "" ? "" : Number(e.target.value))
@@ -357,8 +357,8 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
                 </span>
                 <input
                   type="number"
-                  min="1"
-                  step="100"
+                  min="0"
+                  step="any"
                   required
                   value={basePrice}
                   onChange={(e) =>
