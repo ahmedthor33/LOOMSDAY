@@ -10,6 +10,7 @@ import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
 import { useToast } from "@/components/ui/Toast";
+import { idbGet } from "@/lib/robust-storage";
 
 interface ProductDetailClientViewProps {
   slug?: string;
@@ -48,17 +49,40 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const raw = localStorage.getItem("loomsday-admin-storage-v5");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0) {
-          setLocalProducts(parsed.state.products);
+    let isCancelled = false;
+
+    const syncProducts = async () => {
+      // 1. Fast sync from localStorage
+      try {
+        const raw = localStorage.getItem("loomsday-admin-storage-v5");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
         }
-      }
-    } catch {
-      // Storage unavailable or parsing error
-    }
+      } catch {}
+
+      // 2. Authoritative sync from IndexedDB
+      try {
+        const idbRaw = await idbGet("loomsday-admin-storage-v5");
+        if (idbRaw) {
+          const parsed = JSON.parse(idbRaw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
+        }
+      } catch {}
+    };
+
+    syncProducts();
+    window.addEventListener("storage", syncProducts);
+    window.addEventListener("loomsday-products-updated", syncProducts);
+    return () => {
+      isCancelled = true;
+      window.removeEventListener("storage", syncProducts);
+      window.removeEventListener("loomsday-products-updated", syncProducts);
+    };
   }, []);
 
   // Authoritative user products: Zustand store first, then localStorage

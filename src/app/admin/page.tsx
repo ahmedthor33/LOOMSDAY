@@ -112,10 +112,10 @@ function AdminContent() {
   const pendingOrdersCount = orders.filter((o) => o.status === "Processing").length;
   const inTransitCount = orders.filter((o) => o.status === "In Transit").length;
   const lowStockVariantsCount = products.reduce((count, p) => {
-    return count + p.variants.filter((v) => v.stock < 15).length;
+    return count + (p.variants || []).filter((v) => v.stock < 15).length;
   }, 0);
   const totalUnitsInStock = products.reduce((sum, p) => {
-    return sum + p.variants.reduce((vSum, v) => vSum + v.stock, 0);
+    return sum + (p.variants || []).reduce((vSum, v) => vSum + v.stock, 0);
   }, 0);
 
   // Filtered Products
@@ -729,7 +729,7 @@ function AdminContent() {
                       </tr>
                     ) : (
                       filteredProducts.map((prod) => {
-                      const totalStock = prod.variants.reduce((s, v) => s + v.stock, 0);
+                      const totalStock = (prod.variants || []).reduce((s, v) => s + v.stock, 0);
                       return (
                         <tr key={prod.id} className="hover:bg-surface-container-low transition-colors">
                           <td className="py-3 px-4">
@@ -909,7 +909,7 @@ function AdminContent() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                    {prod.variants.map((v) => (
+                    {(prod.variants || []).map((v) => (
                       <div
                         key={v.id}
                         className={`p-3 rounded-lg border text-xs space-y-2 ${

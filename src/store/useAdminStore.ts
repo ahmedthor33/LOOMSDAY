@@ -3,12 +3,29 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
+import {
+  idbGet,
+  idbSet,
+  idbDelete,
+  cleanupStaleAdminStorage,
+  createLightweightSnapshot,
+} from "@/lib/robust-storage";
+
+export { cleanupStaleAdminStorage };
 
 export const SUPER_ADMIN_EMAIL = "ahmedthor33@gmail.com";
 
 export function isSuperAdminEmail(email?: string | null): boolean {
   if (!email) return false;
   return email.trim().toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
+}
+
+function notifyStoreUpdated() {
+  if (typeof window !== "undefined") {
+    try {
+      window.dispatchEvent(new Event("loomsday-products-updated"));
+    } catch {}
+  }
 }
 
 interface AdminState {
@@ -218,30 +235,94 @@ export const useAdminStore = create<AdminState>()(
 
       // Product Management
       addProduct: (product) => {
-        const normalizedVariants = (product.variants || []).map((v) => ({
-          ...v,
-          price: product.basePrice,
-          retailPrice: product.retailPrice,
-        }));
-        const normalizedProduct: Product = {
-          ...product,
-          variants: normalizedVariants.length > 0 ? normalizedVariants : (product.variants || []),
-        };
         set((state) => {
           const currentList = Array.isArray(state.products) ? state.products : [];
-          // If a product with the same ID or same slug already exists, update it in place to prevent duplicate rows
-          const existingIndex = currentList.findIndex(
-            (p) => p.id === product.id || (p.slug && p.slug === product.slug)
-          );
-          if (existingIndex >= 0) {
-            const updated = [...currentList];
-            updated[existingIndex] = normalizedProduct;
-            return { products: updated };
+
+          // 1. Ensure unique ID
+          let uniqueId = product.id && !currentList.some((p) => p.id === product.id)
+            ? product.id
+            : `prod-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+
+          // 2. Ensure unique Slug (never overwrite another product with same name or slug!)
+          let baseSlug = (product.slug || product.name || `item-${Date.now()}`)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)+/g, "");
+          if (!baseSlug) baseSlug = `prod-${Date.now()}`;
+
+          let uniqueSlug = baseSlug;
+          let counter = 2;
+          while (currentList.some((p) => p.slug === uniqueSlug)) {
+            uniqueSlug = `${baseSlug}-${counter}`;
+            counter++;
           }
+
+          // 3. Normalize variants with uniqueId and safe stock/pricing
+          const defaultSizes = product.availableSizes && product.availableSizes.length > 0
+            ? product.availableSizes
+            : ["Single", "Double", "Queen", "King"];
+
+          const sourceVariants = product.variants && product.variants.length > 0
+            ? product.variants
+            : defaultSizes.map((sz, idx) => ({
+                id: `var-${Date.now()}-${idx + 1}`,
+                productId: uniqueId,
+                size: sz,
+                colorName: "Warm Ivory",
+                colorHex: "#FAF7F2",
+                price: Number(product.basePrice) || 0,
+                retailPrice: product.retailPrice ? Number(product.retailPrice) : undefined,
+                stock: 30,
+                sku: `${uniqueSlug.slice(0, 4).toUpperCase()}-${sz.slice(0, 2).toUpperCase()}-IVR`,
+              }));
+
+          const normalizedVariants = sourceVariants.map((v, idx) => ({
+            ...v,
+            id: v.id && !currentList.some((p) => (p.variants || []).some((pv) => pv.id === v.id))
+              ? v.id
+              : `var-${Date.now()}-${idx + 1}-${Math.random().toString(36).slice(2, 6)}`,
+            productId: uniqueId,
+            price: Number(product.basePrice) || v.price || 0,
+            retailPrice: product.retailPrice !== undefined ? Number(product.retailPrice) : v.retailPrice,
+            stock: typeof v.stock === "number" ? Math.max(0, v.stock) : 30,
+          }));
+
+          // 4. Ensure at least one image with valid URL
+          const sourceImages = product.images && product.images.length > 0
+            ? product.images
+            : [{
+                id: `img-${Date.now()}-1`,
+                productId: uniqueId,
+                url: "/images/hero-bedding.jpg",
+                altText: product.name,
+                sortOrder: 0,
+                isPrimary: true,
+              }];
+
+          const normalizedImages = sourceImages.map((img, idx) => ({
+            ...img,
+            id: img.id || `img-${Date.now()}-${idx + 1}`,
+            productId: uniqueId,
+            url: img.url || "/images/hero-bedding.jpg",
+          }));
+
+          const normalizedProduct: Product = {
+            ...product,
+            id: uniqueId,
+            slug: uniqueSlug,
+            basePrice: Number(product.basePrice) || 0,
+            retailPrice: product.retailPrice !== undefined && Number(product.retailPrice) > 0 ? Number(product.retailPrice) : undefined,
+            variants: normalizedVariants,
+            images: normalizedImages,
+            availableSizes: defaultSizes,
+          };
+
           return {
             products: [normalizedProduct, ...currentList],
           };
         });
+
+        notifyStoreUpdated();
       },
 
       updateProduct: (id, updates) => {
@@ -262,12 +343,14 @@ export const useAdminStore = create<AdminState>()(
             }),
           };
         });
+        notifyStoreUpdated();
       },
 
       deleteProduct: (id) => {
         set((state) => ({
           products: (Array.isArray(state.products) ? state.products : []).filter((p) => p.id !== id),
         }));
+        notifyStoreUpdated();
       },
 
       clearDemoProducts: () => {
@@ -276,6 +359,7 @@ export const useAdminStore = create<AdminState>()(
             (p) => p.id !== "prod-1" && p.slug !== "french-flax-linen-sheet-set"
           ),
         }));
+        notifyStoreUpdated();
       },
 
       updateVariantStock: (productId, variantId, stock) => {
@@ -290,6 +374,7 @@ export const useAdminStore = create<AdminState>()(
             };
           }),
         }));
+        notifyStoreUpdated();
       },
 
       restockProduct: (productId, amount) => {
@@ -305,6 +390,7 @@ export const useAdminStore = create<AdminState>()(
             };
           }),
         }));
+        notifyStoreUpdated();
       },
 
       clearAllTestData: () => {
@@ -313,12 +399,14 @@ export const useAdminStore = create<AdminState>()(
           orders: [],
           transactions: [],
         });
+        notifyStoreUpdated();
       },
 
       loadDemoCatalog: () => {
         set({
           products: DEMO_PRODUCTS,
         });
+        notifyStoreUpdated();
       },
 
       // Orders
@@ -461,55 +549,81 @@ export const useAdminStore = create<AdminState>()(
           transactions: [],
           paymentMethods: INITIAL_PAYMENT_METHODS,
         });
+        notifyStoreUpdated();
       },
     }),
     {
       name: "loomsday-admin-storage-v5",
       storage: createJSONStorage(() => ({
-        getItem: (key) => {
+        getItem: async (key): Promise<string | null> => {
           if (typeof window === "undefined") return null;
+          cleanupStaleAdminStorage();
+
+          // 1. Try reading from high-capacity IndexedDB
           try {
-            return localStorage.getItem(key);
+            const idbVal = await idbGet(key);
+            if (idbVal && typeof idbVal === "string" && idbVal.length > 10) {
+              return idbVal;
+            }
           } catch (e) {
-            console.error("Storage getItem failed:", e);
-            return null;
+            console.warn("[LOOMSDAY Store] IndexedDB getItem failed:", e);
           }
+
+          // 2. Fall back to localStorage
+          try {
+            const localVal = localStorage.getItem(key);
+            if (localVal) {
+              // Background sync to IndexedDB for next load
+              idbSet(key, localVal).catch(() => {});
+              return localVal;
+            }
+          } catch (e) {
+            console.error("[LOOMSDAY Store] localStorage getItem failed:", e);
+          }
+
+          return null;
         },
-        setItem: (key, value) => {
+
+        setItem: async (key, value): Promise<void> => {
           if (typeof window === "undefined") return;
+          cleanupStaleAdminStorage();
+
+          // 1. Always store full fidelity state in IndexedDB (no 5MB limit!)
+          try {
+            await idbSet(key, value);
+          } catch (idbErr) {
+            console.warn("[LOOMSDAY Store] IndexedDB write failed:", idbErr);
+          }
+
+          // 2. Sync to localStorage for fast synchronous bootstrap
           try {
             localStorage.setItem(key, value);
           } catch (e) {
-            console.warn("Storage quota exceeded or write failed; attempting payload optimization:", e);
+            console.warn("[LOOMSDAY Store] LocalStorage quota reached; caching optimized snapshot in localStorage (full data safely stored in IndexedDB):", e);
             try {
-              const parsed = JSON.parse(value);
-              if (parsed?.state?.products && Array.isArray(parsed.state.products)) {
-                // If quota exceeded, downscale any base64 image strings to standard fallback to preserve core product data
-                parsed.state.products = parsed.state.products.map((p: any) => ({
-                  ...p,
-                  images: (p.images || []).map((img: any) => ({
-                    ...img,
-                    url: typeof img.url === "string" && img.url.length > 50000
-                      ? "/images/hero-bedding.jpg"
-                      : img.url,
-                  })),
-                }));
-                localStorage.setItem(key, JSON.stringify(parsed));
-              }
+              const lightweight = createLightweightSnapshot(value);
+              localStorage.setItem(key, lightweight);
             } catch (err2) {
-              console.error("Storage recovery failed:", err2);
+              console.warn("[LOOMSDAY Store] LocalStorage recovery failed, but data is safe in IndexedDB:", err2);
             }
           }
+
+          // 3. Notify all open views and listeners
+          notifyStoreUpdated();
         },
-        removeItem: (key) => {
+
+        removeItem: async (key): Promise<void> => {
           if (typeof window === "undefined") return;
           try {
+            await idbDelete(key);
+          } catch {}
+          try {
             localStorage.removeItem(key);
-          } catch (e) {
-            console.error("Storage removeItem failed:", e);
-          }
+          } catch {}
+          notifyStoreUpdated();
         },
       })),
     }
   )
 );
+

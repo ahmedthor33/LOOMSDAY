@@ -31,10 +31,15 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessingImage, setIsProcessingImage] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
   const [showUrlFallback, setShowUrlFallback] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
+    setFormError(null);
+    setImageError(null);
+    setIsProcessingImage(false);
+
     if (productToEdit) {
       setName(productToEdit.name);
       setSlug(productToEdit.slug);
@@ -67,7 +72,6 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       setIsBestSeller(false);
       setIsNewArrival(true);
     }
-    setImageError(null);
   }, [productToEdit, isOpen]);
 
   const toggleSize = (sz: string) => {
@@ -84,6 +88,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
 
   const handleNameChange = (val: string) => {
     setName(val);
+    if (formError) setFormError(null);
     if (!productToEdit) {
       setSlug(
         val
@@ -94,7 +99,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     }
   };
 
-  // Image compressor helper: creates ultra-compact 800px / 72% quality JPEG (<50KB) to ensure 100% reliable localStorage persistence
+  // Image compressor helper: creates ultra-compact 640px / 70% quality JPEG (<35KB) with 4s failsafe
   const processImageFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
       setImageError("Please choose a valid image file (PNG, JPG, WEBP, AVIF).");
@@ -102,62 +107,78 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     }
 
     setImageError(null);
+    setFormError(null);
     setIsProcessingImage(true);
+
+    // 4-second safety timeout so form is NEVER stuck if image decoding stalls
+    const timeoutId = setTimeout(() => {
+      setIsProcessingImage(false);
+      setImageError("Image processing timed out. Reverted to previous photo.");
+    }, 4000);
 
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
       const img = new window.Image();
       img.onload = () => {
-        const maxDimension = 800;
-        let { width, height } = img;
-        if (width > maxDimension || height > maxDimension) {
-          if (width > height) {
-            height = Math.round((height * maxDimension) / width);
-            width = maxDimension;
-          } else {
-            width = Math.round((width * maxDimension) / height);
-            height = maxDimension;
-          }
-        }
-
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          setImageUrl("/images/hero-bedding.jpg");
-          setIsProcessingImage(false);
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, width, height);
+        clearTimeout(timeoutId);
         try {
-          let optimized = canvas.toDataURL("image/jpeg", 0.72);
-          // If still large, downsample slightly to guarantee <70KB
-          if (optimized.length > 80000) {
+          const maxDimension = 640;
+          let { width, height } = img;
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            setImageUrl(dataUrl.length < 50000 ? dataUrl : "/images/hero-bedding.jpg");
+            return;
+          }
+
+          // Fill white background to avoid black background on transparent PNGs
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          let optimized = canvas.toDataURL("image/jpeg", 0.70);
+
+          // If still large, downscale slightly to guarantee <50KB
+          if (optimized.length > 50000) {
             const smallCanvas = document.createElement("canvas");
-            smallCanvas.width = Math.round(width * 0.75);
-            smallCanvas.height = Math.round(height * 0.75);
+            smallCanvas.width = Math.round(width * 0.7);
+            smallCanvas.height = Math.round(height * 0.7);
             const sCtx = smallCanvas.getContext("2d");
             if (sCtx) {
+              sCtx.fillStyle = "#ffffff";
+              sCtx.fillRect(0, 0, smallCanvas.width, smallCanvas.height);
               sCtx.drawImage(canvas, 0, 0, smallCanvas.width, smallCanvas.height);
-              optimized = smallCanvas.toDataURL("image/jpeg", 0.65);
+              optimized = smallCanvas.toDataURL("image/jpeg", 0.60);
             }
           }
           setImageUrl(optimized);
         } catch {
           setImageUrl("/images/hero-bedding.jpg");
+        } finally {
+          setIsProcessingImage(false);
         }
-        setIsProcessingImage(false);
       };
       img.onerror = () => {
-        setImageError("Failed to decode image file.");
+        clearTimeout(timeoutId);
+        setImageError("Failed to decode image file. Please use a standard JPG or PNG.");
         setIsProcessingImage(false);
       };
       img.src = dataUrl;
     };
     reader.onerror = () => {
+      clearTimeout(timeoutId);
       setImageError("Failed to read image file.");
       setIsProcessingImage(false);
     };
@@ -188,6 +209,8 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       processImageFile(e.target.files[0]);
+      // Reset input value so re-uploading same file triggers change
+      e.target.value = "";
     }
   };
 
@@ -195,13 +218,28 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
+    setImageError(null);
+
     if (!name.trim()) {
-      setImageError("Product title is required.");
+      setFormError("Product Title is required. Please provide a title.");
       return;
     }
     if (isProcessingImage) {
+      setFormError("Product photography is currently optimizing. Please wait a moment.");
       return;
     }
+
+    const cleanBasePriceStr = typeof basePrice === "number" ? String(basePrice) : (basePrice || "");
+    const finalBasePrice = Number(String(cleanBasePriceStr).replace(/[^0-9.]/g, "")) || 0;
+    if (finalBasePrice <= 0) {
+      setFormError("Please enter a valid Actual Selling Price in PKR greater than Rs. 0 (e.g. 28500).");
+      return;
+    }
+
+    const cleanRetailPriceStr = typeof retailPrice === "number" ? String(retailPrice) : (retailPrice || "");
+    const parsedRetail = Number(String(cleanRetailPriceStr).replace(/[^0-9.]/g, "")) || 0;
+    const finalRetailPrice = parsedRetail > 0 ? parsedRetail : undefined;
 
     const cleanSlug = (slug.trim() || name.trim())
       .toLowerCase()
@@ -214,16 +252,12 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       duvets: "Duvets & Inserts",
     };
 
-    const finalBasePrice = Number(basePrice) || 0;
-    const finalRetailPrice =
-      retailPrice !== "" && Number(retailPrice) > 0 ? Number(retailPrice) : undefined;
-
     const finalProduct: Product = {
-      id: productToEdit?.id || `prod-${Date.now()}`,
+      id: productToEdit?.id || `prod-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name: name.trim(),
       slug: finalSlug,
-      tagline: tagline.trim(),
-      description: description.trim(),
+      tagline: tagline.trim() || "Stone-Washed Normandy Flax • Impossibly Soft",
+      description: description.trim() || "Woven from slow-harvested 100% certified organic European flax. Stone-washed for immediate softness and effortless drape.",
       category,
       categoryLabel: categoryLabels[category] || "Bedsheets",
       basePrice: finalBasePrice,
@@ -263,8 +297,13 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       })),
     };
 
-    onSave(finalProduct);
-    onClose();
+    try {
+      onSave(finalProduct);
+      onClose();
+    } catch (err: any) {
+      console.error("onSave failed:", err);
+      setFormError(err?.message || "Failed to save product. Please try again.");
+    }
   };
 
   const numRetail = Number(retailPrice) || 0;
@@ -295,6 +334,24 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
             <span className="material-symbols-outlined text-lg">close</span>
           </button>
         </div>
+
+        {/* Prominent Alert Banner for Validation / Save Issues */}
+        {formError && (
+          <div className="p-3.5 rounded-lg bg-error/10 border border-error/30 text-error text-xs flex items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-lg shrink-0">error</span>
+              <span className="font-medium">{formError}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setFormError(null)}
+              className="text-error hover:opacity-70 p-1"
+              aria-label="Dismiss error"
+            >
+              <span className="material-symbols-outlined text-sm">close</span>
+            </button>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Row 1: Title & Slug */}

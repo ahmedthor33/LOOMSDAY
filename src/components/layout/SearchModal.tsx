@@ -3,9 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { PRODUCTS } from "@/lib/products-data";
+import { Product } from "@/types";
+import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
+import { idbGet } from "@/lib/robust-storage";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -16,7 +18,43 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { products: storeProducts } = useAdminStore();
-  const allProducts = storeProducts && storeProducts.length > 0 ? storeProducts : PRODUCTS;
+  const [localProducts, setLocalProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    let isCancelled = false;
+    const sync = async () => {
+      try {
+        const raw = localStorage.getItem("loomsday-admin-storage-v5");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
+        }
+      } catch {}
+
+      try {
+        const idbRaw = await idbGet("loomsday-admin-storage-v5");
+        if (idbRaw) {
+          const parsed = JSON.parse(idbRaw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
+        }
+      } catch {}
+    };
+
+    if (isOpen) {
+      sync();
+    }
+    return () => {
+      isCancelled = true;
+    };
+  }, [isOpen]);
+
+  const allProducts = (storeProducts && storeProducts.length > 0)
+    ? storeProducts
+    : (localProducts.length > 0 ? localProducts : DEMO_PRODUCTS);
 
   useEffect(() => {
     if (isOpen) {

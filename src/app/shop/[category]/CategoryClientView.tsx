@@ -3,9 +3,11 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
+import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
+import { idbGet } from "@/lib/robust-storage";
 
 const CATEGORY_META: Record<string, { title: string; subtitle: string; description: string }> = {
   bedsheets: {
@@ -71,23 +73,46 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const raw = localStorage.getItem("loomsday-admin-storage-v5");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0) {
-          setLocalProducts(parsed.state.products);
+    let isCancelled = false;
+
+    const syncProducts = async () => {
+      // 1. Fast sync from localStorage
+      try {
+        const raw = localStorage.getItem("loomsday-admin-storage-v5");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
         }
-      }
-    } catch {
-      // Storage unavailable or parsing error
-    }
+      } catch {}
+
+      // 2. Authoritative sync from IndexedDB
+      try {
+        const idbRaw = await idbGet("loomsday-admin-storage-v5");
+        if (idbRaw) {
+          const parsed = JSON.parse(idbRaw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
+        }
+      } catch {}
+    };
+
+    syncProducts();
+    window.addEventListener("storage", syncProducts);
+    window.addEventListener("loomsday-products-updated", syncProducts);
+    return () => {
+      isCancelled = true;
+      window.removeEventListener("storage", syncProducts);
+      window.removeEventListener("loomsday-products-updated", syncProducts);
+    };
   }, []);
 
   const allProducts = useMemo(() => {
     if (products && products.length > 0) return products;
     if (localProducts.length > 0) return localProducts;
-    return [];
+    return DEMO_PRODUCTS;
   }, [products, localProducts]);
 
   const meta = CATEGORY_META[activeSlug] || {

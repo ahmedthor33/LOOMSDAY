@@ -8,6 +8,7 @@ import { useAdminStore } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { formatCurrency } from "@/lib/utils";
+import { idbGet } from "@/lib/robust-storage";
 
 const normalizeCategory = (cat?: string): string => {
   if (!cat) return "";
@@ -25,17 +26,40 @@ export default function ShopPage() {
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const raw = localStorage.getItem("loomsday-admin-storage-v5");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0) {
-          setLocalProducts(parsed.state.products);
+    let isCancelled = false;
+
+    const syncProducts = async () => {
+      // 1. Fast sync from localStorage
+      try {
+        const raw = localStorage.getItem("loomsday-admin-storage-v5");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
         }
-      }
-    } catch {
-      // Storage unavailable or parsing error
-    }
+      } catch {}
+
+      // 2. Authoritative sync from IndexedDB
+      try {
+        const idbRaw = await idbGet("loomsday-admin-storage-v5");
+        if (idbRaw) {
+          const parsed = JSON.parse(idbRaw);
+          if (Array.isArray(parsed?.state?.products) && parsed.state.products.length > 0 && !isCancelled) {
+            setLocalProducts(parsed.state.products);
+          }
+        }
+      } catch {}
+    };
+
+    syncProducts();
+    window.addEventListener("storage", syncProducts);
+    window.addEventListener("loomsday-products-updated", syncProducts);
+    return () => {
+      isCancelled = true;
+      window.removeEventListener("storage", syncProducts);
+      window.removeEventListener("loomsday-products-updated", syncProducts);
+    };
   }, []);
 
   const allProducts = useMemo(() => {
