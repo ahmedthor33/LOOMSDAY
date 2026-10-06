@@ -83,12 +83,13 @@ interface AdminState {
   shippingSettings: ShippingSettings;
   updateShippingSettings: (settings: Partial<ShippingSettings>) => void;
 
-  // Storefront CMS
+  // Storefront CMS & Marketing
   cms: StorefrontCms;
   updateHero: (hero: Partial<StorefrontCms["hero"]>) => void;
   updateBedsheetHero: (bedsheetHero: Partial<CategoryHeroBanner>) => void;
   updateAnnouncement: (announcement: Partial<StorefrontCms["announcement"]>) => void;
   updateProvenance: (provenance: Partial<StorefrontCms["provenance"]>) => void;
+  updateMarketing: (marketing: Partial<NonNullable<StorefrontCms["marketing"]>>) => void;
 
   // Payments & Financials
   paymentMethods: PaymentMethodConfig[];
@@ -204,6 +205,11 @@ const INITIAL_CMS: StorefrontCms = {
     paragraph2:
       "We weave with slow tension on heritage looms, wash with natural volcanic pumice, and tailor with double-needle French felled seams.",
     foundedYear: "1884",
+  },
+  marketing: {
+    metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "",
+    metaPixelEnabled: true,
+    testEventCode: "",
   },
 };
 
@@ -628,6 +634,23 @@ export const useAdminStore = create<AdminState>()(
             provenance: { ...state.cms.provenance, ...provenance },
           },
         }));
+      },
+
+      updateMarketing: (marketing) => {
+        set((state) => ({
+          cms: {
+            ...state.cms,
+            marketing: {
+              ...(state.cms?.marketing || {
+                metaPixelId: "",
+                metaPixelEnabled: true,
+                testEventCode: "",
+              }),
+              ...marketing,
+            },
+          },
+        }));
+        notifyStoreUpdated();
       },
 
       // Payments & Gateways

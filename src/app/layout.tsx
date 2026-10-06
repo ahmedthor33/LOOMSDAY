@@ -6,6 +6,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -64,6 +65,7 @@ export default function RootLayout({
       <body className="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
         <AuthProvider>
           <ToastProvider>
+            <MetaPixel />
             <Header />
             <main className="w-full pt-28 bg-surface flex-1 flex flex-col">
               {children}

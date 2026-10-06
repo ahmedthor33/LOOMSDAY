@@ -12,6 +12,7 @@ import { AddressConfirmationModal } from "@/components/cart/AddressConfirmationM
 import { Order, PaymentMethodConfig } from "@/types";
 import { formatCurrency, MONOGRAM_THRESHOLD, FREE_SHIPPING_THRESHOLD } from "@/lib/utils";
 import { useToast } from "@/components/ui/Toast";
+import { trackPurchase, trackInitiateCheckout } from "@/lib/meta-pixel";
 
 export default function CartPage() {
   const router = useRouter();
@@ -87,6 +88,9 @@ export default function CartPage() {
 
   React.useEffect(() => {
     setMounted(true);
+    if (items.length > 0) {
+      trackInitiateCheckout(items, currentSubtotal);
+    }
   }, []);
 
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -149,6 +153,7 @@ export default function CartPage() {
 
     setTimeout(() => {
       addOrder(newOrder);
+      trackPurchase({ id: newOrder.id, total: newOrder.total, items: newOrder.items });
       setIsProcessingCheckout(false);
       setIsAddressModalOpen(false);
       clearCart();

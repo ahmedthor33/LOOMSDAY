@@ -8,6 +8,7 @@ import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
 import { useToast } from "@/components/ui/Toast";
+import { trackAddToCart } from "@/lib/meta-pixel";
 
 interface ProductCardProps {
   product: Product;
@@ -44,6 +45,14 @@ export function ProductCard({ product }: ProductCardProps) {
       colorName: selectedColor.name,
       colorHex: selectedColor.hex,
       inStock: true,
+    });
+
+    trackAddToCart({
+      productId: product.id,
+      name: product.name,
+      price: product.basePrice,
+      quantity: 1,
+      category: product.category,
     });
 
     showToast(`Added ${product.name} (${selectedColor.name}) to your bag`);

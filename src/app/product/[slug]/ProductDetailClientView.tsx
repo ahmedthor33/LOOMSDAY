@@ -12,6 +12,7 @@ import { useWishlistStore } from "@/store/useWishlistStore";
 import { useToast } from "@/components/ui/Toast";
 import { idbGet } from "@/lib/robust-storage";
 import { fetchSupabaseProducts } from "@/lib/catalog-service";
+import { trackViewContent, trackAddToCart } from "@/lib/meta-pixel";
 
 interface ProductDetailClientViewProps {
   slug?: string;
@@ -139,6 +140,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
   // Sync initial product selections once product is found
   useEffect(() => {
     if (product) {
+      trackViewContent(product);
       if (product.availableColors && product.availableColors.length > 0) {
         setSelectedColor(product.availableColors[0]);
       }
@@ -198,6 +200,14 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
       },
       quantity
     );
+
+    trackAddToCart({
+      productId: product.id,
+      name: product.name,
+      price: currentPrice,
+      quantity,
+      category: product.category,
+    });
 
     showToast(`Added ${quantity} × ${product.name} to your bag`);
   };

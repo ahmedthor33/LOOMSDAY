@@ -186,6 +186,17 @@ export interface StorefrontCms {
     paragraph2: string;
     foundedYear: string;
   };
+  marketing?: {
+    metaPixelId: string;
+    metaPixelEnabled: boolean;
+    testEventCode?: string;
+  };
+}
+
+export interface MarketingConfig {
+  metaPixelId: string;
+  metaPixelEnabled: boolean;
+  testEventCode?: string;
 }
 
 export interface PaymentMethodConfig {

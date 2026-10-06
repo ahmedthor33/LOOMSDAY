@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency, FREE_SHIPPING_THRESHOLD, MONOGRAM_THRESHOLD } from "@/lib/utils";
 import { CROSS_SELL_ITEMS } from "@/lib/products-data";
+import { trackInitiateCheckout } from "@/lib/meta-pixel";
 
 export function CartDrawer() {
   const {
@@ -240,7 +241,10 @@ export function CartDrawer() {
             <div className="space-y-2">
               <Link
                 href="/cart"
-                onClick={closeDrawer}
+                onClick={() => {
+                  trackInitiateCheckout(items, currentSubtotal);
+                  closeDrawer();
+                }}
                 className="w-full h-12 rounded bg-primary text-on-primary font-label-md text-label-md uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 shadow-sm"
               >
                 <span>Proceed to Checkout</span>

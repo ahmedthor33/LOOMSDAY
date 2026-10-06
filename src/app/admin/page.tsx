@@ -25,7 +25,8 @@ type AdminTab =
   | "coupons"
   | "shipping"
   | "cms"
-  | "payments";
+  | "payments"
+  | "marketing";
 
 export default function AdminPage() {
   return (
@@ -61,6 +62,7 @@ function AdminContent() {
     updateBedsheetHero,
     updateAnnouncement,
     updateProvenance,
+    updateMarketing,
     paymentMethods,
     togglePaymentMethod,
     updatePaymentMethod,
@@ -151,6 +153,46 @@ function AdminContent() {
   const [expShipFee, setExpShipFee] = useState(shippingSettings.expressShippingFee);
   const [monogramThreshold, setMonogramThreshold] = useState(shippingSettings.monogramThreshold);
   const [estDelivery, setEstDelivery] = useState(shippingSettings.estimatedDeliveryDays);
+
+  // Meta Pixel & Marketing form local state
+  const [pixelId, setPixelId] = useState(cms?.marketing?.metaPixelId || "");
+  const [pixelEnabled, setPixelEnabled] = useState(cms?.marketing?.metaPixelEnabled !== false);
+
+  useEffect(() => {
+    if (cms?.marketing) {
+      setPixelId(cms.marketing.metaPixelId || "");
+      setPixelEnabled(cms.marketing.metaPixelEnabled !== false);
+    }
+  }, [cms?.marketing]);
+
+  const handleSavePixel = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateMarketing({
+      metaPixelId: pixelId.trim(),
+      metaPixelEnabled: pixelEnabled,
+    });
+    showToast(
+      pixelId.trim()
+        ? "Meta Pixel updated successfully! Live tracking is active."
+        : "Meta Pixel settings saved (Pixel ID is currently empty)."
+    );
+  };
+
+  const handleTestPixel = () => {
+    if (typeof window !== "undefined" && window.fbq) {
+      try {
+        window.fbq("trackCustom", "LoomsdayAdminTestEvent", {
+          timestamp: new Date().toISOString(),
+          testBy: "Atelier OS",
+        });
+        showToast("Test event sent to Meta Pixel! Check Meta Pixel Helper.", "success");
+      } catch {
+        showToast("Error firing test event to Meta Pixel.", "error");
+      }
+    } else {
+      showToast("Meta Pixel is not active yet. Enter your Pixel ID and save first.", "error");
+    }
+  };
 
   // Computed Metrics
   const totalRevenue = orders.reduce((sum, o) => sum + (o.status !== "Cancelled" ? o.total : 0), 0);
@@ -316,6 +358,7 @@ function AdminContent() {
             { id: "cms", label: "Storefront & Hero CMS", icon: "auto_awesome" },
             { id: "shipping", label: "Shipping Rates", icon: "tune" },
             { id: "payments", label: "Financials & Ledger", icon: "payments" },
+            { id: "marketing", label: "Meta Pixel & Ads", icon: "ads_click" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -2324,6 +2367,238 @@ function AdminContent() {
                   </table>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ==================================================================== */}
+        {/* 9. MARKETING & META PIXEL */}
+        {/* ==================================================================== */}
+        {currentTab === "marketing" && (
+          <div className="space-y-8 animate-fade-in">
+            {/* Header Banner */}
+            <div className="flex flex-wrap items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-container-low border border-surface-variant/50 shadow-sm">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full bg-secondary/15 flex items-center justify-center text-secondary">
+                    <span className="material-symbols-outlined text-lg">ads_click</span>
+                  </span>
+                  <h2 className="font-headline-sm text-xl text-primary font-medium tracking-tight">
+                    Meta Pixel &amp; Ads Sovereign Hub
+                  </h2>
+                </div>
+                <p className="font-body-sm text-xs text-on-surface-variant max-w-2xl">
+                  Connect your Facebook &amp; Instagram Advertising Pixel to track page visits, product interactions, cart actions, and completed customer acquisitions with automatic e-commerce conversion attribution.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-label-md tracking-wider uppercase border ${
+                    pixelId.trim() && pixelEnabled
+                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-700"
+                      : !pixelId.trim()
+                      ? "bg-amber-500/10 border-amber-500/30 text-amber-700"
+                      : "bg-surface-variant/40 border-surface-variant text-on-surface-variant"
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      pixelId.trim() && pixelEnabled
+                        ? "bg-emerald-500 animate-pulse"
+                        : !pixelId.trim()
+                        ? "bg-amber-500"
+                        : "bg-neutral-400"
+                    }`}
+                  />
+                  <span>
+                    {pixelId.trim() && pixelEnabled
+                      ? "Pixel Live & Tracking"
+                      : !pixelId.trim()
+                      ? "Pixel ID Not Configured"
+                      : "Pixel Paused"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Configuration Card */}
+            <form onSubmit={handleSavePixel} className="p-6 rounded-2xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-surface-variant/30 pb-4">
+                <div>
+                  <h3 className="font-headline-sm text-base text-primary font-medium">
+                    Meta Pixel Configuration
+                  </h3>
+                  <p className="text-xs text-on-surface-variant">
+                    Your unique Dataset / Pixel ID from Meta Events Manager (Business Suite).
+                  </p>
+                </div>
+
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={pixelEnabled}
+                    onChange={(e) => setPixelEnabled(e.target.checked)}
+                    className="rounded accent-secondary w-4 h-4"
+                  />
+                  <span className="font-medium text-primary">Enable Live Tracking</span>
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2 space-y-2">
+                  <label className="block text-xs font-label-md uppercase tracking-wider text-primary">
+                    Meta Pixel ID (15–16 Digits)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-sm text-on-surface-variant">
+                      tag
+                    </span>
+                    <input
+                      type="text"
+                      value={pixelId}
+                      onChange={(e) => setPixelId(e.target.value.replace(/[^0-9]/g, ""))}
+                      placeholder="e.g. 1234567890123456"
+                      className="w-full pl-10 pr-4 py-3 rounded-lg border border-surface-variant bg-surface text-primary font-mono text-sm focus:outline-none focus:border-secondary transition-colors"
+                    />
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant">
+                    Found in <span className="font-medium text-primary">Meta Events Manager</span> &rarr; Data Sources &rarr; Settings &rarr; Pixel ID.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-surface-container-low border border-surface-variant/30 flex flex-col justify-between">
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-label-eyebrow uppercase tracking-wider text-secondary">
+                      DIAGNOSTICS &amp; TESTING
+                    </span>
+                    <p className="text-xs text-on-surface-variant">
+                      Fire a live test beacon into the browser to verify with Meta Pixel Helper.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleTestPixel}
+                    className="mt-3 px-3 py-2 rounded border border-surface-variant hover:border-primary text-xs font-label-md uppercase tracking-wider text-primary bg-surface transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-sm">send</span>
+                    <span>Send Test Event</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors shadow"
+                >
+                  Save Pixel Settings
+                </button>
+              </div>
+            </form>
+
+            {/* Standard E-Commerce Events Breakdown */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-headline-sm text-base text-primary font-medium">
+                  Active E-Commerce Tracking Events
+                </h3>
+                <p className="text-xs text-on-surface-variant">
+                  These 5 standard conversion events are automatically tracked across your boutique for Meta Ads optimization:
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  {
+                    name: "PageView",
+                    trigger: "Every visitor navigation",
+                    desc: "Tracks every page load and client-side route transition on the store.",
+                    icon: "visibility",
+                    payload: "Page URL, Document Title",
+                  },
+                  {
+                    name: "ViewContent",
+                    trigger: "Product detail pages",
+                    desc: "Fires when customer inspects an individual linen or duvet piece.",
+                    icon: "inventory_2",
+                    payload: "content_name, content_category, content_ids, price in PKR",
+                  },
+                  {
+                    name: "AddToCart",
+                    trigger: "Add to Bag button clicked",
+                    desc: "Fires from product detail views, quick add cards, and cross-sell drawers.",
+                    icon: "shopping_bag",
+                    payload: "content_name, content_ids, value in PKR, quantity",
+                  },
+                  {
+                    name: "InitiateCheckout",
+                    trigger: "Proceed to Checkout clicked",
+                    desc: "Fires when customer advances to checkout or opens the /cart page.",
+                    icon: "shopping_cart_checkout",
+                    payload: "content_ids, total cart value in PKR, num_items",
+                  },
+                  {
+                    name: "Purchase",
+                    trigger: "Order placement confirmed",
+                    desc: "Fires when patron finalizes payment and TCS delivery details.",
+                    icon: "verified",
+                    payload: "order_id, total amount in PKR, content_ids, items list",
+                  },
+                  {
+                    name: "Currency & Region",
+                    trigger: "Global Store Setting",
+                    desc: "All values are passed in Pakistani Rupee (PKR) for accurate ad ROAS reporting.",
+                    icon: "payments",
+                    payload: "currency: 'PKR'",
+                  },
+                ].map((ev, i) => (
+                  <div
+                    key={i}
+                    className="p-4 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-2 flex flex-col justify-between"
+                  >
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-xs font-semibold text-primary flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-sm text-secondary">{ev.icon}</span>
+                          <span>{ev.name}</span>
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 text-[10px] font-medium font-mono">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span>Active</span>
+                        </span>
+                      </div>
+                      <p className="text-xs text-on-surface-variant leading-relaxed">
+                        {ev.desc}
+                      </p>
+                    </div>
+                    <div className="pt-2 border-t border-surface-variant/20 flex flex-col gap-0.5 text-[10px] text-on-surface-variant font-mono">
+                      <span className="text-secondary font-sans font-medium uppercase text-[9px] tracking-wider">
+                        TRIGGER: {ev.trigger}
+                      </span>
+                      <span className="truncate">DATA: {ev.payload}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Setup Guidance Card */}
+            <div className="p-6 rounded-2xl bg-surface-container-low border border-surface-variant/40 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-secondary text-lg">help</span>
+                <h4 className="font-headline-sm text-sm text-primary font-medium">
+                  How to find your Meta Pixel ID
+                </h4>
+              </div>
+              <ol className="list-decimal list-inside space-y-1.5 text-xs text-on-surface-variant leading-relaxed">
+                <li>Log in to <span className="font-medium text-primary">Meta Events Manager</span> (business.facebook.com/events_manager2).</li>
+                <li>In the left sidebar, click <span className="font-medium text-primary">Data Sources</span> and select your Pixel (or click &quot;Connect Data&quot; to create one).</li>
+                <li>Go to the <span className="font-medium text-primary">Settings</span> tab.</li>
+                <li>Copy the 15-16 digit number under <span className="font-medium text-primary">Pixel ID</span> / <span className="font-medium text-primary">Dataset ID</span>.</li>
+                <li>Paste it in the box above and click <span className="font-medium text-primary">Save Pixel Settings</span>.</li>
+                <li>Install the free <span className="font-medium text-primary">Meta Pixel Helper</span> extension for Chrome to verify your green events in real-time!</li>
+              </ol>
             </div>
           </div>
         )}
