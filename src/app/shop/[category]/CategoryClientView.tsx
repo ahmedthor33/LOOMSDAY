@@ -8,6 +8,7 @@ import { useAdminStore, DEFAULT_BEDSHEET_HERO } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { idbGet } from "@/lib/robust-storage";
+import { fetchSupabaseProducts } from "@/lib/catalog-service";
 
 const CATEGORY_META: Record<string, { title: string; subtitle: string; description: string }> = {
   bedsheets: {
@@ -102,6 +103,14 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
           if (parsed?.state?.cms && !isCancelled) {
             setLocalCms(parsed.state.cms);
           }
+        }
+      } catch {}
+
+      // 3. Live cloud sync from Supabase
+      try {
+        const cloudProds = await fetchSupabaseProducts();
+        if (cloudProds && cloudProds.length > 0 && !isCancelled) {
+          setLocalProducts(cloudProds);
         }
       } catch {}
     };

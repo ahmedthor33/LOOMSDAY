@@ -11,6 +11,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
 import { useToast } from "@/components/ui/Toast";
 import { idbGet } from "@/lib/robust-storage";
+import { fetchSupabaseProducts } from "@/lib/catalog-service";
 
 interface ProductDetailClientViewProps {
   slug?: string;
@@ -71,6 +72,14 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
+        }
+      } catch {}
+
+      // 3. Live cloud sync from Supabase
+      try {
+        const cloudProds = await fetchSupabaseProducts();
+        if (cloudProds && cloudProds.length > 0 && !isCancelled) {
+          setLocalProducts(cloudProds);
         }
       } catch {}
     };

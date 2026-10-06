@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { formatCurrency } from "@/lib/utils";
 import { idbGet } from "@/lib/robust-storage";
+import { fetchSupabaseProducts } from "@/lib/catalog-service";
 
 const normalizeCategory = (cat?: string): string => {
   if (!cat) return "";
@@ -48,6 +49,14 @@ export default function ShopPage() {
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
+        }
+      } catch {}
+
+      // 3. Live cloud sync from Supabase
+      try {
+        const cloudProds = await fetchSupabaseProducts();
+        if (cloudProds && cloudProds.length > 0 && !isCancelled) {
+          setLocalProducts(cloudProds);
         }
       } catch {}
     };

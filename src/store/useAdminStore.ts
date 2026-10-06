@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig, CategoryHeroBanner } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
-import { fetchSupabaseProducts, sanitizeCatalogProducts, pushProductsToSupabase } from "@/lib/catalog-service";
+import { fetchSupabaseProducts, sanitizeCatalogProducts, pushProductsToSupabase, deleteProductFromSupabase } from "@/lib/catalog-service";
 import {
   idbGet,
   idbSet,
@@ -363,6 +363,11 @@ export const useAdminStore = create<AdminState>()(
             availableSizes: defaultSizes,
           };
 
+          // Automatic background push to Supabase Cloud
+          pushProductsToSupabase([normalizedProduct]).catch((err) =>
+            console.warn("[LOOMSDAY Store] Auto cloud push error:", err)
+          );
+
           return {
             products: [normalizedProduct, ...currentList],
           };
@@ -372,6 +377,7 @@ export const useAdminStore = create<AdminState>()(
       },
 
       updateProduct: (id, updates) => {
+        let updatedItem: Product | null = null;
         set((state) => {
           const currentList = Array.isArray(state.products) ? state.products : [];
           return {
@@ -385,14 +391,23 @@ export const useAdminStore = create<AdminState>()(
                   retailPrice: updated.retailPrice,
                 }));
               }
+              updatedItem = updated;
               return updated;
             }),
           };
         });
+        if (updatedItem) {
+          pushProductsToSupabase([updatedItem]).catch((err) =>
+            console.warn("[LOOMSDAY Store] Auto cloud push error:", err)
+          );
+        }
         notifyStoreUpdated();
       },
 
       deleteProduct: (id) => {
+        deleteProductFromSupabase(id).catch((err) =>
+          console.warn("[LOOMSDAY Store] Auto cloud delete error:", err)
+        );
         set((state) => ({
           products: (Array.isArray(state.products) ? state.products : []).filter(
             (p) => p.id !== id && p.slug !== id
@@ -499,6 +514,10 @@ export const useAdminStore = create<AdminState>()(
       importCatalog: (importedProducts: Product[]) => {
         const sanitized = sanitizeCatalogProducts(importedProducts);
         if (sanitized.length === 0) return { success: false, count: 0 };
+        // Automatic background push of imported products to Supabase
+        pushProductsToSupabase(sanitized).catch((err) =>
+          console.warn("[LOOMSDAY Store] Auto cloud import push error:", err)
+        );
         set((state) => {
           const currentList = Array.isArray(state.products) ? state.products : [];
           const mergedMap = new Map<string, Product>();

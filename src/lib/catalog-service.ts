@@ -243,6 +243,28 @@ export async function pushProductsToSupabase(products: Product[]): Promise<{ suc
 }
 
 /**
+ * Deletes a product and its associated variants/images from Supabase
+ */
+export async function deleteProductFromSupabase(idOrSlug: string): Promise<boolean> {
+  if (!isSupabaseConfigured) return false;
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return false;
+
+  try {
+    const isUUID = isValidUUID(idOrSlug);
+    if (isUUID) {
+      await supabase.from("products").delete().eq("id", idOrSlug);
+    } else {
+      await supabase.from("products").delete().eq("slug", idOrSlug);
+    }
+    return true;
+  } catch (e) {
+    console.warn("[LOOMSDAY Catalog] Supabase delete error:", e);
+    return false;
+  }
+}
+
+/**
  * Validates and normalizes raw JSON products for catalog import
  */
 export function sanitizeCatalogProducts(rawProducts: any[]): Product[] {

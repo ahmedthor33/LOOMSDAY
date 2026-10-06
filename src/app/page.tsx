@@ -8,6 +8,7 @@ import { PRODUCTS } from "@/lib/products-data";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useAdminStore } from "@/store/useAdminStore";
 import { idbGet } from "@/lib/robust-storage";
+import { fetchSupabaseProducts } from "@/lib/catalog-service";
 
 export default function HomePage() {
   const { cms, products } = useAdminStore();
@@ -37,6 +38,14 @@ export default function HomePage() {
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
+        }
+      } catch {}
+
+      // 3. Live cloud sync from Supabase (pulls newly added products on any device)
+      try {
+        const cloudProds = await fetchSupabaseProducts();
+        if (cloudProds && cloudProds.length > 0 && !isCancelled) {
+          setLocalProducts(cloudProds);
         }
       } catch {}
     };

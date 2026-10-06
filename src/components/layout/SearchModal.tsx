@@ -8,6 +8,7 @@ import { PRODUCTS } from "@/lib/products-data";
 import { useAdminStore } from "@/store/useAdminStore";
 import { formatCurrency } from "@/lib/utils";
 import { idbGet } from "@/lib/robust-storage";
+import { fetchSupabaseProducts } from "@/lib/catalog-service";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -40,6 +41,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
+        }
+      } catch {}
+
+      try {
+        const cloudProds = await fetchSupabaseProducts();
+        if (cloudProds && cloudProds.length > 0 && !isCancelled) {
+          setLocalProducts(cloudProds);
         }
       } catch {}
     };
