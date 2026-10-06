@@ -149,6 +149,17 @@ export interface ShippingSettings {
   estimatedDeliveryDays: string;
 }
 
+export interface CategoryHeroBanner {
+  enabled: boolean;
+  eyebrow: string;
+  headline: string;
+  subheadline: string;
+  badge?: string;
+  imageUrl: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
 export interface StorefrontCms {
   announcement: {
     text: string;
@@ -165,6 +176,9 @@ export interface StorefrontCms {
     secondaryCtaLink: string;
     imageUrl: string;
   };
+  bedsheetHero?: CategoryHeroBanner;
+  pillowHero?: CategoryHeroBanner;
+  duvetHero?: CategoryHeroBanner;
   provenance: {
     badge: string;
     title: string;

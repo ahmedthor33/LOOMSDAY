@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig } from "@/types";
+import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig, CategoryHeroBanner } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
-import { fetchSupabaseProducts, sanitizeCatalogProducts } from "@/lib/catalog-service";
+import { fetchSupabaseProducts, sanitizeCatalogProducts, pushProductsToSupabase } from "@/lib/catalog-service";
 import {
   idbGet,
   idbSet,
@@ -86,6 +86,7 @@ interface AdminState {
   // Storefront CMS
   cms: StorefrontCms;
   updateHero: (hero: Partial<StorefrontCms["hero"]>) => void;
+  updateBedsheetHero: (bedsheetHero: Partial<CategoryHeroBanner>) => void;
   updateAnnouncement: (announcement: Partial<StorefrontCms["announcement"]>) => void;
   updateProvenance: (provenance: Partial<StorefrontCms["provenance"]>) => void;
 
@@ -164,6 +165,19 @@ const INITIAL_SHIPPING: ShippingSettings = {
   estimatedDeliveryDays: "2 - 4 Business Days (TCS / Leopard)",
 };
 
+export const DEFAULT_BEDSHEET_HERO: CategoryHeroBanner = {
+  enabled: true,
+  eyebrow: "LAYER 01 : FOUNDATIONAL SOFTNESS",
+  headline: "PAK Linen & Percale Bedsheets",
+  subheadline:
+    "Deep pocket fitted sheets and generously turned flat sheets woven from slow-harvested Normandy flax and crisp Aegean percale cotton.",
+  badge: "PAK Linen Weave",
+  imageUrl:
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
+  ctaText: "Explore Bedsheet Sets",
+  ctaLink: "#products-grid",
+};
+
 const INITIAL_CMS: StorefrontCms = {
   announcement: {
     text: "✦ COMPLIMENTARY NATIONWIDE SHIPPING ON ORDERS OVER RS. 5,000 ✦",
@@ -181,6 +195,7 @@ const INITIAL_CMS: StorefrontCms = {
     secondaryCtaLink: "/shop/duvets",
     imageUrl: "/images/hero-bedding.jpg",
   },
+  bedsheetHero: DEFAULT_BEDSHEET_HERO,
   provenance: {
     badge: "SLOW CRAFT & PROVENANCE",
     title: "Centuries of Normandy flax cultivation meets contemporary architectural repose.",
@@ -256,7 +271,7 @@ export const INITIAL_PAYMENT_METHODS: PaymentMethodConfig[] = [
 export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
-      products: [],
+      products: PRODUCTS,
       orders: [],
       coupons: INITIAL_COUPONS,
       shippingSettings: INITIAL_SHIPPING,
@@ -451,13 +466,20 @@ export const useAdminStore = create<AdminState>()(
 
       syncWithSupabase: async () => {
         try {
+          const currentList = Array.isArray(get().products) ? get().products : [];
+          // 1. First push local products to Supabase if we have any
+          if (currentList.length > 0) {
+            await pushProductsToSupabase(currentList);
+          }
+
+          // 2. Fetch latest catalog from Supabase
           const cloudProds = await fetchSupabaseProducts();
           if (cloudProds && cloudProds.length > 0) {
             set((state) => {
-              const currentList = Array.isArray(state.products) ? state.products : [];
+              const localList = Array.isArray(state.products) ? state.products : [];
               const mergedMap = new Map<string, Product>();
               cloudProds.forEach((p) => mergedMap.set(p.slug || p.id, p));
-              currentList.forEach((p) => {
+              localList.forEach((p) => {
                 if (!mergedMap.has(p.slug || p.id)) {
                   mergedMap.set(p.slug || p.id, p);
                 }
@@ -467,7 +489,7 @@ export const useAdminStore = create<AdminState>()(
             notifyStoreUpdated();
             return { success: true, count: cloudProds.length };
           }
-          return { success: false, count: 0 };
+          return { success: true, count: currentList.length };
         } catch (e) {
           console.warn("[LOOMSDAY Store] Cloud sync failed:", e);
           return { success: false, count: 0 };
@@ -555,6 +577,20 @@ export const useAdminStore = create<AdminState>()(
             hero: { ...state.cms.hero, ...hero },
           },
         }));
+        notifyStoreUpdated();
+      },
+
+      updateBedsheetHero: (bedsheetHero) => {
+        set((state) => ({
+          cms: {
+            ...state.cms,
+            bedsheetHero: {
+              ...(state.cms?.bedsheetHero || DEFAULT_BEDSHEET_HERO),
+              ...bedsheetHero,
+            },
+          },
+        }));
+        notifyStoreUpdated();
       },
 
       updateAnnouncement: (announcement) => {
@@ -702,6 +738,11 @@ export const useAdminStore = create<AdminState>()(
           notifyStoreUpdated();
         },
       })),
+      onRehydrateStorage: () => (state) => {
+        if (state && (!Array.isArray(state.products) || state.products.length === 0)) {
+          state.products = PRODUCTS;
+        }
+      },
     }
   )
 );

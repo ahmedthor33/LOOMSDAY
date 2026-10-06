@@ -2,16 +2,16 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { Product } from "@/types";
+import { Product, StorefrontCms } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
-import { useAdminStore } from "@/store/useAdminStore";
+import { useAdminStore, DEFAULT_BEDSHEET_HERO } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { idbGet } from "@/lib/robust-storage";
 
 const CATEGORY_META: Record<string, { title: string; subtitle: string; description: string }> = {
   bedsheets: {
-    title: "French Linen & Percale Bedsheets",
+    title: "PAK Linen & Percale Bedsheets",
     subtitle: "LAYER 01 : FOUNDATIONAL SOFTNESS",
     description: "Deep pocket fitted sheets and generously turned flat sheets woven from slow-harvested Normandy flax and crisp Aegean percale cotton.",
   },
@@ -67,8 +67,9 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
     }
   }, [category]);
 
-  const { products } = useAdminStore();
+  const { products, cms } = useAdminStore();
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
+  const [localCms, setLocalCms] = useState<StorefrontCms | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -84,6 +85,9 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
+          if (parsed?.state?.cms && !isCancelled) {
+            setLocalCms(parsed.state.cms);
+          }
         }
       } catch {}
 
@@ -94,6 +98,9 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
           const parsed = JSON.parse(idbRaw);
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
+          }
+          if (parsed?.state?.cms && !isCancelled) {
+            setLocalCms(parsed.state.cms);
           }
         }
       } catch {}
@@ -114,6 +121,16 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
     if (localProducts.length > 0) return localProducts;
     return PRODUCTS.length > 0 ? PRODUCTS : [];
   }, [products, localProducts]);
+
+  const activeCms = cms?.bedsheetHero ? cms : (localCms || cms);
+  const rawBedsheetHero = activeCms?.bedsheetHero || DEFAULT_BEDSHEET_HERO;
+  const bedsheetBanner = {
+    ...rawBedsheetHero,
+    headline:
+      !rawBedsheetHero.headline || rawBedsheetHero.headline === "French Linen & Percale Bedsheets"
+        ? "PAK Linen & Percale Bedsheets"
+        : rawBedsheetHero.headline,
+  };
 
   const meta = CATEGORY_META[activeSlug] || {
     title: `${activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1)} Collection`,
@@ -200,39 +217,118 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
 
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-8">
-      {/* Top Editorial Header */}
-      <section className="mb-10">
-        <nav className="flex items-center gap-2 mb-6 font-label-eyebrow text-label-eyebrow tracking-widest uppercase text-on-surface-variant/80">
-          <Link href="/" className="hover:text-primary transition-colors">
-            Home
-          </Link>
-          <span className="text-[10px] text-outline-variant">/</span>
-          <Link href="/shop" className="hover:text-primary transition-colors">
-            Bedding
-          </Link>
-          <span className="text-[10px] text-outline-variant">/</span>
-          <span className="text-primary font-medium capitalize">{activeSlug}</span>
-        </nav>
+      {/* Top Hero Section: Bespoke Hero Banner for Bedsheets, Standard Typographic for other archives */}
+      {activeSlug === "bedsheets" && bedsheetBanner.enabled !== false ? (
+        <section className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mb-8 shadow-xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-between p-6 sm:p-10 lg:p-12 border border-outline-variant/30 bg-surface-container-high">
+          {/* Background Editorial Image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={bedsheetBanner.imageUrl || "/images/hero-bedding.jpg"}
+            alt={bedsheetBanner.headline}
+            className="absolute inset-0 w-full h-full object-cover object-center scale-100 hover:scale-105 transition-transform duration-1000 ease-out"
+            loading="eager"
+            // @ts-expect-error fetchpriority is standard in modern browsers
+            fetchpriority="high"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.src.endsWith("/images/hero-bedding.jpg")) {
+                target.src = "/images/hero-bedding.jpg";
+              }
+            }}
+          />
 
-        <div className="space-y-4 max-w-3xl">
-          <div className="flex items-center gap-3">
-            <span className="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">
-              {meta.subtitle}
-            </span>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-xs">
-              {categoryProducts.length} {categoryProducts.length === 1 ? "Piece" : "Pieces"}
-            </span>
+          {/* Sophisticated Dark Cinematic Scrim Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none" />
+
+          {/* Top Header Row with Glassy Breadcrumbs & Provenance Badge */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+            <nav className="flex items-center gap-2 font-label-eyebrow text-[11px] tracking-widest uppercase text-white/80 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
+              <Link href="/" className="hover:text-secondary transition-colors">
+                Home
+              </Link>
+              <span className="text-[10px] text-white/40">/</span>
+              <Link href="/shop" className="hover:text-secondary transition-colors">
+                Bedding
+              </Link>
+              <span className="text-[10px] text-white/40">/</span>
+              <span className="text-secondary font-medium">Bedsheet Sets</span>
+            </nav>
+
+            {bedsheetBanner.badge && (
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-secondary/90 text-primary font-label-eyebrow text-[11px] font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm border border-secondary/30">
+                <span className="material-symbols-outlined text-[14px]">verified</span>
+                <span>{bedsheetBanner.badge}</span>
+              </span>
+            )}
           </div>
-          <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-primary tracking-tight">
-            {meta.title}
-          </h1>
-          <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-            {meta.description}
-          </p>
-        </div>
 
-        {/* Quick Category Switcher Tabs */}
-        <div className="flex items-center gap-2 pt-6 overflow-x-auto pb-1">
+          {/* Hero Narrative & CTA Controls */}
+          <div className="relative z-10 space-y-4 max-w-3xl pt-16 sm:pt-20">
+            <div className="flex items-center gap-3">
+              <span className="font-label-eyebrow text-xs uppercase tracking-[0.25em] text-secondary font-medium drop-shadow-sm">
+                {bedsheetBanner.eyebrow}
+              </span>
+            </div>
+
+            <h1 className="font-display-hero text-headline-lg sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.12] drop-shadow-md">
+              {bedsheetBanner.headline}
+            </h1>
+
+            <p className="font-body-lg text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed max-w-2xl drop-shadow-sm">
+              {bedsheetBanner.subheadline}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <a
+                href={bedsheetBanner.ctaLink || "#products-grid"}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface text-primary font-label-md text-xs uppercase tracking-widest font-semibold hover:bg-surface-variant hover:scale-[1.02] active:scale-[0.98] transition-all shadow-md"
+              >
+                <span>{bedsheetBanner.ctaText || "Explore Bedsheet Sets"}</span>
+                <span className="material-symbols-outlined text-sm">arrow_downward</span>
+              </a>
+              <span className="inline-flex items-center px-4 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/15 text-white text-xs font-label-sm tracking-wide">
+                {categoryProducts.length} {categoryProducts.length === 1 ? "Piece" : "Pieces"} in Archive
+              </span>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="mb-10">
+          <nav className="flex items-center gap-2 mb-6 font-label-eyebrow text-label-eyebrow tracking-widest uppercase text-on-surface-variant/80">
+            <Link href="/" className="hover:text-primary transition-colors">
+              Home
+            </Link>
+            <span className="text-[10px] text-outline-variant">/</span>
+            <Link href="/shop" className="hover:text-primary transition-colors">
+              Bedding
+            </Link>
+            <span className="text-[10px] text-outline-variant">/</span>
+            <span className="text-primary font-medium capitalize">{activeSlug}</span>
+          </nav>
+
+          <div className="space-y-4 max-w-3xl">
+            <div className="flex items-center gap-3">
+              <span className="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">
+                {meta.subtitle}
+              </span>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-xs">
+                {categoryProducts.length} {categoryProducts.length === 1 ? "Piece" : "Pieces"}
+              </span>
+            </div>
+            <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-primary tracking-tight">
+              {meta.title}
+            </h1>
+            <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+              {meta.description}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Navigation Tabs & Refinement Controls Strip */}
+      <section className="mb-8">
+        <div className="flex items-center gap-2 pt-2 overflow-x-auto pb-1">
           <Link
             href="/shop"
             className="px-4 py-2 rounded-full text-xs font-label-md uppercase tracking-wider bg-surface-container hover:bg-surface-variant text-on-surface transition-colors shrink-0"
@@ -351,7 +447,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
       </section>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div id="products-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-3">
           <ProductFilters
             filters={filters}
