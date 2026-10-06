@@ -12,8 +12,16 @@ import { PaymentMethodModal } from "@/components/admin/PaymentMethodModal";
 import { ImportCatalogModal } from "@/components/admin/ImportCatalogModal";
 import { BulkAddModal } from "@/components/admin/BulkAddModal";
 import { exportCatalogToJson } from "@/lib/catalog-service";
-import { useAdminStore, SUPER_ADMIN_EMAIL, isDemoProduct, DEFAULT_BEDSHEET_HERO } from "@/store/useAdminStore";
-import { Product, Order, AdminCoupon, PaymentMethodConfig } from "@/types";
+import {
+  useAdminStore,
+  SUPER_ADMIN_EMAIL,
+  isDemoProduct,
+  DEFAULT_SHOP_HERO,
+  DEFAULT_BEDSHEET_HERO,
+  DEFAULT_PILLOW_HERO,
+  DEFAULT_DUVET_HERO,
+} from "@/store/useAdminStore";
+import { Product, Order, AdminCoupon, PaymentMethodConfig, CategoryHeroBanner } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { useToast } from "@/components/ui/Toast";
 
@@ -27,6 +35,465 @@ type AdminTab =
   | "cms"
   | "payments"
   | "marketing";
+
+const BED_PRESETS = [
+  {
+    name: "Warm Ivory Flax",
+    desc: "Signature French Normandy",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
+  },
+  {
+    name: "Volcanic Pumice Linen",
+    desc: "Washed Organic Drape",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuBUZzpp8szKlCaNHPJemnC7kx29DdEaV7E3I1TFOfneVOOybqWHexi6-MoM23vQoMPe-EnSSE2tUyGvgGr3ZTPpE86VvolITvNzUwRts0j1NCnviBoNlO5_6V-s6-RXuAB6NH9REQV0N-tMe6dClU48x6HFueH2sf_aGFB8ibRlDUBD9_BgcAkh1KkDa1a4b1KRICZQhiy1Da8CrR9z0C0iGTVN7zluXFgR4S8CVkA8M_avPXvxdVssvw",
+  },
+  {
+    name: "Pure Normandy Atelier",
+    desc: "Slow Harvested Flax",
+    url: "/images/hero-bedding.jpg",
+  },
+];
+
+const PILLOW_PRESETS = [
+  {
+    name: "Bavarian Cloud Loft",
+    desc: "European White Down",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZln3uLX8fzZHDzCdaDgClEvINVhmgMFiG4LsS37402s-SGkXCoE-TIQUWYQ1VX43haCPKu1WNH7BQaD8dnuGl_BXE7OZhLfJ8XcDReVMe9ij43mIRCzskGIHasidrAkhdA9-DJbD0cUNCDiX3kmjrd5ayu3p-M_XEE7KUfQHaP4S7q3kc4IDU28mLbYpUATW3foxTcK2jNND0uSjpwPbtrqE39A80lzluICl4QyPAiAmbRiBPNq_Bjg",
+  },
+  {
+    name: "French Envelope Shams",
+    desc: "Double-Needle French Felled",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuB5mg_88uP4_dY0StskHnUAypeSbRoucIm9WT-4HR0oAhnQmLZpvQryGp9dRkRHXbywiF4rdugLcuMoRPigGYCT36DBSF4ZqUkql1Fvbv4FsJR7Z-jb_ZTKaPbn0S4wcKo0yT-u5NMEYIs4dhebchIyjiGTZhd7fCuNLNWfKcX7zNv15mR39syvFaPaBGXjvgohAlrO-ORZS36KvAyWx90TvMz_SjFMWmkOvTp5qjbh_7YVesL5Hn00kw",
+  },
+  {
+    name: "Talalay Latex Core",
+    desc: "Ergonomic Support",
+    url: "/images/hero-bedding.jpg",
+  },
+];
+
+const DUVET_PRESETS = [
+  {
+    name: "European Baffle-Box Down",
+    desc: "750 Fill Power Loft",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCtOoYRRk0vGHuHkhoXB0ih8gsU0xTM_GGMq5APfzivgWXTvPdiG1uI5jfW5mWymwl1GqLYK1sXDsPR60PueZgV_M9jJ6mR4_ORPyDSiIL6iowMgRPg0-4jAEit5AXiKX7v-AEly6B792PSm3XJMHU-6RS572no-rMjGSSppdgxpLhDfgv4UU7c6EJ6R15wlZW6Qn1QOO6xcHPjvGne-45X8aJ-DoUpGwVFICvJVHXa8qcD5tp2I1-uMg",
+  },
+  {
+    name: "Stone-Washed Flax Duvet",
+    desc: "Horn-Buttoned Linen Cover",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDiBCnikRLwnd_4Wsq2BV_wVpZaf2My8kvlRPBh3KSFqnjtzRILf4fjs0dPkKD450bxrZH7e861saDA3s6fi430jIcrvFomHmJ1oJU4UYdCmvwbz_FqXd6HYLM4L31NphUK7SlVEgJpOYsVajd7SbfUezj8omF6M9yskA3anvoBdPz7uH_qwNTjuJ2iZVgdlf5XF5jHKDFyRtQD5j2GsNoxvU_yFqfHBI1ldpcLIHZXhmgDsax5tSQKwA",
+  },
+  {
+    name: "Winter Cloud Sanctuary",
+    desc: "All-Season Thermoregulation",
+    url: "/images/hero-bedding.jpg",
+  },
+];
+
+const SHOP_PRESETS = [
+  {
+    name: "Architectural Atelier",
+    desc: "Mastercrafted Repose",
+    url: "/images/hero-bedding.jpg",
+  },
+  {
+    name: "French Normandy Suite",
+    desc: "Organic Slow Harvest",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
+  },
+  {
+    name: "Complete Linen Archive",
+    desc: "Natural Volcanic Wash",
+    url: "https://lh3.googleusercontent.com/aida-public/AB6AXuBUZzpp8szKlCaNHPJemnC7kx29DdEaV7E3I1TFOfneVOOybqWHexi6-MoM23vQoMPe-EnSSE2tUyGvgGr3ZTPpE86VvolITvNzUwRts0j1NCnviBoNlO5_6V-s6-RXuAB6NH9REQV0N-tMe6dClU48x6HFueH2sf_aGFB8ibRlDUBD9_BgcAkh1KkDa1a4b1KRICZQhiy1Da8CrR9z0C0iGTVN7zluXFgR4S8CVkA8M_avPXvxdVssvw",
+  },
+];
+
+interface CategoryBannerStudioProps {
+  title: string;
+  categoryPath: string;
+  categoryName: string;
+  icon: string;
+  banner: CategoryHeroBanner;
+  defaultBanner: CategoryHeroBanner;
+  presets: { name: string; desc: string; url: string }[];
+  onSave: (banner: CategoryHeroBanner) => void;
+  showToast: (msg: string) => void;
+}
+
+function CategoryBannerStudio({
+  title,
+  categoryPath,
+  categoryName,
+  icon,
+  banner,
+  defaultBanner,
+  presets,
+  onSave,
+  showToast,
+}: CategoryBannerStudioProps) {
+  const [enabled, setEnabled] = useState(banner?.enabled ?? defaultBanner.enabled);
+  const [eyebrow, setEyebrow] = useState(banner?.eyebrow || defaultBanner.eyebrow);
+  const [headline, setHeadline] = useState(banner?.headline || defaultBanner.headline);
+  const [subheadline, setSubheadline] = useState(banner?.subheadline || defaultBanner.subheadline);
+  const [badge, setBadge] = useState(banner?.badge || defaultBanner.badge || "");
+  const [ctaText, setCtaText] = useState(banner?.ctaText || defaultBanner.ctaText || "");
+  const [ctaLink, setCtaLink] = useState(banner?.ctaLink || defaultBanner.ctaLink || "#products-grid");
+  const [imageUrl, setImageUrl] = useState(banner?.imageUrl || defaultBanner.imageUrl);
+
+  useEffect(() => {
+    setEnabled(banner?.enabled ?? defaultBanner.enabled);
+    setEyebrow(banner?.eyebrow || defaultBanner.eyebrow);
+    setHeadline(banner?.headline || defaultBanner.headline);
+    setSubheadline(banner?.subheadline || defaultBanner.subheadline);
+    setBadge(banner?.badge || defaultBanner.badge || "");
+    setCtaText(banner?.ctaText || defaultBanner.ctaText || "");
+    setCtaLink(banner?.ctaLink || defaultBanner.ctaLink || "#products-grid");
+    setImageUrl(banner?.imageUrl || defaultBanner.imageUrl);
+  }, [banner, defaultBanner]);
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    onSave({
+      enabled,
+      eyebrow,
+      headline,
+      subheadline,
+      badge,
+      ctaText,
+      ctaLink,
+      imageUrl,
+    });
+    showToast(`${title} published live to ${categoryPath}.`);
+  };
+
+  const handleReset = () => {
+    if (confirm(`Reset ${title} to original atelier defaults?`)) {
+      setEnabled(defaultBanner.enabled);
+      setEyebrow(defaultBanner.eyebrow);
+      setHeadline(defaultBanner.headline);
+      setSubheadline(defaultBanner.subheadline);
+      setBadge(defaultBanner.badge || "");
+      setCtaText(defaultBanner.ctaText || "");
+      setCtaLink(defaultBanner.ctaLink || "#products-grid");
+      setImageUrl(defaultBanner.imageUrl);
+      onSave(defaultBanner);
+      showToast(`${title} reset to factory defaults.`);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Status Bar */}
+      <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2.5">
+            <span className="material-symbols-outlined text-secondary text-2xl">{icon}</span>
+            <h3 className="font-headline-sm text-lg text-primary font-medium">{title}</h3>
+            <span className="text-[10px] uppercase tracking-wider bg-secondary/20 text-secondary font-semibold px-2 py-0.5 rounded-full font-mono">
+              {categoryPath}
+            </span>
+          </div>
+          <p className="font-body-sm text-xs text-on-surface-variant">
+            Customize photography, title, narrative, badge, and CTA displayed at the top of {categoryName}.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 cursor-pointer text-xs px-3.5 py-2 rounded-lg bg-surface border border-surface-variant/40 hover:border-secondary transition-colors">
+            <input
+              type="checkbox"
+              checked={enabled}
+              onChange={(e) => setEnabled(e.target.checked)}
+              className="rounded accent-secondary"
+            />
+            <span className="font-medium text-primary">
+              {enabled ? "Banner Enabled" : "Banner Disabled"}
+            </span>
+          </label>
+          <Link
+            href={categoryPath}
+            target="_blank"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface text-primary border border-surface-variant/40 text-xs font-medium hover:border-secondary transition-colors"
+          >
+            <span>View Live Page</span>
+            <span className="material-symbols-outlined text-sm">open_in_new</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Real-time Interactive Live Preview */}
+      <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-3">
+        <div className="flex items-center justify-between border-b border-surface-variant/30 pb-3">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-secondary text-base">visibility</span>
+            <span className="font-label-md text-xs uppercase tracking-wider text-primary font-semibold">
+              Real-time Storefront Preview
+            </span>
+          </div>
+          <span className="text-[11px] font-mono text-on-surface-variant">
+            Live sync to {categoryPath}
+          </span>
+        </div>
+
+        <div className="relative w-full rounded-2xl overflow-hidden min-h-[320px] md:min-h-[380px] flex flex-col justify-between p-6 md:p-8 border border-outline-variant/30 bg-neutral-900 shadow-md">
+          {/* Background image preview */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageUrl || "/images/hero-bedding.jpg"}
+            alt="Preview"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.src.endsWith("/images/hero-bedding.jpg")) {
+                target.src = "/images/hero-bedding.jpg";
+              }
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none" />
+
+          {!enabled && (
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center text-center p-6 text-white space-y-2">
+              <span className="material-symbols-outlined text-3xl text-amber-400">visibility_off</span>
+              <p className="font-headline-sm text-sm font-semibold">Visual Banner Currently Disabled</p>
+              <p className="font-body-sm text-xs text-white/70 max-w-md">
+                On {categoryPath}, the boutique will display the clean minimalist typographic header instead. Check &ldquo;Banner Enabled&rdquo; to activate this visual editorial banner.
+              </p>
+            </div>
+          )}
+
+          {/* Preview Top Row */}
+          <div className="relative z-10 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5 font-label-eyebrow text-[10px] tracking-widest uppercase text-white/80 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
+              <span>Home</span>
+              <span className="text-white/40">/</span>
+              <span>Bedding</span>
+              <span className="text-white/40">/</span>
+              <span className="text-secondary font-medium">{categoryName}</span>
+            </div>
+            {badge && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary text-primary font-label-eyebrow text-[10px] font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
+                <span className="material-symbols-outlined text-[12px]">verified</span>
+                <span>{badge}</span>
+              </span>
+            )}
+          </div>
+
+          {/* Preview Bottom Content */}
+          <div className="relative z-10 space-y-2 pt-12 max-w-xl">
+            <span className="font-label-eyebrow text-[10px] uppercase tracking-[0.2em] text-secondary font-medium drop-shadow-sm">
+              {eyebrow || defaultBanner.eyebrow}
+            </span>
+            <h4 className="font-display-hero text-xl md:text-2xl lg:text-3xl text-white tracking-tight leading-tight drop-shadow-md">
+              {headline || defaultBanner.headline}
+            </h4>
+            <p className="font-body-sm text-xs text-white/90 leading-relaxed line-clamp-2 drop-shadow-sm">
+              {subheadline || defaultBanner.subheadline}
+            </p>
+            <div className="pt-2 flex items-center gap-3">
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface text-primary font-label-md text-[10px] uppercase tracking-wider font-semibold shadow">
+                <span>{ctaText || defaultBanner.ctaText || `Explore ${categoryName}`}</span>
+                <span className="material-symbols-outlined text-xs">arrow_downward</span>
+              </div>
+              <span className="text-[10px] text-white/80 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
+                Live Storefront Preview
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Form Controls */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Image Customizer & Presets */}
+        <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-surface-variant/30 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-secondary text-lg">landscape</span>
+              <h4 className="font-headline-sm text-sm text-primary font-medium">
+                {title} Photography
+              </h4>
+            </div>
+            <span className="text-[11px] text-on-surface-variant">
+              High-resolution 16:9 or ultra-wide landscape
+            </span>
+          </div>
+
+          {/* Curated Presets */}
+          <div>
+            <label className="block text-xs font-medium text-primary mb-2">
+              Curated Luxury Bedding Presets (Click to apply)
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {presets.map((preset) => (
+                <button
+                  key={preset.url}
+                  type="button"
+                  onClick={() => {
+                    setImageUrl(preset.url);
+                    showToast(`Applied preset: ${preset.name}`);
+                  }}
+                  className={`group text-left p-2 rounded-lg border transition-all ${
+                    imageUrl === preset.url
+                      ? "border-secondary bg-secondary/10 ring-1 ring-secondary"
+                      : "border-surface-variant/50 hover:border-secondary/60 bg-surface"
+                  }`}
+                >
+                  <div className="relative aspect-[16/9] rounded overflow-hidden mb-1.5 bg-neutral-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={preset.url}
+                      alt={preset.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <p className="text-xs font-medium text-primary truncate">{preset.name}</p>
+                  <p className="text-[10px] text-on-surface-variant truncate">{preset.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Drag and Drop Uploader */}
+          <div className="pt-2">
+            <DragDropImageUpload
+              currentImageUrl={imageUrl}
+              onImageChange={(newUrl) => {
+                setImageUrl(newUrl);
+                showToast("Hero banner image updated in editor.");
+              }}
+              label="Upload Custom Banner Photography or URL"
+              recommendedAspect="16:9 Landscape Ultra HD (1920x1080 or larger)"
+            />
+          </div>
+        </div>
+
+        {/* Copy & Narrative Configuration */}
+        <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 border-b border-surface-variant/30 pb-3">
+            <span className="material-symbols-outlined text-secondary text-lg">edit_note</span>
+            <h4 className="font-headline-sm text-sm text-primary font-medium">
+              Editorial Copy &amp; Typography
+            </h4>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-primary mb-1">
+                Eyebrow Subtitle Tagline
+              </label>
+              <input
+                type="text"
+                value={eyebrow}
+                onChange={(e) => setEyebrow(e.target.value)}
+                placeholder={defaultBanner.eyebrow}
+                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary uppercase tracking-widest focus:outline-none focus:border-secondary"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-primary mb-1">
+                Provenance / Quality Badge
+              </label>
+              <input
+                type="text"
+                value={badge}
+                onChange={(e) => setBadge(e.target.value)}
+                placeholder={defaultBanner.badge || "Verified Luxury"}
+                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-medium focus:outline-none focus:border-secondary"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-primary mb-1">
+              Primary Display Headline
+            </label>
+            <input
+              type="text"
+              value={headline}
+              onChange={(e) => setHeadline(e.target.value)}
+              placeholder={defaultBanner.headline}
+              className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-serif text-sm focus:outline-none focus:border-secondary"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-primary mb-1">
+              Subheadline Narrative Description
+            </label>
+            <textarea
+              rows={3}
+              value={subheadline}
+              onChange={(e) => setSubheadline(e.target.value)}
+              placeholder={defaultBanner.subheadline}
+              className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary resize-none"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label className="block text-xs font-medium text-primary mb-1">
+                CTA Button Label
+              </label>
+              <input
+                type="text"
+                value={ctaText}
+                onChange={(e) => setCtaText(e.target.value)}
+                placeholder={defaultBanner.ctaText || `Explore ${categoryName}`}
+                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-primary mb-1">
+                CTA Target Link / Anchor
+              </label>
+              <input
+                type="text"
+                value={ctaLink}
+                onChange={(e) => setCtaLink(e.target.value)}
+                placeholder="#products-grid"
+                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-mono focus:outline-none focus:border-secondary"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Submission and Action Strip */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-xl bg-surface-container-low border border-surface-variant/40">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border border-outline-variant/60 text-on-surface-variant hover:text-primary text-xs font-medium transition-colors"
+          >
+            <span className="material-symbols-outlined text-sm">restart_alt</span>
+            <span>Reset to Atelier Defaults</span>
+          </button>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href={categoryPath}
+              target="_blank"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border border-surface-variant bg-surface text-primary text-xs font-medium hover:border-secondary transition-colors"
+            >
+              <span>Preview on Storefront</span>
+              <span className="material-symbols-outlined text-sm">open_in_new</span>
+            </Link>
+
+            <button
+              type="submit"
+              className="inline-flex items-center gap-2 px-8 py-3 rounded bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors shadow-lg"
+            >
+              <span className="material-symbols-outlined text-sm">publish</span>
+              <span>Publish {categoryName} Banner Live</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+}
 
 export default function AdminPage() {
   return (
@@ -59,7 +526,10 @@ function AdminContent() {
     updateShippingSettings,
     cms,
     updateHero,
+    updateShopHero,
     updateBedsheetHero,
+    updatePillowHero,
+    updateDuvetHero,
     updateAnnouncement,
     updateProvenance,
     updateMarketing,
@@ -102,7 +572,9 @@ function AdminContent() {
   const [isSyncingCloud, setIsSyncingCloud] = useState(false);
 
   // CMS Sub-Tab state: default to bedsheets so the user has immediate access
-  const [cmsSubTab, setCmsSubTab] = useState<"bedsheets" | "homepage" | "announcement">("bedsheets");
+  const [cmsSubTab, setCmsSubTab] = useState<
+    "bedsheets" | "pillows" | "duvets" | "shop" | "homepage" | "announcement"
+  >("bedsheets");
 
   // CMS form local state
   const [announcementText, setAnnouncementText] = useState(cms.announcement.text);
@@ -115,37 +587,6 @@ function AdminContent() {
   const [heroSecondaryCtaText, setHeroSecondaryCtaText] = useState(cms.hero.secondaryCtaText);
   const [heroSecondaryCtaLink, setHeroSecondaryCtaLink] = useState(cms.hero.secondaryCtaLink);
   const [heroImageUrl, setHeroImageUrl] = useState(cms.hero.imageUrl);
-
-  // Bedsheet Hero CMS form local state
-  const currentBedsheetHero = cms.bedsheetHero || DEFAULT_BEDSHEET_HERO;
-  const rawBedsheetTitle = currentBedsheetHero.headline;
-  const initialBedsheetHeadline =
-    !rawBedsheetTitle || rawBedsheetTitle === "French Linen & Percale Bedsheets"
-      ? "PAK Linen & Percale Bedsheets"
-      : rawBedsheetTitle;
-  const [bedsheetEnabled, setBedsheetEnabled] = useState(currentBedsheetHero.enabled ?? true);
-  const [bedsheetEyebrow, setBedsheetEyebrow] = useState(currentBedsheetHero.eyebrow);
-  const [bedsheetHeadline, setBedsheetHeadline] = useState(initialBedsheetHeadline);
-  const [bedsheetSubheadline, setBedsheetSubheadline] = useState(currentBedsheetHero.subheadline);
-  const [bedsheetBadge, setBedsheetBadge] = useState(currentBedsheetHero.badge || "PAK Linen Weave");
-  const [bedsheetCtaText, setBedsheetCtaText] = useState(currentBedsheetHero.ctaText || "Explore Bedsheet Sets");
-  const [bedsheetCtaLink, setBedsheetCtaLink] = useState(currentBedsheetHero.ctaLink || "#products-grid");
-  const [bedsheetImageUrl, setBedsheetImageUrl] = useState(currentBedsheetHero.imageUrl);
-
-  // Synchronize Bedsheet local state if cms.bedsheetHero updates
-  useEffect(() => {
-    if (cms?.bedsheetHero) {
-      setBedsheetEnabled(cms.bedsheetHero.enabled ?? true);
-      setBedsheetEyebrow(cms.bedsheetHero.eyebrow || DEFAULT_BEDSHEET_HERO.eyebrow);
-      const h = cms.bedsheetHero.headline;
-      setBedsheetHeadline(!h || h === "French Linen & Percale Bedsheets" ? "PAK Linen & Percale Bedsheets" : h);
-      setBedsheetSubheadline(cms.bedsheetHero.subheadline || DEFAULT_BEDSHEET_HERO.subheadline);
-      setBedsheetBadge(cms.bedsheetHero.badge || "PAK Linen Weave");
-      setBedsheetCtaText(cms.bedsheetHero.ctaText || DEFAULT_BEDSHEET_HERO.ctaText || "Explore Bedsheet Sets");
-      setBedsheetCtaLink(cms.bedsheetHero.ctaLink || DEFAULT_BEDSHEET_HERO.ctaLink || "#products-grid");
-      setBedsheetImageUrl(cms.bedsheetHero.imageUrl || DEFAULT_BEDSHEET_HERO.imageUrl);
-    }
-  }, [cms?.bedsheetHero]);
 
   // Shipping form local state
   const [freeShipThreshold, setFreeShipThreshold] = useState(shippingSettings.freeShippingThreshold);
@@ -242,36 +683,7 @@ function AdminContent() {
     showToast("Storefront homepage hero section and announcement bar published live.");
   };
 
-  // Bedsheet Hero Save
-  const handleSaveBedsheetHero = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    updateBedsheetHero({
-      enabled: bedsheetEnabled,
-      eyebrow: bedsheetEyebrow,
-      headline: bedsheetHeadline,
-      subheadline: bedsheetSubheadline,
-      badge: bedsheetBadge,
-      ctaText: bedsheetCtaText,
-      ctaLink: bedsheetCtaLink,
-      imageUrl: bedsheetImageUrl,
-    });
-    showToast("Bedsheet page hero banner published live to /shop/bedsheets.");
-  };
 
-  const handleResetBedsheetDefaults = () => {
-    if (confirm("Reset Bedsheet hero banner to original atelier defaults?")) {
-      setBedsheetEnabled(DEFAULT_BEDSHEET_HERO.enabled);
-      setBedsheetEyebrow(DEFAULT_BEDSHEET_HERO.eyebrow);
-      setBedsheetHeadline(DEFAULT_BEDSHEET_HERO.headline);
-      setBedsheetSubheadline(DEFAULT_BEDSHEET_HERO.subheadline);
-      setBedsheetBadge(DEFAULT_BEDSHEET_HERO.badge || "100% Normandy Flax");
-      setBedsheetCtaText(DEFAULT_BEDSHEET_HERO.ctaText || "Explore Bedsheet Sets");
-      setBedsheetCtaLink(DEFAULT_BEDSHEET_HERO.ctaLink || "#products-grid");
-      setBedsheetImageUrl(DEFAULT_BEDSHEET_HERO.imageUrl);
-      updateBedsheetHero(DEFAULT_BEDSHEET_HERO);
-      showToast("Bedsheet banner reset to factory defaults.");
-    }
-  };
 
   // Shipping Save
   const handleSaveShipping = (e: React.FormEvent) => {
@@ -1397,7 +1809,7 @@ function AdminContent() {
               </div>
 
               {/* Sub-Tab Navigation Bar */}
-              <div className="flex items-center gap-1 p-1 bg-surface-container rounded-xl border border-surface-variant/40">
+              <div className="flex items-center gap-1 p-1 bg-surface-container rounded-xl border border-surface-variant/40 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setCmsSubTab("bedsheets")}
@@ -1408,10 +1820,49 @@ function AdminContent() {
                   }`}
                 >
                   <span className="material-symbols-outlined text-sm">bed</span>
-                  <span>Bedsheets Banner</span>
+                  <span>Bedsheets</span>
                   <span className="text-[9px] bg-secondary text-primary px-1.5 py-0.2 rounded-full font-bold ml-0.5">
                     HERO
                   </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCmsSubTab("pillows")}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-label-md uppercase tracking-wider transition-all ${
+                    cmsSubTab === "pillows"
+                      ? "bg-primary text-on-primary font-semibold shadow-sm"
+                      : "text-on-surface-variant hover:text-primary hover:bg-surface/50"
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-sm">airline_seat_individual_suite</span>
+                  <span>Pillows</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCmsSubTab("duvets")}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-label-md uppercase tracking-wider transition-all ${
+                    cmsSubTab === "duvets"
+                      ? "bg-primary text-on-primary font-semibold shadow-sm"
+                      : "text-on-surface-variant hover:text-primary hover:bg-surface/50"
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-sm">single_bed</span>
+                  <span>Duvets</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCmsSubTab("shop")}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-label-md uppercase tracking-wider transition-all ${
+                    cmsSubTab === "shop"
+                      ? "bg-primary text-on-primary font-semibold shadow-sm"
+                      : "text-on-surface-variant hover:text-primary hover:bg-surface/50"
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-sm">collections_bookmark</span>
+                  <span>All Pieces (/shop)</span>
                 </button>
 
                 <button
@@ -1444,348 +1895,62 @@ function AdminContent() {
 
             {/* TAB 1: BEDSHEET PAGE HERO BANNER CUSTOMIZER */}
             {cmsSubTab === "bedsheets" && (
-              <div className="space-y-6">
-                {/* Status Bar */}
-                <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2.5">
-                      <span className="material-symbols-outlined text-secondary text-2xl">bed</span>
-                      <h3 className="font-headline-sm text-lg text-primary font-medium">
-                        Bedsheet Page Hero Banner Studio
-                      </h3>
-                      <span className="text-[10px] uppercase tracking-wider bg-secondary/20 text-secondary font-semibold px-2 py-0.5 rounded-full font-mono">
-                        /shop/bedsheets
-                      </span>
-                    </div>
-                    <p className="font-body-sm text-xs text-on-surface-variant">
-                      Customize photography, title, narrative, badge, and CTA displayed at the top of the Bedsheet collection.
-                    </p>
-                  </div>
+              <CategoryBannerStudio
+                title="Bedsheet Page Hero Banner Studio"
+                categoryName="Bedsheet Sets"
+                categoryPath="/shop/bedsheets"
+                icon="bed"
+                banner={cms.bedsheetHero || DEFAULT_BEDSHEET_HERO}
+                defaultBanner={DEFAULT_BEDSHEET_HERO}
+                presets={BED_PRESETS}
+                onSave={updateBedsheetHero}
+                showToast={showToast}
+              />
+            )}
 
-                  <div className="flex items-center gap-3">
-                    <label className="flex items-center gap-2 cursor-pointer text-xs px-3.5 py-2 rounded-lg bg-surface border border-surface-variant/40 hover:border-secondary transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={bedsheetEnabled}
-                        onChange={(e) => setBedsheetEnabled(e.target.checked)}
-                        className="rounded accent-secondary"
-                      />
-                      <span className="font-medium text-primary">
-                        {bedsheetEnabled ? "Banner Enabled" : "Banner Disabled"}
-                      </span>
-                    </label>
-                    <Link
-                      href="/shop/bedsheets"
-                      target="_blank"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface text-primary border border-surface-variant/40 text-xs font-medium hover:border-secondary transition-colors"
-                    >
-                      <span>View Live Page</span>
-                      <span className="material-symbols-outlined text-sm">open_in_new</span>
-                    </Link>
-                  </div>
-                </div>
+            {/* TAB 2: PILLOWS PAGE HERO BANNER CUSTOMIZER */}
+            {cmsSubTab === "pillows" && (
+              <CategoryBannerStudio
+                title="Pillows &amp; Covers Hero Banner Studio"
+                categoryName="Pillows &amp; Covers"
+                categoryPath="/shop/pillows"
+                icon="airline_seat_individual_suite"
+                banner={cms.pillowHero || DEFAULT_PILLOW_HERO}
+                defaultBanner={DEFAULT_PILLOW_HERO}
+                presets={PILLOW_PRESETS}
+                onSave={updatePillowHero}
+                showToast={showToast}
+              />
+            )}
 
-                {/* Real-time Interactive Live Preview */}
-                <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-3">
-                  <div className="flex items-center justify-between border-b border-surface-variant/30 pb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-secondary text-base">visibility</span>
-                      <span className="font-label-md text-xs uppercase tracking-wider text-primary font-semibold">
-                        Real-time Storefront Preview
-                      </span>
-                    </div>
-                    <span className="text-[11px] font-mono text-on-surface-variant">
-                      Live sync to /shop/bedsheets
-                    </span>
-                  </div>
+            {/* TAB 3: DUVETS PAGE HERO BANNER CUSTOMIZER */}
+            {cmsSubTab === "duvets" && (
+              <CategoryBannerStudio
+                title="Duvets &amp; Inserts Hero Banner Studio"
+                categoryName="Duvets &amp; Inserts"
+                categoryPath="/shop/duvets"
+                icon="single_bed"
+                banner={cms.duvetHero || DEFAULT_DUVET_HERO}
+                defaultBanner={DEFAULT_DUVET_HERO}
+                presets={DUVET_PRESETS}
+                onSave={updateDuvetHero}
+                showToast={showToast}
+              />
+            )}
 
-                  <div className="relative w-full rounded-2xl overflow-hidden min-h-[320px] md:min-h-[380px] flex flex-col justify-between p-6 md:p-8 border border-outline-variant/30 bg-neutral-900 shadow-md">
-                    {/* Background image preview */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={bedsheetImageUrl || "/images/hero-bedding.jpg"}
-                      alt="Preview"
-                      className="absolute inset-0 w-full h-full object-cover object-center"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        if (!target.src.endsWith("/images/hero-bedding.jpg")) {
-                          target.src = "/images/hero-bedding.jpg";
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/30 pointer-events-none" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none" />
-
-                    {!bedsheetEnabled && (
-                      <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center text-center p-6 text-white space-y-2">
-                        <span className="material-symbols-outlined text-3xl text-amber-400">visibility_off</span>
-                        <p className="font-headline-sm text-sm font-semibold">Visual Banner Currently Disabled</p>
-                        <p className="font-body-sm text-xs text-white/70 max-w-md">
-                          On /shop/bedsheets, the boutique will display the clean minimalist typographic header instead. Check &ldquo;Banner Enabled&rdquo; to activate this visual editorial banner.
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Preview Top Row */}
-                    <div className="relative z-10 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-1.5 font-label-eyebrow text-[10px] tracking-widest uppercase text-white/80 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
-                        <span>Home</span>
-                        <span className="text-white/40">/</span>
-                        <span>Bedding</span>
-                        <span className="text-white/40">/</span>
-                        <span className="text-secondary font-medium">Bedsheet Sets</span>
-                      </div>
-                      {bedsheetBadge && (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary text-primary font-label-eyebrow text-[10px] font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
-                          <span className="material-symbols-outlined text-[12px]">verified</span>
-                          <span>{bedsheetBadge}</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Preview Bottom Content */}
-                    <div className="relative z-10 space-y-2 pt-12 max-w-xl">
-                      <span className="font-label-eyebrow text-[10px] uppercase tracking-[0.2em] text-secondary font-medium drop-shadow-sm">
-                        {bedsheetEyebrow || "LAYER 01 : FOUNDATIONAL SOFTNESS"}
-                      </span>
-                      <h4 className="font-display-hero text-xl md:text-2xl lg:text-3xl text-white tracking-tight leading-tight drop-shadow-md">
-                        {bedsheetHeadline || "PAK Linen & Percale Bedsheets"}
-                      </h4>
-                      <p className="font-body-sm text-xs text-white/90 leading-relaxed line-clamp-2 drop-shadow-sm">
-                        {bedsheetSubheadline || "Deep pocket fitted sheets and generously turned flat sheets..."}
-                      </p>
-                      <div className="pt-2 flex items-center gap-3">
-                        <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface text-primary font-label-md text-[10px] uppercase tracking-wider font-semibold shadow">
-                          <span>{bedsheetCtaText || "Explore Bedsheet Sets"}</span>
-                          <span className="material-symbols-outlined text-xs">arrow_downward</span>
-                        </div>
-                        <span className="text-[10px] text-white/80 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
-                          Live Storefront Preview
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Form Controls */}
-                <form onSubmit={handleSaveBedsheetHero} className="space-y-6">
-                  {/* Image Customizer & Presets */}
-                  <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between border-b border-surface-variant/30 pb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-secondary text-lg">landscape</span>
-                        <h4 className="font-headline-sm text-sm text-primary font-medium">
-                          Bedsheet Hero Background Photography
-                        </h4>
-                      </div>
-                      <span className="text-[11px] text-on-surface-variant">
-                        High-resolution 16:9 or ultra-wide landscape
-                      </span>
-                    </div>
-
-                    {/* Curated Presets */}
-                    <div>
-                      <label className="block text-xs font-medium text-primary mb-2">
-                        Curated Luxury Bedding Presets (Click to apply)
-                      </label>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        {[
-                          {
-                            name: "Warm Ivory Flax",
-                            desc: "Signature French Normandy",
-                            url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
-                          },
-                          {
-                            name: "Volcanic Pumice Linen",
-                            desc: "Washed Organic Drape",
-                            url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDRofftqisNFZnAIUSYleRpMVRqPllNKXpPVacXAK44OvIFuLdg_JofE-s4TefFOv0XqwHfIXu3fTbRpyORmEUf10FMtUz6AQOTCIZDPelG4gnMnKzebeLXDiuBNcXtLWw4g72Ult4i64ZI7H2s0DlKcx5-M61Q_uC0RFj9hlwhH9vkIMgNARCiaVUT21pKMT8fS0fAVjkCmtTGUqqkQasl15UlqJQGriO9-sQPgX1Utcp3icKTgrtlqw",
-                          },
-                          {
-                            name: "Sanctuary Dawn Suite",
-                            desc: "Morning Light Bedroom",
-                            url: "/images/hero-bedding.jpg",
-                          },
-                          {
-                            name: "Muted Sage Heirloom",
-                            desc: "Calm Botanical Linen",
-                            url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCtOoYRRk0vGHuHkhoXB0ih8gsU0xTM_GGMq5APfzivgWXTvPdiG1uI5jfW5mWymwl1GqLYK1sXDsPR60PueZgV_M9jJ6mR4_ORPyDSiIL6iowMgRPg0-4jAEit5AXiKX7v-AEly6B792PSm3XJMHU-6RS572no-rMjGSSppdgxpLhDfgv4UU7c6EJ6R15wlZW6Qn1QOO6xcHPjvGne-45X8aJ-DoUpGwVFICvJVHXa8qcD5tp2I1-uMg",
-                          },
-                        ].map((preset) => (
-                          <button
-                            key={preset.name}
-                            type="button"
-                            onClick={() => {
-                              setBedsheetImageUrl(preset.url);
-                              showToast(`Applied preset: ${preset.name}`);
-                            }}
-                            className={`group text-left p-2 rounded-lg border transition-all ${
-                              bedsheetImageUrl === preset.url
-                                ? "border-secondary bg-secondary/10 ring-1 ring-secondary"
-                                : "border-surface-variant/50 hover:border-secondary/60 bg-surface"
-                            }`}
-                          >
-                            <div className="relative aspect-[16/9] rounded overflow-hidden mb-1.5 bg-neutral-800">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={preset.url}
-                                alt={preset.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                              />
-                            </div>
-                            <p className="text-xs font-medium text-primary truncate">{preset.name}</p>
-                            <p className="text-[10px] text-on-surface-variant truncate">{preset.desc}</p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Drag and Drop Uploader */}
-                    <div className="pt-2">
-                      <DragDropImageUpload
-                        currentImageUrl={bedsheetImageUrl}
-                        onImageChange={(newUrl) => {
-                          setBedsheetImageUrl(newUrl);
-                          showToast("Bedsheet banner image updated in editor.");
-                        }}
-                        label="Upload Custom Bedsheet Banner Photography or URL"
-                        recommendedAspect="16:9 Landscape Ultra HD (1920x1080 or larger)"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Copy & Narrative Configuration */}
-                  <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-4">
-                    <div className="flex items-center gap-2 border-b border-surface-variant/30 pb-3">
-                      <span className="material-symbols-outlined text-secondary text-lg">edit_note</span>
-                      <h4 className="font-headline-sm text-sm text-primary font-medium">
-                        Editorial Copy &amp; Typography
-                      </h4>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-medium text-primary mb-1">
-                          Eyebrow Subtitle Tagline
-                        </label>
-                        <input
-                          type="text"
-                          value={bedsheetEyebrow}
-                          onChange={(e) => setBedsheetEyebrow(e.target.value)}
-                          placeholder="LAYER 01 : FOUNDATIONAL SOFTNESS"
-                          className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary uppercase tracking-widest focus:outline-none focus:border-secondary"
-                        />
-                        <p className="text-[11px] text-on-surface-variant mt-1">
-                          Appears above the main headline in golden uppercase letters.
-                        </p>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-medium text-primary mb-1">
-                          Provenance / Quality Badge
-                        </label>
-                        <input
-                          type="text"
-                          value={bedsheetBadge}
-                          onChange={(e) => setBedsheetBadge(e.target.value)}
-                          placeholder="100% Normandy Flax"
-                          className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-medium focus:outline-none focus:border-secondary"
-                        />
-                        <p className="text-[11px] text-on-surface-variant mt-1">
-                          Pill badge displayed in the top right corner with verified icon.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-primary mb-1">
-                        Primary Display Headline
-                      </label>
-                      <input
-                        type="text"
-                        value={bedsheetHeadline}
-                        onChange={(e) => setBedsheetHeadline(e.target.value)}
-                        placeholder="PAK Linen & Percale Bedsheets"
-                        className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-serif text-sm focus:outline-none focus:border-secondary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-primary mb-1">
-                        Subheadline Narrative Description
-                      </label>
-                      <textarea
-                        rows={3}
-                        value={bedsheetSubheadline}
-                        onChange={(e) => setBedsheetSubheadline(e.target.value)}
-                        placeholder="Deep pocket fitted sheets and generously turned flat sheets woven from slow-harvested Normandy flax and crisp Aegean percale cotton."
-                        className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary resize-none"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div>
-                        <label className="block text-xs font-medium text-primary mb-1">
-                          CTA Button Label
-                        </label>
-                        <input
-                          type="text"
-                          value={bedsheetCtaText}
-                          onChange={(e) => setBedsheetCtaText(e.target.value)}
-                          placeholder="Explore Bedsheet Sets"
-                          className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-medium text-primary mb-1">
-                          CTA Target Link / Anchor
-                        </label>
-                        <input
-                          type="text"
-                          value={bedsheetCtaLink}
-                          onChange={(e) => setBedsheetCtaLink(e.target.value)}
-                          placeholder="#products-grid"
-                          className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-mono focus:outline-none focus:border-secondary"
-                        />
-                        <p className="text-[11px] text-on-surface-variant mt-1">
-                          Use <code className="bg-surface-variant px-1 rounded">#products-grid</code> to smoothly scroll to the catalog.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Submission and Action Strip */}
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-xl bg-surface-container-low border border-surface-variant/40">
-                    <button
-                      type="button"
-                      onClick={handleResetBedsheetDefaults}
-                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border border-outline-variant/60 text-on-surface-variant hover:text-primary text-xs font-medium transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-sm">restart_alt</span>
-                      <span>Reset to Atelier Defaults</span>
-                    </button>
-
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href="/shop/bedsheets"
-                        target="_blank"
-                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border border-surface-variant bg-surface text-primary text-xs font-medium hover:border-secondary transition-colors"
-                      >
-                        <span>Preview on Storefront</span>
-                        <span className="material-symbols-outlined text-sm">open_in_new</span>
-                      </Link>
-
-                      <button
-                        type="submit"
-                        className="inline-flex items-center gap-2 px-8 py-3 rounded bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors shadow-lg"
-                      >
-                        <span className="material-symbols-outlined text-sm">publish</span>
-                        <span>Publish Bedsheet Banner Live</span>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+            {/* TAB 4: ALL PIECES / SHOP HERO BANNER CUSTOMIZER */}
+            {cmsSubTab === "shop" && (
+              <CategoryBannerStudio
+                title="All Collections Archive Hero Banner Studio"
+                categoryName="All Collections"
+                categoryPath="/shop"
+                icon="collections_bookmark"
+                banner={cms.shopHero || DEFAULT_SHOP_HERO}
+                defaultBanner={DEFAULT_SHOP_HERO}
+                presets={SHOP_PRESETS}
+                onSave={updateShopHero}
+                showToast={showToast}
+              />
             )}
 
             {/* TAB 2: HOMEPAGE HERO BANNER */}

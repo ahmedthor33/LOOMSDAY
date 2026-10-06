@@ -2,9 +2,9 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { Product } from "@/types";
+import { Product, StorefrontCms } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
-import { useAdminStore } from "@/store/useAdminStore";
+import { useAdminStore, DEFAULT_SHOP_HERO } from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { formatCurrency } from "@/lib/utils";
@@ -21,8 +21,9 @@ const normalizeCategory = (cat?: string): string => {
 };
 
 export default function ShopPage() {
-  const { products } = useAdminStore();
+  const { products, cms } = useAdminStore();
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
+  const [localCms, setLocalCms] = useState<StorefrontCms | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -38,6 +39,9 @@ export default function ShopPage() {
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
           }
+          if (parsed?.state?.cms && !isCancelled) {
+            setLocalCms(parsed.state.cms);
+          }
         }
       } catch {}
 
@@ -48,6 +52,9 @@ export default function ShopPage() {
           const parsed = JSON.parse(idbRaw);
           if (Array.isArray(parsed?.state?.products) && !isCancelled) {
             setLocalProducts(parsed.state.products);
+          }
+          if (parsed?.state?.cms && !isCancelled) {
+            setLocalCms(parsed.state.cms);
           }
         }
       } catch {}
@@ -164,55 +171,152 @@ export default function ShopPage() {
     if (key === "price") setFilters((f) => ({ ...f, maxPrice: 100000 }));
   };
 
+  const activeCms = localCms || cms;
+  const shopBanner = activeCms?.shopHero || DEFAULT_SHOP_HERO;
+
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-8">
-      {/* Top Editorial Header & Breadcrumbs */}
-      <section className="mb-10">
-        {/* Breadcrumb Hierarchy */}
-        <nav className="flex items-center gap-2 mb-6 font-label-eyebrow text-label-eyebrow tracking-widest uppercase text-on-surface-variant/80">
-          <Link href="/" className="hover:text-primary transition-colors">
-            Home
-          </Link>
-          <span className="text-[10px] text-outline-variant">/</span>
-          <span className="hover:text-primary transition-colors cursor-pointer">Bedding</span>
-          <span className="text-[10px] text-outline-variant">/</span>
-          <span className="text-primary font-medium">All Collections</span>
-        </nav>
+      {/* Top Editorial Hero Banner */}
+      {shopBanner.enabled !== false ? (
+        <section className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mb-8 shadow-xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-between p-6 sm:p-10 lg:p-12 border border-outline-variant/30 bg-surface-container-high">
+          {/* Background Editorial Image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={shopBanner.imageUrl || "/images/hero-bedding.jpg"}
+            alt={shopBanner.headline}
+            className="absolute inset-0 w-full h-full object-cover object-center scale-100 hover:scale-105 transition-transform duration-1000 ease-out"
+            loading="eager"
+            // @ts-expect-error fetchpriority is standard in modern browsers
+            fetchpriority="high"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.src.endsWith("/images/hero-bedding.jpg")) {
+                target.src = "/images/hero-bedding.jpg";
+              }
+            }}
+          />
 
-        {/* Editorial Header Block */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-8 space-y-4">
+          {/* Sophisticated Dark Cinematic Scrim Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none" />
+
+          {/* Top Header Row with Glassy Breadcrumbs & Provenance Badge */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+            <nav className="flex items-center gap-2 font-label-eyebrow text-[11px] tracking-widest uppercase text-white/80 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
+              <Link href="/" className="hover:text-secondary transition-colors">
+                Home
+              </Link>
+              <span className="text-[10px] text-white/40">/</span>
+              <span className="hover:text-secondary transition-colors cursor-pointer">Bedding</span>
+              <span className="text-[10px] text-white/40">/</span>
+              <span className="text-secondary font-medium">All Collections</span>
+            </nav>
+
+            {shopBanner.badge && (
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-secondary/90 text-primary font-label-eyebrow text-[11px] font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm border border-secondary/30">
+                <span className="material-symbols-outlined text-[14px]">verified</span>
+                <span>{shopBanner.badge}</span>
+              </span>
+            )}
+          </div>
+
+          {/* Hero Narrative & CTA Controls */}
+          <div className="relative z-10 space-y-4 max-w-3xl pt-16 sm:pt-20">
             <div className="flex items-center gap-3">
-              <span className="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">
-                Slow-Crafted Linens
-              </span>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-xs">
-                {allProducts.length} Sanctuary Pieces
+              <span className="font-label-eyebrow text-xs uppercase tracking-[0.25em] text-secondary font-medium drop-shadow-sm">
+                {shopBanner.eyebrow}
               </span>
             </div>
-            <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-primary tracking-tight">
-              The Bedding Collection
+
+            <h1 className="font-display-hero text-headline-lg sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.12] drop-shadow-md">
+              {shopBanner.headline}
             </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-              Spun from slow-harvested French flax and organic Aegean cotton. Naturally thermoregulating, hypoallergenic, and consciously tailored to soften gracefully over decades.
+
+            <p className="font-body-lg text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed max-w-2xl drop-shadow-sm">
+              {shopBanner.subheadline}
             </p>
-          </div>
 
-          {/* Quick Trust Indicators */}
-          <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end lg:items-end">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded bg-surface-container-low text-on-surface text-body-sm text-xs shadow-sm border border-surface-variant/30">
-              <span className="material-symbols-outlined text-secondary text-[20px]">verified</span>
-              <span>OEKO-TEX® Standard 100 Guaranteed</span>
-            </div>
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded bg-surface-container-low text-on-surface text-body-sm text-xs shadow-sm border border-surface-variant/30">
-              <span className="material-symbols-outlined text-secondary text-[20px]">hotel</span>
-              <span>30-Night Restful Slumber Trial</span>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <a
+                href={shopBanner.ctaLink || "#products-grid"}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface text-primary font-label-md text-xs uppercase tracking-widest font-semibold hover:bg-surface-variant hover:scale-[1.02] active:scale-[0.98] transition-all shadow-md"
+              >
+                <span>{shopBanner.ctaText || "Explore All Pieces"}</span>
+                <span className="material-symbols-outlined text-sm">arrow_downward</span>
+              </a>
+              <span className="inline-flex items-center px-4 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/15 text-white text-xs font-label-sm tracking-wide">
+                {allProducts.length} {allProducts.length === 1 ? "Piece" : "Pieces"} in Archive
+              </span>
             </div>
           </div>
+        </section>
+      ) : (
+        <section className="mb-10">
+          {/* Breadcrumb Hierarchy */}
+          <nav className="flex items-center gap-2 mb-6 font-label-eyebrow text-label-eyebrow tracking-widest uppercase text-on-surface-variant/80">
+            <Link href="/" className="hover:text-primary transition-colors">
+              Home
+            </Link>
+            <span className="text-[10px] text-outline-variant">/</span>
+            <span className="hover:text-primary transition-colors cursor-pointer">Bedding</span>
+            <span className="text-[10px] text-outline-variant">/</span>
+            <span className="text-primary font-medium">All Collections</span>
+          </nav>
+
+          {/* Editorial Header Block */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8 space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">
+                  {shopBanner.eyebrow}
+                </span>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-xs">
+                  {allProducts.length} Sanctuary Pieces
+                </span>
+              </div>
+              <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-primary tracking-tight">
+                {shopBanner.headline}
+              </h1>
+              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                {shopBanner.subheadline}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Navigation Tabs Strip */}
+      <section className="mb-6">
+        <div className="flex items-center gap-2 pt-2 overflow-x-auto pb-1">
+          <Link
+            href="/shop"
+            className="px-4 py-2 rounded-full text-xs font-label-md uppercase tracking-wider bg-primary text-on-primary font-semibold shadow-sm shrink-0"
+          >
+            All Pieces
+          </Link>
+          <Link
+            href="/shop/bedsheets"
+            className="px-4 py-2 rounded-full text-xs font-label-md uppercase tracking-wider bg-surface-container hover:bg-surface-variant text-on-surface transition-colors shrink-0"
+          >
+            Bedsheet Sets
+          </Link>
+          <Link
+            href="/shop/pillows"
+            className="px-4 py-2 rounded-full text-xs font-label-md uppercase tracking-wider bg-surface-container hover:bg-surface-variant text-on-surface transition-colors shrink-0"
+          >
+            Pillows &amp; Covers
+          </Link>
+          <Link
+            href="/shop/duvets"
+            className="px-4 py-2 rounded-full text-xs font-label-md uppercase tracking-wider bg-surface-container hover:bg-surface-variant text-on-surface transition-colors shrink-0"
+          >
+            Duvets &amp; Inserts
+          </Link>
         </div>
+      </section>
 
-        {/* Active Filters & Controls Strip */}
-        <div className="mt-8 pt-5 pb-4 bg-surface-container-low/60 rounded-xl px-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-surface-variant/30">
+      {/* Active Filters & Controls Strip */}
+      <section className="mb-8 pt-5 pb-4 bg-surface-container-low/60 rounded-xl px-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-surface-variant/30">
           {/* Left: Active Filter Chips */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-label-eyebrow text-label-eyebrow uppercase tracking-wider text-on-surface-variant mr-1">
@@ -312,11 +416,10 @@ export default function ShopPage() {
               </button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Main Catalog Grid (Sidebar 3 Cols | Products 9 Cols) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div id="products-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Filter Sidebar */}
         <div className="lg:col-span-3">
           <ProductFilters

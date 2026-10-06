@@ -4,7 +4,12 @@ import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Product, StorefrontCms } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
-import { useAdminStore, DEFAULT_BEDSHEET_HERO } from "@/store/useAdminStore";
+import {
+  useAdminStore,
+  DEFAULT_BEDSHEET_HERO,
+  DEFAULT_PILLOW_HERO,
+  DEFAULT_DUVET_HERO,
+} from "@/store/useAdminStore";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters, FilterState } from "@/components/product/ProductFilters";
 import { idbGet } from "@/lib/robust-storage";
@@ -131,15 +136,52 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
     return PRODUCTS.length > 0 ? PRODUCTS : [];
   }, [products, localProducts]);
 
-  const activeCms = cms?.bedsheetHero ? cms : (localCms || cms);
-  const rawBedsheetHero = activeCms?.bedsheetHero || DEFAULT_BEDSHEET_HERO;
-  const bedsheetBanner = {
-    ...rawBedsheetHero,
-    headline:
-      !rawBedsheetHero.headline || rawBedsheetHero.headline === "French Linen & Percale Bedsheets"
-        ? "PAK Linen & Percale Bedsheets"
-        : rawBedsheetHero.headline,
-  };
+  const activeCms = localCms || cms;
+
+  const activeBanner = useMemo(() => {
+    if (activeSlug === "bedsheets") {
+      const b = activeCms?.bedsheetHero || DEFAULT_BEDSHEET_HERO;
+      return {
+        ...b,
+        headline:
+          !b.headline || b.headline === "French Linen & Percale Bedsheets"
+            ? "PAK Linen & Percale Bedsheets"
+            : b.headline,
+        breadcrumbLabel: "Bedsheet Sets",
+        defaultCtaText: "Explore Bedsheet Sets",
+      };
+    }
+    if (activeSlug === "pillows") {
+      const p = activeCms?.pillowHero || DEFAULT_PILLOW_HERO;
+      return {
+        ...p,
+        breadcrumbLabel: "Pillows & Covers",
+        defaultCtaText: "Explore Pillows & Covers",
+      };
+    }
+    if (activeSlug === "duvets") {
+      const d = activeCms?.duvetHero || DEFAULT_DUVET_HERO;
+      return {
+        ...d,
+        breadcrumbLabel: "Duvets & Inserts",
+        defaultCtaText: "Explore Duvets & Inserts",
+      };
+    }
+    const catName = activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1);
+    const meta = CATEGORY_META[activeSlug];
+    return {
+      enabled: true,
+      eyebrow: meta?.subtitle || "ATELIER ARCHIVE",
+      headline: meta?.title || `${catName} Collection`,
+      subheadline: meta?.description || "Handcrafted luxury linens and bedding pieces tailored for quiet sanctuary.",
+      badge: "Curated Atelier Pieces",
+      imageUrl: "/images/hero-bedding.jpg",
+      ctaText: `Explore ${catName}`,
+      ctaLink: "#products-grid",
+      breadcrumbLabel: catName,
+      defaultCtaText: `Explore ${catName}`,
+    };
+  }, [activeSlug, activeCms]);
 
   const meta = CATEGORY_META[activeSlug] || {
     title: `${activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1)} Collection`,
@@ -226,14 +268,14 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
 
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-8">
-      {/* Top Hero Section: Bespoke Hero Banner for Bedsheets, Standard Typographic for other archives */}
-      {activeSlug === "bedsheets" && bedsheetBanner.enabled !== false ? (
+      {/* Top Hero Section: Bespoke Hero Banner for All Categories */}
+      {activeBanner.enabled !== false ? (
         <section className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mb-8 shadow-xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-between p-6 sm:p-10 lg:p-12 border border-outline-variant/30 bg-surface-container-high">
           {/* Background Editorial Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={bedsheetBanner.imageUrl || "/images/hero-bedding.jpg"}
-            alt={bedsheetBanner.headline}
+            src={activeBanner.imageUrl || "/images/hero-bedding.jpg"}
+            alt={activeBanner.headline}
             className="absolute inset-0 w-full h-full object-cover object-center scale-100 hover:scale-105 transition-transform duration-1000 ease-out"
             loading="eager"
             // @ts-expect-error fetchpriority is standard in modern browsers
@@ -261,13 +303,13 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
                 Bedding
               </Link>
               <span className="text-[10px] text-white/40">/</span>
-              <span className="text-secondary font-medium">Bedsheet Sets</span>
+              <span className="text-secondary font-medium">{activeBanner.breadcrumbLabel}</span>
             </nav>
 
-            {bedsheetBanner.badge && (
+            {activeBanner.badge && (
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-secondary/90 text-primary font-label-eyebrow text-[11px] font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm border border-secondary/30">
                 <span className="material-symbols-outlined text-[14px]">verified</span>
-                <span>{bedsheetBanner.badge}</span>
+                <span>{activeBanner.badge}</span>
               </span>
             )}
           </div>
@@ -276,24 +318,24 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
           <div className="relative z-10 space-y-4 max-w-3xl pt-16 sm:pt-20">
             <div className="flex items-center gap-3">
               <span className="font-label-eyebrow text-xs uppercase tracking-[0.25em] text-secondary font-medium drop-shadow-sm">
-                {bedsheetBanner.eyebrow}
+                {activeBanner.eyebrow}
               </span>
             </div>
 
             <h1 className="font-display-hero text-headline-lg sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.12] drop-shadow-md">
-              {bedsheetBanner.headline}
+              {activeBanner.headline}
             </h1>
 
             <p className="font-body-lg text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed max-w-2xl drop-shadow-sm">
-              {bedsheetBanner.subheadline}
+              {activeBanner.subheadline}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
-                href={bedsheetBanner.ctaLink || "#products-grid"}
+                href={activeBanner.ctaLink || "#products-grid"}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface text-primary font-label-md text-xs uppercase tracking-widest font-semibold hover:bg-surface-variant hover:scale-[1.02] active:scale-[0.98] transition-all shadow-md"
               >
-                <span>{bedsheetBanner.ctaText || "Explore Bedsheet Sets"}</span>
+                <span>{activeBanner.ctaText || activeBanner.defaultCtaText}</span>
                 <span className="material-symbols-outlined text-sm">arrow_downward</span>
               </a>
               <span className="inline-flex items-center px-4 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/15 text-white text-xs font-label-sm tracking-wide">

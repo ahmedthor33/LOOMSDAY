@@ -86,7 +86,10 @@ interface AdminState {
   // Storefront CMS & Marketing
   cms: StorefrontCms;
   updateHero: (hero: Partial<StorefrontCms["hero"]>) => void;
+  updateShopHero: (shopHero: Partial<CategoryHeroBanner>) => void;
   updateBedsheetHero: (bedsheetHero: Partial<CategoryHeroBanner>) => void;
+  updatePillowHero: (pillowHero: Partial<CategoryHeroBanner>) => void;
+  updateDuvetHero: (duvetHero: Partial<CategoryHeroBanner>) => void;
   updateAnnouncement: (announcement: Partial<StorefrontCms["announcement"]>) => void;
   updateProvenance: (provenance: Partial<StorefrontCms["provenance"]>) => void;
   updateMarketing: (marketing: Partial<NonNullable<StorefrontCms["marketing"]>>) => void;
@@ -166,6 +169,18 @@ const INITIAL_SHIPPING: ShippingSettings = {
   estimatedDeliveryDays: "2 - 4 Business Days (TCS / Leopard)",
 };
 
+export const DEFAULT_SHOP_HERO: CategoryHeroBanner = {
+  enabled: true,
+  eyebrow: "THE COMPLETE ARCHIVE : 55 PIECES",
+  headline: "Architectural Repose & Linen Craft",
+  subheadline:
+    "Explore the complete LOOMSDAY atelier collection—from pure Normandy flax bedsheets to Hungarian goose down duvet inserts and silk envelope pillowcases.",
+  badge: "Mastercrafted in France & PK",
+  imageUrl: "/images/hero-bedding.jpg",
+  ctaText: "Explore All Collections",
+  ctaLink: "#products-grid",
+};
+
 export const DEFAULT_BEDSHEET_HERO: CategoryHeroBanner = {
   enabled: true,
   eyebrow: "LAYER 01 : FOUNDATIONAL SOFTNESS",
@@ -176,6 +191,32 @@ export const DEFAULT_BEDSHEET_HERO: CategoryHeroBanner = {
   imageUrl:
     "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
   ctaText: "Explore Bedsheet Sets",
+  ctaLink: "#products-grid",
+};
+
+export const DEFAULT_PILLOW_HERO: CategoryHeroBanner = {
+  enabled: true,
+  eyebrow: "LAYER 02 : CERVICAL ELEVATION",
+  headline: "Sanctuary Pillows & Linen Shams",
+  subheadline:
+    "Cloud-loft Bavarian goose down, natural Talalay latex contour cores, and enzyme-washed French linen envelope pillowcases crafted for restorative rest.",
+  badge: "Normandy Flax & Pure Down",
+  imageUrl:
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuAZln3uLX8fzZHDzCdaDgClEvINVhmgMFiG4LsS37402s-SGkXCoE-TIQUWYQ1VX43haCPKu1WNH7BQaD8dnuGl_BXE7OZhLfJ8XcDReVMe9ij43mIRCzskGIHasidrAkhdA9-DJbD0cUNCDiX3kmjrd5ayu3p-M_XEE7KUfQHaP4S7q3kc4IDU28mLbYpUATW3foxTcK2jNND0uSjpwPbtrqE39A80lzluICl4QyPAiAmbRiBPNq_Bjg",
+  ctaText: "Explore Pillows & Shams",
+  ctaLink: "#products-grid",
+};
+
+export const DEFAULT_DUVET_HERO: CategoryHeroBanner = {
+  enabled: true,
+  eyebrow: "LAYER 03 : RESTFUL EMBRACE",
+  headline: "All-Season Duvet Covers & Down Inserts",
+  subheadline:
+    "Weightless thermal regulation tailored with 3D baffle-box European goose down inserts and breathable enzyme-washed linen duvet covers.",
+  badge: "3D Baffle-Box Craft",
+  imageUrl:
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuCtOoYRRk0vGHuHkhoXB0ih8gsU0xTM_GGMq5APfzivgWXTvPdiG1uI5jfW5mWymwl1GqLYK1sXDsPR60PueZgV_M9jJ6mR4_ORPyDSiIL6iowMgRPg0-4jAEit5AXiKX7v-AEly6B792PSm3XJMHU-6RS572no-rMjGSSppdgxpLhDfgv4UU7c6EJ6R15wlZW6Qn1QOO6xcHPjvGne-45X8aJ-DoUpGwVFICvJVHXa8qcD5tp2I1-uMg",
+  ctaText: "Explore Duvets & Covers",
   ctaLink: "#products-grid",
 };
 
@@ -196,7 +237,10 @@ const INITIAL_CMS: StorefrontCms = {
     secondaryCtaLink: "/shop/duvets",
     imageUrl: "/images/hero-bedding.jpg",
   },
+  shopHero: DEFAULT_SHOP_HERO,
   bedsheetHero: DEFAULT_BEDSHEET_HERO,
+  pillowHero: DEFAULT_PILLOW_HERO,
+  duvetHero: DEFAULT_DUVET_HERO,
   provenance: {
     badge: "SLOW CRAFT & PROVENANCE",
     title: "Centuries of Normandy flax cultivation meets contemporary architectural repose.",
@@ -605,6 +649,19 @@ export const useAdminStore = create<AdminState>()(
         notifyStoreUpdated();
       },
 
+      updateShopHero: (shopHero) => {
+        set((state) => ({
+          cms: {
+            ...state.cms,
+            shopHero: {
+              ...(state.cms?.shopHero || DEFAULT_SHOP_HERO),
+              ...shopHero,
+            },
+          },
+        }));
+        notifyStoreUpdated();
+      },
+
       updateBedsheetHero: (bedsheetHero) => {
         set((state) => ({
           cms: {
@@ -612,6 +669,32 @@ export const useAdminStore = create<AdminState>()(
             bedsheetHero: {
               ...(state.cms?.bedsheetHero || DEFAULT_BEDSHEET_HERO),
               ...bedsheetHero,
+            },
+          },
+        }));
+        notifyStoreUpdated();
+      },
+
+      updatePillowHero: (pillowHero) => {
+        set((state) => ({
+          cms: {
+            ...state.cms,
+            pillowHero: {
+              ...(state.cms?.pillowHero || DEFAULT_PILLOW_HERO),
+              ...pillowHero,
+            },
+          },
+        }));
+        notifyStoreUpdated();
+      },
+
+      updateDuvetHero: (duvetHero) => {
+        set((state) => ({
+          cms: {
+            ...state.cms,
+            duvetHero: {
+              ...(state.cms?.duvetHero || DEFAULT_DUVET_HERO),
+              ...duvetHero,
             },
           },
         }));

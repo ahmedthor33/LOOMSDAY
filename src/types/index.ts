@@ -176,6 +176,7 @@ export interface StorefrontCms {
     secondaryCtaLink: string;
     imageUrl: string;
   };
+  shopHero?: CategoryHeroBanner;
   bedsheetHero?: CategoryHeroBanner;
   pillowHero?: CategoryHeroBanner;
   duvetHero?: CategoryHeroBanner;
