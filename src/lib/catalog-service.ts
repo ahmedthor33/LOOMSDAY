@@ -120,6 +120,15 @@ export async function fetchSupabaseProducts(): Promise<Product[] | null> {
       };
     });
 
+    // Ensure all master catalog products from PRODUCTS are included even if Supabase has fewer items
+    const existingSlugs = new Set(mapped.map((m) => m.slug));
+    const existingIds = new Set(mapped.map((m) => m.id));
+    for (const bp of PRODUCTS) {
+      if (!existingSlugs.has(bp.slug) && !existingIds.has(bp.id)) {
+        mapped.push(bp);
+      }
+    }
+
     return mapped;
   } catch (err) {
     console.warn("[LOOMSDAY Catalog] Unexpected error fetching Supabase catalog:", err);

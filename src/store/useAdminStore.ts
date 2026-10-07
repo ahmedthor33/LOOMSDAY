@@ -171,7 +171,7 @@ const INITIAL_SHIPPING: ShippingSettings = {
 
 export const DEFAULT_SHOP_HERO: CategoryHeroBanner = {
   enabled: true,
-  eyebrow: "THE COMPLETE ARCHIVE : 55 PIECES",
+  eyebrow: "THE COMPLETE ARCHIVE : 81 PIECES",
   headline: "Architectural Repose & Linen Craft",
   subheadline:
     "Explore the complete LOOMSDAY atelier collection—from pure Normandy flax bedsheets to Hungarian goose down duvet inserts and silk envelope pillowcases.",
@@ -864,8 +864,18 @@ export const useAdminStore = create<AdminState>()(
         },
       })),
       onRehydrateStorage: () => (state) => {
-        if (state && (!Array.isArray(state.products) || state.products.length === 0)) {
-          state.products = PRODUCTS;
+        if (state) {
+          if (!Array.isArray(state.products) || state.products.length === 0) {
+            state.products = PRODUCTS;
+          } else if (state.products.length < PRODUCTS.length) {
+            const existingMap = new Map(state.products.map((p) => [p.slug || p.id, p]));
+            PRODUCTS.forEach((p) => {
+              if (!existingMap.has(p.slug || p.id)) {
+                existingMap.set(p.slug || p.id, p);
+              }
+            });
+            state.products = Array.from(existingMap.values());
+          }
         }
       },
     }

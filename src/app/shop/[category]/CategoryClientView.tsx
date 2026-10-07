@@ -115,7 +115,14 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
       try {
         const cloudProds = await fetchSupabaseProducts();
         if (cloudProds && cloudProds.length > 0 && !isCancelled) {
-          setLocalProducts(cloudProds);
+          const mergedMap = new Map<string, Product>();
+          cloudProds.forEach((p) => mergedMap.set(p.slug || p.id, p));
+          PRODUCTS.forEach((p) => {
+            if (!mergedMap.has(p.slug || p.id)) {
+              mergedMap.set(p.slug || p.id, p);
+            }
+          });
+          setLocalProducts(Array.from(mergedMap.values()));
         }
       } catch {}
     };

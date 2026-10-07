@@ -2,6 +2,1488 @@ import { Product } from "@/types";
 
 export const PRODUCTS: Product[] = [
   {
+    "id": "prod-1791392411242-eve6m",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-26",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791392411242-1",
+        "productId": "prod-1791392411242-eve6m",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-26.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791392411242-1",
+        "productId": "prod-1791392411242-eve6m",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791392362845-de52o",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-25",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791392362845-1",
+        "productId": "prod-1791392362845-de52o",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-25.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791392362845-1",
+        "productId": "prod-1791392362845-de52o",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791392291191-dxdj9",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-24",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791392291191-1",
+        "productId": "prod-1791392291191-dxdj9",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-24.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791392303090-1",
+        "productId": "prod-1791392291191-dxdj9",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791392228021-lte9i",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-23",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791392228021-1",
+        "productId": "prod-1791392228021-lte9i",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-23.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791392228021-1",
+        "productId": "prod-1791392228021-lte9i",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791392169206-cpdmr",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-22",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791392169206-1",
+        "productId": "prod-1791392169206-cpdmr",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-22.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791392169206-1",
+        "productId": "prod-1791392169206-cpdmr",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791392081029-i29bo",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-21",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100%Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791392081029-1",
+        "productId": "prod-1791392081029-i29bo",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-21.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791392108439-1",
+        "productId": "prod-1791392081029-i29bo",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391946154-u78c8",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-20",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391946154-1",
+        "productId": "prod-1791391946154-u78c8",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-20.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391946154-1",
+        "productId": "prod-1791391946154-u78c8",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391885902-k76u9",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-19",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391885902-1",
+        "productId": "prod-1791391885902-k76u9",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-19.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391885902-1",
+        "productId": "prod-1791391885902-k76u9",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391824143-kufln",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-18",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391824143-1",
+        "productId": "prod-1791391824143-kufln",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-18.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391824143-1",
+        "productId": "prod-1791391824143-kufln",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391759117-9vwsq",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-17",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391759117-1",
+        "productId": "prod-1791391759117-9vwsq",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-17.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391759117-1",
+        "productId": "prod-1791391759117-9vwsq",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391632230-q7ol3",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-16",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391632230-1",
+        "productId": "prod-1791391632230-q7ol3",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-16.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391632230-1",
+        "productId": "prod-1791391632230-q7ol3",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391571176-0x16k",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-15",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391571176-1",
+        "productId": "prod-1791391571176-0x16k",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-15.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391571176-1",
+        "productId": "prod-1791391571176-0x16k",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391385721-txrtv",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-14",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391385721-1",
+        "productId": "prod-1791391385721-txrtv",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-14.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391483370-1",
+        "productId": "prod-1791391385721-txrtv",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391300257-44h9k",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-13",
+    "tagline": "Stone-Washed Normandy Flax • Impossibly Soft",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% French Flax Linen",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391300257-1",
+        "productId": "prod-1791391300257-44h9k",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-13.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391300257-1",
+        "productId": "prod-1791391300257-44h9k",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391253637-l8bhm",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-12",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391253637-1",
+        "productId": "prod-1791391253637-l8bhm",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-12.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391253637-1",
+        "productId": "prod-1791391253637-l8bhm",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391181447-coqf9",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-11",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391181447-1",
+        "productId": "prod-1791391181447-coqf9",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-11.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391181447-1",
+        "productId": "prod-1791391181447-coqf9",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391102803-vbud8",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-10",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391102803-1",
+        "productId": "prod-1791391102803-vbud8",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-10.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391102803-1",
+        "productId": "prod-1791391102803-vbud8",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791391038500-2lq21",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-9",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791391038500-1",
+        "productId": "prod-1791391038500-2lq21",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-9.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791391038500-1",
+        "productId": "prod-1791391038500-2lq21",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390963064-uhm71",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-8",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390963064-1",
+        "productId": "prod-1791390963064-uhm71",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-8.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390963064-1",
+        "productId": "prod-1791390963064-uhm71",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390897908-tlktd",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-7",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100%Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390897908-1",
+        "productId": "prod-1791390897908-tlktd",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-7.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390897908-1",
+        "productId": "prod-1791390897908-tlktd",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390833292-dn59q",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-6",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390833292-1",
+        "productId": "prod-1791390833292-dn59q",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-6.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390833292-1",
+        "productId": "prod-1791390833292-dn59q",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390762970-hfo2q",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-5",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390762970-1",
+        "productId": "prod-1791390762970-hfo2q",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-5.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390762970-1",
+        "productId": "prod-1791390762970-hfo2q",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390692217-nu6yf",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-4",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3599,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390692218-1",
+        "productId": "prod-1791390692217-nu6yf",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-4.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390692218-1",
+        "productId": "prod-1791390692217-nu6yf",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3599,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390618530-h320i",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-3",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390618530-1",
+        "productId": "prod-1791390618530-h320i",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-3.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390618530-1",
+        "productId": "prod-1791390618530-h320i",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390550700-gehtu",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size-2",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.\nWhy You'll Love It\n\nIt looks like a luxury hotel bed, feels soft against the skin, and the design stays vibrant for a long time. The matching pieces mean you don't have to buy extras to style your bed.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4500,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% Velvet Jacquard",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390550700-1",
+        "productId": "prod-1791390550700-gehtu",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size-2.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390550700-1",
+        "productId": "prod-1791390550700-gehtu",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4500,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
+    "id": "prod-1791390410710-w0qva",
+    "name": "4Pc Velvet Jacquard Bedsheet Set (King Size)",
+    "slug": "4pc-velvet-jacquard-bedsheet-set-king-size",
+    "tagline": "Plush velvet. Woven luxury. Colour that lasts.",
+    "description": "4Pc Velvet Jacquard Bedsheet Set (King Size)\n\nTagline: Plush velvet. Woven luxury. Colour that lasts.\n\nOverview\n\nGive your bedroom the look of a boutique hotel suite. This 4-piece King Size set is made from rich velvet jacquard, a fabric known for its soft, plush feel and its elegant woven pattern. The pattern is woven into the fabric rather than printed on it, so the design has depth, texture and a subtle sheen that catches the light. It suits both modern and classic décor, and it works well for everyday use as well as for wedding, gifting and festive occasions.\n\nWhat's in the Set\nPiece\tQuantity\tSize\nBedsheet\t1\t95 × 95 inches\nPillow Covers\t2\t19 × 29 inches\nCushion Cover\t1\t15 × 15 inches\n\nThe generous 95 × 95 inch bedsheet covers a King Size bed with room to tuck in. The pillow covers fit standard bed pillows, and the matching cushion cover adds a finishing touch.\n\nKey Features\nVelvet jacquard fabric: soft and smooth to the touch, with a rich, premium look.\nWoven pattern: the design is built into the fabric, so it won't fade or peel like a surface print.\n100% colour guarantee: the colours stay vivid and true, wash after wash.\nComplete coordinated set: the bedsheet, pillow covers and cushion cover match, so the bed looks styled straight away.\nWarm and cosy feel: velvet is comfortable and inviting, especially in cooler months.\nGift-worthy: a good choice for weddings, housewarmings and festive gifting.\nCare Instructions\nWash gently in cold or lukewarm water.\nWash with similar colours and turn the pieces inside out.\nUse a mild detergent and avoid bleach.\nDry in shade and iron on low heat on the reverse side.",
+    "category": "bedsheets",
+    "categoryLabel": "Bedsheets",
+    "basePrice": 3500,
+    "retailPrice": 4700,
+    "rating": 5,
+    "reviewCount": 1,
+    "material": "100% French Flax Linen",
+    "origin": "",
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "availableSizes": [
+      "King"
+    ],
+    "availableColors": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "Soft Sand",
+        "hex": "#E8DFD0"
+      },
+      {
+        "name": "Muted Sage",
+        "hex": "#C2C9BC"
+      }
+    ],
+    "images": [
+      {
+        "id": "img-1791390410710-1",
+        "productId": "prod-1791390410710-w0qva",
+        "url": "/images/products/4pc-velvet-jacquard-bedsheet-set-king-size.jpg",
+        "altText": "4Pc Velvet Jacquard Bedsheet Set (King Size) styled in luxury bedroom setting",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-1791390410710-1",
+        "productId": "prod-1791390410710-w0qva",
+        "size": "King",
+        "colorName": "Warm Ivory",
+        "colorHex": "#FAF7F2",
+        "price": 3500,
+        "retailPrice": 4700,
+        "stock": 30,
+        "sku": "4PC--KI-IVR"
+      }
+    ]
+  },
+  {
     "id": "prod-1791279316347-uvjj0",
     "name": "3pc Export Quality Pure Cotton Bedsheets",
     "slug": "3pc-export-quality-pure-cotton-bedsheets-33",
@@ -54,7 +1536,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-33-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -111,7 +1593,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-32-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -168,7 +1650,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-31-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -225,7 +1707,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-30-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -282,7 +1764,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-29-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -339,7 +1821,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-28-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -396,7 +1878,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-27-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -453,7 +1935,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-26-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -510,7 +1992,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-25-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -567,7 +2049,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-24-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -624,7 +2106,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-23-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -681,7 +2163,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-22-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -738,7 +2220,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-21-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -795,7 +2277,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-20-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -852,7 +2334,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-19-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -909,7 +2391,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-18-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -966,7 +2448,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-17-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1023,7 +2505,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-16-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1080,7 +2562,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-15-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1137,7 +2619,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-14-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1194,7 +2676,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-13-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1251,7 +2733,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-12-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1308,7 +2790,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-11-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1365,7 +2847,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-10-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1422,7 +2904,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-9-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1479,7 +2961,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-8-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1536,7 +3018,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-7-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1593,7 +3075,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-6-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1650,7 +3132,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-5-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1707,7 +3189,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-4-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1764,7 +3246,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-3-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1821,7 +3303,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2700,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-2-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1878,7 +3360,7 @@ export const PRODUCTS: Product[] = [
         "price": 1900,
         "retailPrice": 2800,
         "stock": 30,
-        "sku": "SKU-3PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-1"
+        "sku": "3PC--KI-IVR"
       }
     ]
   },
@@ -1935,7 +3417,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-22-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -1992,7 +3474,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-21-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2049,7 +3531,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-20-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2106,7 +3588,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-19-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2163,7 +3645,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-18-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2220,7 +3702,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-17-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2277,7 +3759,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-16-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2334,7 +3816,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-15-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2391,7 +3873,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-14-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2448,7 +3930,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-13-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2505,7 +3987,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-12-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2562,7 +4044,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-11-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2619,7 +4101,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-10-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2676,7 +4158,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-9-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2733,7 +4215,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-8-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2790,7 +4272,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-7-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2847,7 +4329,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-6-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2904,7 +4386,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-5-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -2961,7 +4443,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-4-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -3018,7 +4500,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-3-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -3075,7 +4557,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-2-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   },
@@ -3132,7 +4614,7 @@ export const PRODUCTS: Product[] = [
         "price": 2050,
         "retailPrice": 3500,
         "stock": 30,
-        "sku": "SKU-5-PC-EXPORT-QUALITY-PURE-COTTON-BEDSHEETS-1"
+        "sku": "5-PC-KI-IVR"
       }
     ]
   }

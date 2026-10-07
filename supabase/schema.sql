@@ -134,72 +134,90 @@ ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
 
 -- 1. Profiles: Users can view and update their own profile
 CREATE POLICY "Users can view own profile" ON public.profiles
-    FOR SELECT USING (auth.uid() = id);
+    FOR SELECT TO authenticated USING ((SELECT auth.uid()) = id);
 
 CREATE POLICY "Users can update own profile" ON public.profiles
-    FOR UPDATE USING (auth.uid() = id);
+    FOR UPDATE TO authenticated USING ((SELECT auth.uid()) = id);
 
 CREATE POLICY "Users can insert own profile" ON public.profiles
-    FOR INSERT WITH CHECK (auth.uid() = id);
+    FOR INSERT TO authenticated WITH CHECK ((SELECT auth.uid()) = id);
 
 -- 2. Public Read for Catalog (Categories, Products, Variants, Images)
 CREATE POLICY "Public read categories" ON public.categories
-    FOR SELECT USING (true);
+    FOR SELECT TO anon, authenticated USING (id IS NOT NULL);
 
 CREATE POLICY "Public read products" ON public.products
-    FOR SELECT USING (true);
+    FOR SELECT TO anon, authenticated USING (id IS NOT NULL);
 
 CREATE POLICY "Public read product_variants" ON public.product_variants
-    FOR SELECT USING (true);
+    FOR SELECT TO anon, authenticated USING (id IS NOT NULL);
 
 CREATE POLICY "Public read product_images" ON public.product_images
-    FOR SELECT USING (true);
+    FOR SELECT TO anon, authenticated USING (id IS NOT NULL);
+
+
 
 -- 3. Wishlist Items: Users own their saved items
 CREATE POLICY "Users can read own wishlist" ON public.wishlist_items
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT TO authenticated USING ((SELECT auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert to wishlist" ON public.wishlist_items
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT TO authenticated WITH CHECK ((SELECT auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete from wishlist" ON public.wishlist_items
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE TO authenticated USING ((SELECT auth.uid()) = user_id);
 
 -- 4. Cart Items: Users manage their cart items
 CREATE POLICY "Users can read own cart" ON public.cart_items
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT TO authenticated USING ((SELECT auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert to cart" ON public.cart_items
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT TO authenticated WITH CHECK ((SELECT auth.uid()) = user_id);
 
 CREATE POLICY "Users can update own cart" ON public.cart_items
-    FOR UPDATE USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can delete from cart" ON public.cart_items
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR UPDATE TO authenticated USING ((SELECT auth.uid()) = user_id);
 
 -- 5. Orders & Order Items: Users view their orders
 CREATE POLICY "Users can view own orders" ON public.orders
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT TO authenticated USING ((SELECT auth.uid()) = user_id);
 
 CREATE POLICY "Users can create orders" ON public.orders
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT TO authenticated WITH CHECK ((SELECT auth.uid()) = user_id);
 
 CREATE POLICY "Users can view own order items" ON public.order_items
-    FOR SELECT USING (
+    FOR SELECT TO authenticated USING (
         EXISTS (
             SELECT 1 FROM public.orders
             WHERE orders.id = order_items.order_id
-            AND orders.user_id = auth.uid()
+            AND orders.user_id = (SELECT auth.uid())
         )
     );
 
 -- ==============================================================================
--- 6. AUTOMATIC USER PROFILE TRIGGER
+-- 6. FOREIGN KEY INDEXES (Eliminates sequential scans & advisor warnings)
+-- ==============================================================================
+CREATE INDEX IF NOT EXISTS idx_products_category_id ON public.products(category_id);
+CREATE INDEX IF NOT EXISTS idx_product_variants_product_id ON public.product_variants(product_id);
+CREATE INDEX IF NOT EXISTS idx_product_images_product_id ON public.product_images(product_id);
+CREATE INDEX IF NOT EXISTS idx_wishlist_items_user_id ON public.wishlist_items(user_id);
+CREATE INDEX IF NOT EXISTS idx_wishlist_items_product_id ON public.wishlist_items(product_id);
+CREATE INDEX IF NOT EXISTS idx_cart_items_user_id ON public.cart_items(user_id);
+CREATE INDEX IF NOT EXISTS idx_cart_items_variant_id ON public.cart_items(variant_id);
+CREATE INDEX IF NOT EXISTS idx_orders_user_id ON public.orders(user_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON public.order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_variant_id ON public.order_items(variant_id);
+
+-- ==============================================================================
+-- 7. AUTOMATIC USER PROFILE TRIGGER
 -- Triggered whenever a new user registers in Supabase Auth
+-- Hardened with explicit search_path and restricted permissions
 -- ==============================================================================
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger AS $$
+RETURNS trigger 
+LANGUAGE plpgsql 
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
 BEGIN
     INSERT INTO public.profiles (id, full_name, created_at, updated_at)
     VALUES (
@@ -211,11 +229,18 @@ BEGIN
     ON CONFLICT (id) DO NOTHING;
     RETURN new;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
+
+-- Revoke execute from public/anon/authenticated to secure SECURITY DEFINER function
+REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM anon;
+REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM authenticated;
+GRANT EXECUTE ON FUNCTION public.handle_new_user() TO postgres, supabase_admin;
 
 -- Drop trigger if already exists and recreate
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
 
