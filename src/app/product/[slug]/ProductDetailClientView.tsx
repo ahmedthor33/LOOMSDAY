@@ -136,6 +136,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
   const [selectedSize, setSelectedSize] = useState("Single");
   const [quantity, setQuantity] = useState(1);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // Sync initial product selections once product is found
   useEffect(() => {
@@ -334,7 +335,10 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
           )}
 
           {/* Main Visual Stage */}
-          <div className="relative w-full aspect-[4/5] rounded overflow-hidden bg-surface-container shadow-md group">
+          <div
+            onClick={() => setIsLightboxOpen(true)}
+            className="relative w-full aspect-[4/5] rounded overflow-hidden bg-surface-container shadow-md group cursor-zoom-in"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={
@@ -346,8 +350,21 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
 
+            {/* Floating Zoom Hint Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLightboxOpen(true);
+              }}
+              aria-label="Inspect in ultra-high resolution"
+              className="absolute bottom-4 right-4 bg-surface/90 backdrop-blur-md p-2 rounded-full shadow-md text-primary hover:text-secondary hover:scale-110 transition-all opacity-80 group-hover:opacity-100 flex items-center justify-center z-10"
+            >
+              <span className="material-symbols-outlined text-[20px]">zoom_in</span>
+            </button>
+
             {/* Floating Certification Badge */}
-            <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3.5 py-1.5 rounded shadow-sm flex items-center gap-2">
+            <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3.5 py-1.5 rounded shadow-sm flex items-center gap-2 pointer-events-none">
               <span className="material-symbols-outlined text-[16px] text-secondary">verified</span>
               <span className="font-label-eyebrow text-label-eyebrow uppercase text-on-surface tracking-wider">
                 OEKO-TEX® Standard 100
@@ -356,7 +373,7 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
 
             {/* Material Origin Note */}
             {product.origin && (
-              <div className="absolute bottom-4 left-4 hidden sm:flex items-center gap-2 bg-surface-container-high/85 backdrop-blur-sm px-3.5 py-1.5 rounded">
+              <div className="absolute bottom-4 left-4 hidden sm:flex items-center gap-2 bg-surface-container-high/85 backdrop-blur-sm px-3.5 py-1.5 rounded pointer-events-none">
                 <span className="w-2 h-2 rounded-full bg-secondary" />
                 <span className="font-label-sm text-xs text-on-surface-variant font-medium">
                   {product.origin}
@@ -899,6 +916,46 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen High-Resolution Lightbox Modal */}
+      {isLightboxOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/92 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setIsLightboxOpen(false)}
+            aria-label="Close zoomed view"
+            className="absolute top-6 right-6 text-white/80 hover:text-white p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-all z-50 flex items-center justify-center cursor-pointer shadow-lg"
+          >
+            <span className="material-symbols-outlined text-2xl">close</span>
+          </button>
+
+          <div
+            className="relative max-w-6xl max-h-[92vh] w-full h-full flex flex-col items-center justify-center select-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={
+                product.images[activeImageIndex]?.url ||
+                product.images[0]?.url ||
+                "/images/hero-bedding.jpg"
+              }
+              alt={product.name}
+              className="max-w-full max-h-[86vh] object-contain rounded-lg shadow-2xl transition-all duration-300"
+            />
+            <div className="mt-3 flex items-center gap-3 text-white/70 text-xs font-label-sm tracking-wider uppercase">
+              <span className="text-white font-medium">{product.name}</span>
+              <span>•</span>
+              <span>Ultra-HD Linen Weave Inspection</span>
             </div>
           </div>
         </div>

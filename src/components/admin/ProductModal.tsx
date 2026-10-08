@@ -123,7 +123,8 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       img.onload = () => {
         clearTimeout(timeoutId);
         try {
-          const maxDimension = 640;
+          // Preserve 2K High Resolution (up to 2048px)
+          const maxDimension = 2048;
           let { width, height } = img;
           if (width > maxDimension || height > maxDimension) {
             if (width > height) {
@@ -140,29 +141,21 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
           canvas.height = height;
           const ctx = canvas.getContext("2d");
           if (!ctx) {
-            setImageUrl(dataUrl.length < 50000 ? dataUrl : "/images/hero-bedding.jpg");
+            setImageUrl(dataUrl);
             return;
           }
+
+          // Use high quality image smoothing
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
 
           // Fill white background to avoid black background on transparent PNGs
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, width, height);
           ctx.drawImage(img, 0, 0, width, height);
-          let optimized = canvas.toDataURL("image/jpeg", 0.70);
 
-          // If still large, downscale slightly to guarantee <50KB
-          if (optimized.length > 50000) {
-            const smallCanvas = document.createElement("canvas");
-            smallCanvas.width = Math.round(width * 0.7);
-            smallCanvas.height = Math.round(height * 0.7);
-            const sCtx = smallCanvas.getContext("2d");
-            if (sCtx) {
-              sCtx.fillStyle = "#ffffff";
-              sCtx.fillRect(0, 0, smallCanvas.width, smallCanvas.height);
-              sCtx.drawImage(canvas, 0, 0, smallCanvas.width, smallCanvas.height);
-              optimized = smallCanvas.toDataURL("image/jpeg", 0.60);
-            }
-          }
+          // Save at pristine 90% JPEG quality
+          const optimized = canvas.toDataURL("image/jpeg", 0.90);
           setImageUrl(optimized);
         } catch {
           setImageUrl("/images/hero-bedding.jpg");
