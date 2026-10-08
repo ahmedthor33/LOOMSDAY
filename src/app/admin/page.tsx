@@ -2779,13 +2779,13 @@ function AdminContent() {
                 </label>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <div className="flex-1 px-3.5 py-2.5 rounded-lg border border-surface-variant bg-surface text-primary font-mono text-xs truncate">
-                    {typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/api/catalog/meta-feed
+                    {typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/meta-catalog.xml
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => {
-                        const url = `${typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/api/catalog/meta-feed`;
+                        const url = `${typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/meta-catalog.xml`;
                         navigator.clipboard.writeText(url);
                         showToast("Copied Meta XML Feed URL to clipboard!", "success");
                       }}
@@ -2797,7 +2797,7 @@ function AdminContent() {
                     <button
                       type="button"
                       onClick={() => {
-                        const url = `${typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/api/catalog/meta-feed?format=csv`;
+                        const url = `${typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/meta-catalog.csv`;
                         navigator.clipboard.writeText(url);
                         showToast("Copied Meta CSV Feed URL to clipboard!", "success");
                       }}

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack && node scripts/sync-dist.js",
+    "build": "node scripts/generate-meta-catalog.js && next build --webpack && node scripts/sync-dist.js",
     "start": "next start",
     "lint": "eslint"
   },
