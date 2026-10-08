@@ -39,10 +39,11 @@ export function trackViewContent(product: {
 }): void {
   if (isPixelReady()) {
     try {
+      const ids = Array.from(new Set([product.id, product.slug].filter(Boolean) as string[]));
       window.fbq("track", "ViewContent", {
         content_name: product.name,
         content_category: product.category || "bedsheets",
-        content_ids: [product.slug || product.id],
+        content_ids: ids,
         content_type: "product",
         value: Number(product.basePrice) || 0,
         currency: "PKR",
@@ -63,14 +64,16 @@ export function trackAddToCart(item: {
   price: number;
   quantity?: number;
   category?: string;
+  slug?: string;
 }): void {
   if (isPixelReady()) {
     try {
       const value = (Number(item.price) || 0) * (item.quantity || 1);
+      const ids = Array.from(new Set([item.productId, item.slug].filter(Boolean) as string[]));
       window.fbq("track", "AddToCart", {
         content_name: item.name,
         content_category: item.category || "bedsheets",
-        content_ids: [item.productId],
+        content_ids: ids,
         content_type: "product",
         value,
         currency: "PKR",
@@ -87,8 +90,15 @@ export function trackAddToCart(item: {
 export function trackInitiateCheckout(cartItems: any[], totalValue: number): void {
   if (isPixelReady()) {
     try {
+      const ids = Array.from(
+        new Set(
+          cartItems
+            .flatMap((i) => [i.productId, i.productSlug, i.id])
+            .filter(Boolean)
+        )
+      );
       window.fbq("track", "InitiateCheckout", {
-        content_ids: cartItems.map((i) => i.productId || i.id),
+        content_ids: ids,
         content_type: "product",
         num_items: cartItems.reduce((acc, i) => acc + (i.quantity || 1), 0),
         value: Number(totalValue) || 0,
@@ -110,8 +120,15 @@ export function trackPurchase(order: {
 }): void {
   if (isPixelReady()) {
     try {
+      const ids = Array.from(
+        new Set(
+          (order.items || [])
+            .flatMap((i: any) => [i.productId, i.productSlug, i.id])
+            .filter(Boolean)
+        )
+      );
       window.fbq("track", "Purchase", {
-        content_ids: (order.items || []).map((i) => i.productId || i.id),
+        content_ids: ids,
         content_type: "product",
         value: Number(order.total) || 0,
         currency: "PKR",

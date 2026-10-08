@@ -251,7 +251,7 @@ const INITIAL_CMS: StorefrontCms = {
     foundedYear: "1884",
   },
   marketing: {
-    metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "",
+    metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "1671379761076166",
     metaPixelEnabled: true,
     testEventCode: "",
   },

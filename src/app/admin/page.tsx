@@ -2752,6 +2752,91 @@ function AdminContent() {
               </div>
             </div>
 
+            {/* Meta Catalog Integration Hub */}
+            <div className="p-6 rounded-2xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/30 pb-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-secondary text-xl">auto_stories</span>
+                    <h3 className="font-headline-sm text-base text-primary font-medium">
+                      Meta Commerce Catalog &amp; Dynamic Product Ads
+                    </h3>
+                  </div>
+                  <p className="text-xs text-on-surface-variant max-w-xl">
+                    Synchronize all 81 LOOMSDAY luxury pieces with Facebook &amp; Instagram Commerce Manager for Advantage+ Dynamic Ads and Instagram Shopping.
+                  </p>
+                </div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 font-mono text-xs font-medium w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span>Pixel Microdata Active</span>
+                </span>
+              </div>
+
+              {/* Data Feed URL */}
+              <div className="space-y-3">
+                <label className="block text-xs font-label-md uppercase tracking-wider text-primary">
+                  Live Scheduled Product Feed URL (Meta XML / RSS 2.0 &amp; CSV)
+                </label>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="flex-1 px-3.5 py-2.5 rounded-lg border border-surface-variant bg-surface text-primary font-mono text-xs truncate">
+                    {typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/api/catalog/meta-feed
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const url = `${typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/api/catalog/meta-feed`;
+                        navigator.clipboard.writeText(url);
+                        showToast("Copied Meta XML Feed URL to clipboard!", "success");
+                      }}
+                      className="px-4 py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-xs uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap"
+                    >
+                      <span className="material-symbols-outlined text-sm">content_copy</span>
+                      <span>Copy XML Feed</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const url = `${typeof window !== "undefined" ? window.location.origin : "https://loomsday.store"}/api/catalog/meta-feed?format=csv`;
+                        navigator.clipboard.writeText(url);
+                        showToast("Copied Meta CSV Feed URL to clipboard!", "success");
+                      }}
+                      className="px-3.5 py-2.5 rounded-lg border border-surface-variant hover:border-primary text-primary font-label-md text-xs uppercase tracking-wider bg-surface transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap"
+                    >
+                      <span className="material-symbols-outlined text-sm">table_view</span>
+                      <span>Copy CSV</span>
+                    </button>
+                  </div>
+                </div>
+                <p className="text-[11px] text-on-surface-variant">
+                  In <span className="font-medium text-primary">Meta Commerce Manager</span> &rarr; Catalog &rarr; Data Sources &rarr; Add Items &rarr; Select <span className="font-medium text-primary">Data Feed</span> &rarr; Choose <span className="font-medium text-primary">Scheduled Feed</span> and paste this URL. Meta will automatically fetch every product, price, image, and availability every hour.
+                </p>
+              </div>
+
+              {/* Two Methods Breakdown */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-surface-variant/30">
+                <div className="p-4 rounded-xl bg-surface-container-low border border-surface-variant/30 space-y-2">
+                  <div className="flex items-center gap-2 text-primary font-medium text-xs">
+                    <span className="material-symbols-outlined text-secondary text-base">cloud_sync</span>
+                    <span>Option A: Scheduled Data Feed (Recommended)</span>
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                    Instantly imports all 81 products into your Meta Catalog in seconds without waiting for web traffic. Updates automatically when you change prices or inventory in Atelier OS.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-surface-container-low border border-surface-variant/30 space-y-2">
+                  <div className="flex items-center gap-2 text-primary font-medium text-xs">
+                    <span className="material-symbols-outlined text-secondary text-base">code</span>
+                    <span>Option B: Auto-Build via Meta Pixel</span>
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                    In Commerce Manager, select <em>Add items using a Pixel</em>. Our product pages already output OpenGraph tags (<code className="text-secondary font-mono">product:price:amount</code>, <code className="text-secondary font-mono">product:retailer_item_id</code>) and Schema.org JSON-LD microdata for Meta's bot.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Setup Guidance Card */}
             <div className="p-6 rounded-2xl bg-surface-container-low border border-surface-variant/40 space-y-3">
               <div className="flex items-center gap-2">
