@@ -62,10 +62,15 @@ export function Header() {
             </button>
 
             {/* Brand Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <span className="font-headline-sm text-headline-sm tracking-[0.2em] text-primary uppercase font-medium">
-                LOOMSDAY
-              </span>
+            <Link href="/" className="flex items-center gap-3 group py-1" aria-label="LOOMSDAY">
+              <Image
+                src="/images/logo/logo-horizontal.png"
+                alt="LOOMSDAY"
+                width={200}
+                height={32}
+                priority
+                className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+              />
             </Link>
 
             {/* Desktop Navigation Links */}

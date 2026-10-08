@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 interface MobileNavProps {
@@ -36,9 +37,15 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
       <div className="fixed inset-y-0 left-0 max-w-xs w-full bg-surface shadow-2xl p-6 flex flex-col justify-between z-10 animate-in slide-in-from-left duration-300">
         <div className="space-y-6">
           <div className="flex items-center justify-between border-b border-surface-variant/40 pb-4">
-            <span className="font-headline-sm text-headline-sm uppercase tracking-widest text-primary">
-              LOOMSDAY
-            </span>
+            <Link href="/" onClick={onClose} className="flex items-center" aria-label="LOOMSDAY">
+              <Image
+                src="/images/logo/logo-horizontal.png"
+                alt="LOOMSDAY"
+                width={160}
+                height={28}
+                className="h-7 w-auto object-contain"
+              />
+            </Link>
             <button
               type="button"
               onClick={onClose}

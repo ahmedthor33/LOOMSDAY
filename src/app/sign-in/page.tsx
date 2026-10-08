@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/Toast";
@@ -73,13 +74,14 @@ export default function SignInPage() {
 
         {/* Top Brand Stamp */}
         <div className="relative z-10 flex items-center justify-between text-on-primary">
-          <Link href="/" className="inline-flex items-center gap-3 group">
-            <span className="w-7 h-7 rounded-full bg-surface/20 backdrop-blur-md flex items-center justify-center text-on-primary transition-all duration-300 group-hover:bg-surface group-hover:text-primary">
-              <span className="material-symbols-outlined text-[16px]">bed</span>
-            </span>
-            <span className="font-headline-sm text-headline-sm tracking-[0.25em] text-surface uppercase text-[15px] font-medium">
-              LOOMSDAY
-            </span>
+          <Link href="/" className="inline-flex items-center gap-3 group" aria-label="LOOMSDAY">
+            <Image
+              src="/images/logo/logo-horizontal-white.png"
+              alt="LOOMSDAY"
+              width={160}
+              height={28}
+              className="h-7 w-auto object-contain transition-opacity group-hover:opacity-85"
+            />
           </Link>
           <div className="flex items-center gap-2 px-3 py-1 rounded bg-surface/10 backdrop-blur-md text-surface/90 font-label-sm text-label-sm uppercase tracking-widest">
             <span>Sanctuary Edition</span>

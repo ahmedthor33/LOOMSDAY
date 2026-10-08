@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/Toast";
@@ -81,9 +82,14 @@ export default function SignUpPage() {
 
         {/* Top Brand Stamp */}
         <div className="relative z-10 flex items-center justify-between text-on-primary">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <span className="font-headline-sm text-headline-sm tracking-widest uppercase">LOOMSDAY</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary-container inline-block" />
+          <Link href="/" className="inline-flex items-center gap-2 group" aria-label="LOOMSDAY">
+            <Image
+              src="/images/logo/logo-horizontal-white.png"
+              alt="LOOMSDAY"
+              width={160}
+              height={28}
+              className="h-7 w-auto object-contain transition-opacity group-hover:opacity-85"
+            />
           </Link>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface/15 backdrop-blur-md rounded-full text-surface font-label-sm text-label-sm tracking-widest uppercase">
             <span>Atelier Collection</span>

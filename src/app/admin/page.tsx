@@ -704,11 +704,15 @@ function AdminContent() {
       <header className="sticky top-0 z-30 bg-primary text-on-primary border-b border-surface-variant/20 shadow-md">
         <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="font-headline-sm text-lg tracking-[0.2em] font-medium text-surface uppercase">
-                LOOMSDAY
-              </span>
-              <span className="text-[10px] uppercase tracking-widest font-label-eyebrow bg-secondary text-primary px-2 py-0.5 rounded font-semibold">
+            <Link href="/" className="flex items-center gap-2.5 group" aria-label="LOOMSDAY Boutique">
+              <Image
+                src="/images/logo/logo-horizontal-white.png"
+                alt="LOOMSDAY"
+                width={140}
+                height={24}
+                className="h-6 w-auto object-contain transition-opacity group-hover:opacity-85"
+              />
+              <span className="text-[10px] uppercase tracking-widest font-label-eyebrow bg-secondary text-primary px-2 py-0.5 rounded font-semibold ml-0.5">
                 ATELIER OS
               </span>
             </Link>

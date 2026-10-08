@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -67,9 +68,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Brand & Newsletter */}
           <div className="md:col-span-5 space-y-6">
-            <span className="font-headline-sm text-xl uppercase tracking-[0.25em] text-primary font-medium block">
-              LOOMSDAY
-            </span>
+            <Link href="/" className="inline-block group" aria-label="LOOMSDAY">
+              <Image
+                src="/images/logo/logo.png"
+                alt="LOOMSDAY"
+                width={160}
+                height={120}
+                className="h-14 sm:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              />
+            </Link>
             <p className="font-body-md text-body-md text-on-surface-variant max-w-sm leading-relaxed">
               Quiet luxury bedding crafted from slow-harvested Normandy flax and Aegean cotton. Designed for the unhurried life.
             </p>
