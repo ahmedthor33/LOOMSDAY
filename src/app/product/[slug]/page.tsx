@@ -66,7 +66,7 @@ export async function generateMetadata({
     },
     // Meta / Facebook Microdata Tags for Catalog Sync via Pixel
     other: {
-      "product:brand": "LOOMSDAY",
+      "product:brand": product.brand || "LOOMSDAY",
       "product:availability": "in stock",
       "product:condition": "new",
       "product:price:amount": String(product.basePrice),
@@ -105,7 +105,7 @@ export default async function ProductDetailPage({
       mpn: product.id,
       brand: {
         "@type": "Brand",
-        name: "LOOMSDAY",
+        name: product.brand || "LOOMSDAY",
       },
       offers: {
         "@type": "Offer",

@@ -387,9 +387,14 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
         <div className="lg:col-span-5 flex flex-col lg:sticky lg:top-28 space-y-6">
           {/* Eyebrow & Badges */}
           <div className="flex items-center justify-between">
-            <span className="inline-block bg-surface-container-high text-secondary px-2.5 py-1 rounded font-label-eyebrow text-label-eyebrow uppercase tracking-widest font-medium">
-              {product.isBestSeller ? "BEST SELLER • NORMANDY FLAX" : "HERITAGE REST ARCHIVE"}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="inline-block bg-primary text-on-primary px-2.5 py-1 rounded font-label-eyebrow text-label-eyebrow uppercase tracking-widest font-semibold">
+                {product.brand || "LOOMSDAY"}
+              </span>
+              <span className="inline-block bg-surface-container-high text-secondary px-2.5 py-1 rounded font-label-eyebrow text-label-eyebrow uppercase tracking-widest font-medium">
+                {product.isBestSeller ? "BEST SELLER • NORMANDY FLAX" : "HERITAGE REST ARCHIVE"}
+              </span>
+            </div>
             <span className="font-label-sm text-xs text-on-surface-variant flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block" /> Limited
               Atelier Batch

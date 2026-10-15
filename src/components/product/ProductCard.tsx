@@ -153,6 +153,12 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           </div>
 
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <span className="font-label-eyebrow text-[10px] text-secondary font-bold uppercase tracking-widest">
+              {product.brand || "LOOMSDAY"}
+            </span>
+          </div>
+
           <Link href={`/product/${encodeURIComponent(product.slug || product.id)}`} className="block">
             <h3 className="font-headline-sm text-[18px] leading-snug text-primary mt-1 group-hover:text-secondary transition-colors">
               {product.name}

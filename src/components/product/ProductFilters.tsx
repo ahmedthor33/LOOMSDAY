@@ -9,6 +9,7 @@ export interface FilterState {
   color: string;
   material: string;
   maxPrice: number;
+  brand?: string;
 }
 
 interface ProductFiltersProps {
@@ -17,6 +18,7 @@ interface ProductFiltersProps {
   onClearFilters: () => void;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
+  availableBrands?: string[];
 }
 
 export function ProductFilters({
@@ -25,9 +27,11 @@ export function ProductFilters({
   onClearFilters,
   isOpenMobile,
   onCloseMobile,
+  availableBrands = [],
 }: ProductFiltersProps) {
   const [openSections, setOpenSections] = useState({
     category: true,
+    brand: true,
     size: true,
     color: true,
     material: true,
@@ -111,6 +115,73 @@ export function ProductFilters({
           </div>
         )}
       </div>
+
+      {/* Brand & Atelier */}
+      {availableBrands && availableBrands.length > 0 && (
+        <div className="bg-surface-container-low rounded-xl p-5 shadow-sm border border-surface-variant/30">
+          <button
+            type="button"
+            onClick={() => toggleSection("brand")}
+            className="w-full flex items-center justify-between text-left group"
+          >
+            <span className="font-label-md text-label-md uppercase tracking-wider text-primary font-medium">
+              Brand &amp; Atelier
+            </span>
+            <span className="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-transform">
+              {openSections.brand ? "remove" : "add"}
+            </span>
+          </button>
+          {openSections.brand && (
+            <div className="mt-4 space-y-2.5">
+              <label className="flex items-center justify-between cursor-pointer group select-none">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="radio"
+                    name="brand"
+                    checked={!filters.brand || filters.brand === "all"}
+                    onChange={() => onFilterChange({ ...filters, brand: "all" })}
+                    className="w-4 h-4 text-primary accent-primary cursor-pointer"
+                  />
+                  <span
+                    className={`font-body-sm text-sm transition-colors ${
+                      !filters.brand || filters.brand === "all"
+                        ? "text-primary font-semibold"
+                        : "text-on-surface-variant group-hover:text-primary"
+                    }`}
+                  >
+                    All Brands
+                  </span>
+                </div>
+              </label>
+              {availableBrands.map((b) => (
+                <label
+                  key={b}
+                  className="flex items-center justify-between cursor-pointer group select-none"
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="brand"
+                      checked={filters.brand === b}
+                      onChange={() => onFilterChange({ ...filters, brand: b })}
+                      className="w-4 h-4 text-primary accent-primary cursor-pointer"
+                    />
+                    <span
+                      className={`font-body-sm text-sm transition-colors ${
+                        filters.brand === b
+                          ? "text-primary font-semibold"
+                          : "text-on-surface-variant group-hover:text-primary"
+                      }`}
+                    >
+                      {b}
+                    </span>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Bed Sizes */}
       <div className="bg-surface-container-low rounded-xl p-5 shadow-sm border border-surface-variant/30">

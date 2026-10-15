@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
@@ -93,21 +93,70 @@ export default function HomePage() {
 
   const displayedProducts = filterProducts();
 
+  // Hero media slider state
+  const [activeSlide, setActiveSlide] = useState<number>(0);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const [isSliderPaused, setIsSliderPaused] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const heroMode = cms?.hero?.activeMedia || "slider";
+  const heroImageUrl =
+    cms?.hero?.imageUrl && cms.hero.imageUrl.trim().length > 0
+      ? cms.hero.imageUrl
+      : "/images/hero-bedding.jpg";
+  const heroVideoUrl =
+    cms?.hero?.videoUrl && cms.hero.videoUrl.trim().length > 0
+      ? cms.hero.videoUrl
+      : "https://assets.mixkit.co/videos/preview/mixkit-folds-of-a-white-fabric-41007-large.mp4";
+  const slideIntervalSec = Math.max(4, cms?.hero?.slideIntervalSeconds || 8);
+
+  useEffect(() => {
+    if (heroMode === "video") {
+      setActiveSlide(1);
+    } else if (heroMode === "image") {
+      setActiveSlide(0);
+    }
+  }, [heroMode]);
+
+  useEffect(() => {
+    if (heroMode !== "slider" || isSliderPaused) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
+    }, slideIntervalSec * 1000);
+    return () => clearInterval(timer);
+  }, [heroMode, isSliderPaused, slideIntervalSec]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (activeSlide === 1 && isVideoPlaying) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [activeSlide, isVideoPlaying]);
+
   return (
     <div className="flex flex-col w-full">
       {/* 1. HERO SECTION */}
-      <section className="relative w-full -mt-28 min-h-[92vh] flex items-end pb-16 overflow-hidden bg-surface-container-low">
-        {/* Background Editorial Image */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <section
+        className="relative w-full -mt-28 min-h-[92vh] flex items-end pb-16 overflow-hidden bg-surface-container-low"
+        onMouseEnter={() => setIsSliderPaused(true)}
+        onMouseLeave={() => setIsSliderPaused(false)}
+      >
+        {/* SLIDE 0: Background Editorial Image */}
+        <div
+          className={`absolute inset-0 w-full h-full overflow-hidden transition-all duration-1000 ease-in-out ${
+            activeSlide === 0
+              ? "opacity-100 scale-100 z-0"
+              : "opacity-0 scale-105 -z-10 pointer-events-none"
+          }`}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={
-              cms?.hero?.imageUrl && cms.hero.imageUrl.trim().length > 0
-                ? cms.hero.imageUrl
-                : "/images/hero-bedding.jpg"
-            }
+            src={heroImageUrl}
             alt="LOOMSDAY French flax linen bedding in serene natural morning light"
-            className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out"
+            className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out"
             loading="eager"
             // @ts-expect-error fetchpriority is standard in modern browsers
             fetchpriority="high"
@@ -120,9 +169,38 @@ export default function HomePage() {
           />
         </div>
 
+        {/* SLIDE 1: Background Cinematic Video */}
+        <div
+          className={`absolute inset-0 w-full h-full overflow-hidden transition-all duration-1000 ease-in-out ${
+            activeSlide === 1
+              ? "opacity-100 scale-100 z-0"
+              : "opacity-0 scale-105 -z-10 pointer-events-none"
+          }`}
+        >
+          <video
+            ref={videoRef}
+            src={heroVideoUrl}
+            poster={cms?.hero?.videoPosterUrl || heroImageUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover object-center"
+          >
+            {/* Fallback image if video fails to stream */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={heroImageUrl}
+              alt="LOOMSDAY French flax linen bedding"
+              className="w-full h-full object-cover object-center"
+            />
+          </video>
+        </div>
+
         {/* Scrim overlays for pure editorial contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-primary/15" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 via-primary/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-primary/15 z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 via-primary/30 to-transparent z-[1]" />
 
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 pt-44">
@@ -161,8 +239,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Scroll Indicator */}
-          <div className="mt-16 flex items-center justify-between text-surface/70 pt-6 border-t border-surface/20">
+          {/* Interactive Slide Switcher & Scroll Indicator */}
+          <div className="mt-16 flex flex-col sm:flex-row sm:items-center justify-between text-surface/80 pt-6 border-t border-surface/20 gap-4">
             <div className="flex items-center gap-3">
               <div className="w-4 h-7 rounded-full flex items-start justify-center p-1 bg-surface/20 backdrop-blur-sm">
                 <div className="w-1 h-2 bg-surface rounded-full animate-bounce" />
@@ -171,11 +249,100 @@ export default function HomePage() {
                 SCROLL TO EXPLORE
               </span>
             </div>
-            <div className="hidden sm:flex items-center gap-4 text-surface/80 font-label-sm text-label-sm">
-              <span>01 / 05</span>
-              <span className="w-12 h-[1px] bg-surface/30" />
-              <span className="italic font-headline-sm text-[15px]">Normandy Flax Origin</span>
-            </div>
+
+            {/* Slider Navigation Bar */}
+            {heroMode === "slider" && (
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                {/* 01 Photography Tab */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSlide(0);
+                    setIsSliderPaused(true);
+                  }}
+                  className={`group flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-label-eyebrow uppercase tracking-widest transition-all ${
+                    activeSlide === 0
+                      ? "bg-surface text-primary shadow-lg font-semibold scale-105"
+                      : "bg-surface/15 text-surface/80 hover:bg-surface/25 backdrop-blur-md border border-surface/20"
+                  }`}
+                  aria-label="Switch to Photography slide"
+                >
+                  <span className="material-symbols-outlined text-xs">photo_camera</span>
+                  <span>01 / Photography</span>
+                </button>
+
+                {/* 02 Motion Film Tab */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSlide(1);
+                    setIsSliderPaused(true);
+                  }}
+                  className={`group flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-label-eyebrow uppercase tracking-widest transition-all ${
+                    activeSlide === 1
+                      ? "bg-surface text-primary shadow-lg font-semibold scale-105"
+                      : "bg-surface/15 text-surface/80 hover:bg-surface/25 backdrop-blur-md border border-surface/20"
+                  }`}
+                  aria-label="Switch to Motion Film video slide"
+                >
+                  <span className="material-symbols-outlined text-xs">play_circle</span>
+                  <span>02 / Motion Film</span>
+                </button>
+
+                {/* Next & Prev Arrows */}
+                <div className="flex items-center gap-1 pl-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
+                      setIsSliderPaused(true);
+                    }}
+                    className="w-7 h-7 rounded-full bg-surface/15 hover:bg-surface/30 backdrop-blur-md text-surface border border-surface/20 flex items-center justify-center transition-all hover:scale-105"
+                    title="Toggle slide"
+                    aria-label="Previous slide"
+                  >
+                    <span className="material-symbols-outlined text-sm">chevron_left</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
+                      setIsSliderPaused(true);
+                    }}
+                    className="w-7 h-7 rounded-full bg-surface/15 hover:bg-surface/30 backdrop-blur-md text-surface border border-surface/20 flex items-center justify-center transition-all hover:scale-105"
+                    title="Toggle slide"
+                    aria-label="Next slide"
+                  >
+                    <span className="material-symbols-outlined text-sm">chevron_right</span>
+                  </button>
+                </div>
+
+                {/* Video Play/Pause controller (when viewing video) */}
+                {activeSlide === 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsVideoPlaying((p) => !p)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface/20 hover:bg-surface/30 backdrop-blur-md text-surface text-[10px] uppercase font-mono tracking-wider border border-surface/20 transition-all"
+                    title={isVideoPlaying ? "Pause Video Motion" : "Play Video Motion"}
+                    aria-label={isVideoPlaying ? "Pause Video Motion" : "Play Video Motion"}
+                  >
+                    <span className="material-symbols-outlined text-xs">
+                      {isVideoPlaying ? "pause" : "play_arrow"}
+                    </span>
+                    <span>{isVideoPlaying ? "Pause Motion" : "Play Motion"}</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* If Single Image or Single Video mode */}
+            {heroMode !== "slider" && (
+              <div className="hidden sm:flex items-center gap-4 text-surface/80 font-label-sm text-label-sm">
+                <span>{heroMode === "video" ? "Cinematic Motion" : "Editorial Stills"}</span>
+                <span className="w-12 h-[1px] bg-surface/30" />
+                <span className="italic font-headline-sm text-[15px]">Normandy Flax Origin</span>
+              </div>
+            )}
           </div>
         </div>
       </section>

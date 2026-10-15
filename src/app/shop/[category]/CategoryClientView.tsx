@@ -198,16 +198,12 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
 
   const [filters, setFilters] = useState<FilterState>({
     category: activeSlug,
+    brand: "all",
     size: "",
     color: "",
     material: "",
     maxPrice: 100000,
   });
-
-  // Sync filter when activeSlug changes
-  useEffect(() => {
-    setFilters((prev) => ({ ...prev, category: activeSlug }));
-  }, [activeSlug]);
 
   const [sortOption, setSortOption] = useState<
     "featured" | "best_selling" | "price_asc" | "price_desc" | "rating"
@@ -224,9 +220,31 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
     });
   }, [allProducts, activeSlug]);
 
+  const availableBrands = useMemo(() => {
+    const brandsSet = new Set<string>();
+    categoryProducts.forEach((p) => {
+      if (p.brand && p.brand.trim()) {
+        brandsSet.add(p.brand.trim());
+      } else {
+        brandsSet.add("LOOMSDAY");
+      }
+    });
+    return Array.from(brandsSet);
+  }, [categoryProducts]);
+
+  // Sync filter when activeSlug changes
+  useEffect(() => {
+    setFilters((prev) => ({ ...prev, category: activeSlug, brand: "all" }));
+  }, [activeSlug]);
+
   const filteredProducts = useMemo(() => {
     return categoryProducts
       .filter((product) => {
+        // Brand filter
+        if (filters.brand && filters.brand !== "all") {
+          const pBrand = (product.brand || "LOOMSDAY").toLowerCase().trim();
+          if (pBrand !== filters.brand.toLowerCase().trim()) return false;
+        }
         // Size filter
         if (
           filters.size &&
@@ -266,6 +284,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
   const clearAllFilters = () => {
     setFilters({
       category: activeSlug,
+      brand: "all",
       size: "",
       color: "",
       material: "",
@@ -431,7 +450,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
             <span className="font-label-sm text-xs uppercase tracking-wider text-on-surface-variant">
               Showing {filteredProducts.length} of {categoryProducts.length} pieces
             </span>
-            {(filters.size || filters.color || filters.material || filters.maxPrice < 100000) && (
+            {(filters.brand !== "all" || filters.size || filters.color || filters.material || filters.maxPrice < 100000) && (
               <button
                 type="button"
                 onClick={clearAllFilters}
@@ -511,6 +530,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
             filters={filters}
             onFilterChange={setFilters}
             onClearFilters={clearAllFilters}
+            availableBrands={availableBrands}
             isOpenMobile={isMobileFiltersOpen}
             onCloseMobile={() => setIsMobileFiltersOpen(false)}
           />

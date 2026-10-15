@@ -8,6 +8,7 @@ import { ProductModal } from "@/components/admin/ProductModal";
 import { OrderDetailModal } from "@/components/admin/OrderDetailModal";
 import { CouponModal } from "@/components/admin/CouponModal";
 import { DragDropImageUpload } from "@/components/admin/DragDropImageUpload";
+import { DragDropVideoUpload } from "@/components/admin/DragDropVideoUpload";
 import { PaymentMethodModal } from "@/components/admin/PaymentMethodModal";
 import { ImportCatalogModal } from "@/components/admin/ImportCatalogModal";
 import { BulkAddModal } from "@/components/admin/BulkAddModal";
@@ -587,6 +588,27 @@ function AdminContent() {
   const [heroSecondaryCtaText, setHeroSecondaryCtaText] = useState(cms.hero.secondaryCtaText);
   const [heroSecondaryCtaLink, setHeroSecondaryCtaLink] = useState(cms.hero.secondaryCtaLink);
   const [heroImageUrl, setHeroImageUrl] = useState(cms.hero.imageUrl);
+  const [heroVideoUrl, setHeroVideoUrl] = useState(cms.hero.videoUrl || "");
+  const [heroActiveMedia, setHeroActiveMedia] = useState<"slider" | "image" | "video">(
+    cms.hero.activeMedia || "slider"
+  );
+  const [heroSlideInterval, setHeroSlideInterval] = useState(cms.hero.slideIntervalSeconds || 8);
+
+  useEffect(() => {
+    if (cms?.hero) {
+      setHeroEyebrow(cms.hero.eyebrow);
+      setHeroHeadline(cms.hero.headline);
+      setHeroSubheadline(cms.hero.subheadline);
+      setHeroPrimaryCtaText(cms.hero.primaryCtaText);
+      setHeroPrimaryCtaLink(cms.hero.primaryCtaLink);
+      setHeroSecondaryCtaText(cms.hero.secondaryCtaText);
+      setHeroSecondaryCtaLink(cms.hero.secondaryCtaLink);
+      setHeroImageUrl(cms.hero.imageUrl);
+      setHeroVideoUrl(cms.hero.videoUrl || "");
+      setHeroActiveMedia(cms.hero.activeMedia || "slider");
+      setHeroSlideInterval(cms.hero.slideIntervalSeconds || 8);
+    }
+  }, [cms?.hero]);
 
   // Shipping form local state
   const [freeShipThreshold, setFreeShipThreshold] = useState(shippingSettings.freeShippingThreshold);
@@ -650,6 +672,7 @@ function AdminContent() {
   const filteredProducts = products.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+      (p.brand ? p.brand.toLowerCase().includes(productSearch.toLowerCase()) : false) ||
       p.material.toLowerCase().includes(productSearch.toLowerCase()) ||
       (p.origin ? p.origin.toLowerCase().includes(productSearch.toLowerCase()) : false);
     const matchesCategory =
@@ -679,6 +702,9 @@ function AdminContent() {
       secondaryCtaText: heroSecondaryCtaText,
       secondaryCtaLink: heroSecondaryCtaLink,
       imageUrl: heroImageUrl,
+      videoUrl: heroVideoUrl,
+      activeMedia: heroActiveMedia,
+      slideIntervalSeconds: Number(heroSlideInterval) || 8,
     });
     showToast("Storefront homepage hero section and announcement bar published live.");
   };
@@ -1011,7 +1037,12 @@ function AdminContent() {
                                   />
                                 </div>
                                 <div>
-                                  <p className="font-medium text-primary">{prod.name}</p>
+                                  <div className="flex items-center gap-1.5">
+                                    <p className="font-medium text-primary">{prod.name}</p>
+                                    <span className="text-[9px] uppercase font-bold tracking-wider text-secondary bg-secondary/10 px-1.5 py-0.5 rounded">
+                                      {prod.brand || "LOOMSDAY"}
+                                    </span>
+                                  </div>
                                   <span className="text-[10px] text-on-surface-variant font-mono">/{prod.slug}</span>
                                 </div>
                               </div>
@@ -1290,6 +1321,7 @@ function AdminContent() {
                   <thead>
                     <tr className="border-b border-surface-variant/40 text-[11px] uppercase tracking-wider text-on-surface-variant font-label-eyebrow bg-surface-container-low">
                       <th className="py-3 px-4">Item & Silhouette</th>
+                      <th className="py-3 px-4">Brand</th>
                       <th className="py-3 px-4">Category</th>
                       <th className="py-3 px-4">Material</th>
                       <th className="py-3 px-4">Price (PKR)</th>
@@ -1301,7 +1333,7 @@ function AdminContent() {
                   <tbody className="divide-y divide-surface-variant/20">
                     {filteredProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-on-surface-variant">
+                        <td colSpan={8} className="py-12 text-center text-on-surface-variant">
                           <div className="flex flex-col items-center justify-center gap-3">
                             <span className="material-symbols-outlined text-4xl text-neutral-300">inventory_2</span>
                             <h4 className="font-headline-sm text-base text-primary font-medium">Boutique Catalog is Clean</h4>
@@ -1377,6 +1409,11 @@ function AdminContent() {
                                 </span>
                               </div>
                             </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-surface-container-high text-secondary border border-secondary/20">
+                              {prod.brand || "LOOMSDAY"}
+                            </span>
                           </td>
                           <td className="py-3 px-4 capitalize text-on-surface-variant">
                             {prod.categoryLabel || prod.category}
@@ -1961,12 +1998,17 @@ function AdminContent() {
             {cmsSubTab === "homepage" && (
               <form onSubmit={handleSaveCms} className="space-y-6">
                 <div className="p-6 rounded-xl bg-surface-container-lowest border border-surface-variant/40 shadow-sm space-y-6">
-                  <div className="flex items-center justify-between border-b border-surface-variant/30 pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-surface-variant/30 pb-3 gap-3">
                     <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-secondary text-lg">landscape</span>
-                      <h3 className="font-headline-sm text-base text-primary font-medium">
-                        Homepage Hero Section Editorial Asset
-                      </h3>
+                      <span className="material-symbols-outlined text-secondary text-lg">view_carousel</span>
+                      <div>
+                        <h3 className="font-headline-sm text-base text-primary font-medium">
+                          Homepage Hero Slider Media Assets
+                        </h3>
+                        <p className="text-xs text-on-surface-variant">
+                          Configure Slide 1 (Photography) and Slide 2 (10s Cinematic Video)
+                        </p>
+                      </div>
                     </div>
                     <Link
                       href="/"
@@ -1978,15 +2020,117 @@ function AdminContent() {
                     </Link>
                   </div>
 
-                  <DragDropImageUpload
-                    currentImageUrl={heroImageUrl}
-                    onImageChange={(newUrl) => {
-                      setHeroImageUrl(newUrl);
-                      showToast("Hero image asset updated. Click 'Publish Live' below to commit.");
-                    }}
-                    label="Hero Editorial Background Image"
-                    recommendedAspect="16:9 Landscape Ultra HD"
-                  />
+                  {/* Banner Mode & Slider Settings */}
+                  <div className="p-4 rounded-lg bg-surface-container-low border border-surface-variant/50 space-y-3">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                      <div>
+                        <span className="block text-xs font-semibold text-primary uppercase tracking-wider">
+                          Hero Presentation Mode
+                        </span>
+                        <p className="text-[11px] text-on-surface-variant">
+                          Choose how media is displayed on the storefront hero section.
+                        </p>
+                      </div>
+
+                      <div className="inline-flex p-1 bg-surface-container rounded-lg border border-surface-variant/60 text-xs">
+                        <button
+                          type="button"
+                          onClick={() => setHeroActiveMedia("slider")}
+                          className={`px-3 py-1.5 rounded font-medium transition-all ${
+                            heroActiveMedia === "slider"
+                              ? "bg-primary text-on-primary shadow-sm"
+                              : "text-on-surface-variant hover:text-primary"
+                          }`}
+                        >
+                          Dual Slider (Image + Video)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setHeroActiveMedia("image")}
+                          className={`px-3 py-1.5 rounded font-medium transition-all ${
+                            heroActiveMedia === "image"
+                              ? "bg-primary text-on-primary shadow-sm"
+                              : "text-on-surface-variant hover:text-primary"
+                          }`}
+                        >
+                          Image Only
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setHeroActiveMedia("video")}
+                          className={`px-3 py-1.5 rounded font-medium transition-all ${
+                            heroActiveMedia === "video"
+                              ? "bg-primary text-on-primary shadow-sm"
+                              : "text-on-surface-variant hover:text-primary"
+                          }`}
+                        >
+                          Video Only
+                        </button>
+                      </div>
+                    </div>
+
+                    {heroActiveMedia === "slider" && (
+                      <div className="pt-2 border-t border-surface-variant/40 flex items-center justify-between gap-4">
+                        <div className="text-[11px] text-on-surface-variant flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-sm text-secondary">timer</span>
+                          <span>Auto-transition slide cycle duration:</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            min={4}
+                            max={30}
+                            value={heroSlideInterval}
+                            onChange={(e) => setHeroSlideInterval(Math.max(4, Number(e.target.value) || 8))}
+                            className="w-16 px-2.5 py-1 text-xs rounded border border-surface-variant bg-surface text-primary text-center focus:outline-none focus:border-secondary"
+                          />
+                          <span className="text-xs text-on-surface-variant">seconds</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ASSET 1: EDITORIAL PHOTOGRAPHY */}
+                  <div className="p-5 rounded-lg border border-surface-variant/60 bg-surface-container-lowest space-y-4">
+                    <div className="flex items-center gap-2 pb-2 border-b border-surface-variant/30">
+                      <span className="w-5 h-5 rounded-full bg-secondary/10 text-secondary text-xs flex items-center justify-center font-bold">
+                        1
+                      </span>
+                      <h4 className="font-headline-sm text-sm text-primary font-medium">
+                        Slide 1: Editorial Photography
+                      </h4>
+                    </div>
+                    <DragDropImageUpload
+                      currentImageUrl={heroImageUrl}
+                      onImageChange={(newUrl) => {
+                        setHeroImageUrl(newUrl);
+                        showToast("Hero image asset updated. Click 'Publish Live' below to commit.");
+                      }}
+                      label="Hero Editorial Background Image"
+                      recommendedAspect="16:9 Landscape Ultra HD"
+                    />
+                  </div>
+
+                  {/* ASSET 2: CINEMATIC 10S VIDEO */}
+                  <div className="p-5 rounded-lg border border-surface-variant/60 bg-surface-container-lowest space-y-4">
+                    <div className="flex items-center gap-2 pb-2 border-b border-surface-variant/30">
+                      <span className="w-5 h-5 rounded-full bg-secondary/10 text-secondary text-xs flex items-center justify-center font-bold">
+                        2
+                      </span>
+                      <h4 className="font-headline-sm text-sm text-primary font-medium">
+                        Slide 2: Cinematic 10-Second Video (Motion)
+                      </h4>
+                    </div>
+                    <DragDropVideoUpload
+                      currentVideoUrl={heroVideoUrl}
+                      onVideoChange={(newUrl) => {
+                        setHeroVideoUrl(newUrl);
+                        showToast("Hero video asset updated. Click 'Publish Live' below to commit.");
+                      }}
+                      label="Hero Background Video (MP4 / WebM)"
+                      posterUrl={heroImageUrl || "/images/hero-bedding.jpg"}
+                    />
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-surface-variant/30">
                     <div>

@@ -18,6 +18,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
 export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalProps) {
   const [textInput, setTextInput] = useState("");
   const [defaultCategory, setDefaultCategory] = useState<"bedsheets" | "pillows" | "duvets">("bedsheets");
+  const [defaultBrand, setDefaultBrand] = useState("LOOMSDAY");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   if (!isOpen) return null;
@@ -38,7 +39,7 @@ export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalPro
     const timestamp = Date.now();
 
     lines.forEach((line, index) => {
-      // Parse line format: Name, Price, Category (optional), Material (optional)
+      // Parse line format: Name, Price, Category (optional), Material (optional), Brand (optional)
       // Supports tab-separated (from Excel) or comma-separated
       const parts = line.includes("\t")
         ? line.split("\t").map((p) => p.trim())
@@ -55,6 +56,7 @@ export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalPro
       else if (catStr.includes("bed") || catStr.includes("sheet")) category = "bedsheets";
 
       const material = parts[3] || "100% French Flax Linen";
+      const brand = parts[4] || defaultBrand || "LOOMSDAY";
 
       const slugBase = name
         .toLowerCase()
@@ -84,6 +86,7 @@ export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalPro
         id: productId,
         name,
         slug,
+        brand,
         tagline: "Stone-Washed Normandy Flax • Impossibly Soft",
         description: `Handcrafted from ${material}. Pre-washed with volcanic stones for signature lived-in drape, breathability, and quiet relaxation.`,
         category,
@@ -197,33 +200,51 @@ All-Season Cloudfiber Duvet, 26000, duvets, Hypoallergenic Microfiber`;
               </button>
             </div>
             <p className="text-[11px] text-on-surface-variant">
-              Format: <span className="font-mono text-primary font-medium">Product Name, Price (PKR), Category (optional), Material (optional)</span>
+              Format: <span className="font-mono text-primary font-medium">Product Name, Price (PKR), Category (optional), Material (optional), Brand (optional)</span>
             </p>
             <textarea
-              rows={12}
+              rows={10}
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
-              placeholder={`Linen Sheet Set, 28500, bedsheets, 100% French Flax\nGoose Down Duvet, 34000, duvets, Bavarian Down\nPure Silk Pillow, 12000, pillows, Mulberry Silk`}
+              placeholder={`Linen Sheet Set, 28500, bedsheets, 100% French Flax, LOOMSDAY\nGoose Down Duvet, 34000, duvets, Bavarian Down, LOOMSDAY\nPure Silk Pillow, 12000, pillows, Mulberry Silk, LOOMSDAY`}
               className="w-full p-3 font-mono text-xs rounded-xl border border-surface-variant bg-surface text-primary focus:outline-none focus:border-primary resize-none mt-1"
             />
           </div>
 
-          <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex items-center justify-between">
-            <div className="space-y-0.5">
-              <span className="font-medium text-primary">Default Category</span>
-              <p className="text-[11px] text-on-surface-variant">
-                Used if a line doesn&apos;t specify category
-              </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex items-center justify-between">
+              <div className="space-y-0.5">
+                <span className="font-medium text-primary">Default Category</span>
+                <p className="text-[11px] text-on-surface-variant">
+                  Fallback category
+                </p>
+              </div>
+              <select
+                value={defaultCategory}
+                onChange={(e) => setDefaultCategory(e.target.value as any)}
+                className="py-1.5 px-3 rounded-lg border border-surface-variant bg-surface text-primary text-xs focus:outline-none"
+              >
+                <option value="bedsheets">Bedsheets</option>
+                <option value="pillows">Pillows &amp; Covers</option>
+                <option value="duvets">Duvets &amp; Inserts</option>
+              </select>
             </div>
-            <select
-              value={defaultCategory}
-              onChange={(e) => setDefaultCategory(e.target.value as any)}
-              className="py-1.5 px-3 rounded-lg border border-surface-variant bg-surface text-primary text-xs focus:outline-none"
-            >
-              <option value="bedsheets">Bedsheets</option>
-              <option value="pillows">Pillows &amp; Covers</option>
-              <option value="duvets">Duvets &amp; Inserts</option>
-            </select>
+
+            <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex items-center justify-between">
+              <div className="space-y-0.5">
+                <span className="font-medium text-primary">Default Brand</span>
+                <p className="text-[11px] text-on-surface-variant">
+                  Fallback brand / atelier
+                </p>
+              </div>
+              <input
+                type="text"
+                value={defaultBrand}
+                onChange={(e) => setDefaultBrand(e.target.value)}
+                placeholder="LOOMSDAY"
+                className="w-28 py-1.5 px-3 rounded-lg border border-surface-variant bg-surface text-primary text-xs font-medium focus:outline-none focus:border-secondary"
+              />
+            </div>
           </div>
         </div>
 

@@ -16,6 +16,7 @@ export const STANDARD_BEDDING_SIZES = ["Single", "Double", "Queen", "King"];
 export function ProductModal({ isOpen, onClose, productToEdit, onSave }: ProductModalProps) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+  const [brand, setBrand] = useState("LOOMSDAY");
   const [tagline, setTagline] = useState("");
   const [category, setCategory] = useState<"bedsheets" | "pillows" | "duvets">("bedsheets");
   const [selectedSizes, setSelectedSizes] = useState<string[]>(["Single", "Double", "Queen", "King"]);
@@ -43,6 +44,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     if (productToEdit) {
       setName(productToEdit.name);
       setSlug(productToEdit.slug);
+      setBrand(productToEdit.brand || "LOOMSDAY");
       setTagline(productToEdit.tagline || "");
       setCategory(productToEdit.category);
       setSelectedSizes(
@@ -61,6 +63,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       // Defaults for new product
       setName("");
       setSlug("");
+      setBrand("LOOMSDAY");
       setTagline("Stone-Washed Normandy Flax • Impossibly Soft");
       setCategory("bedsheets");
       setSelectedSizes(["Single", "Double", "Queen", "King"]);
@@ -249,6 +252,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       id: productToEdit?.id || `prod-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name: name.trim(),
       slug: finalSlug,
+      brand: brand.trim() || "LOOMSDAY",
       tagline: tagline.trim() || "Stone-Washed Normandy Flax • Impossibly Soft",
       description: description.trim() || "Woven from slow-harvested 100% certified organic European flax. Stone-washed for immediate softness and effortless drape.",
       category,
@@ -347,9 +351,9 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Row 1: Title & Slug */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+          {/* Row 1: Title & Brand Name */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-2">
               <label className="block text-xs font-medium text-primary mb-1">Product Title *</label>
               <input
                 type="text"
@@ -361,17 +365,17 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-primary mb-1">URL Identifier (Slug)</label>
+            <div className="md:col-span-1">
+              <label className="block text-xs font-medium text-primary mb-1 flex items-center justify-between">
+                <span>Brand Name *</span>
+                <span className="text-[10px] text-secondary font-semibold uppercase tracking-wider">Atelier</span>
+              </label>
               <input
                 type="text"
-                value={slug}
-                onChange={(e) => {
-                  const val = e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-                  setSlug(val);
-                }}
-                placeholder="Auto-generated from title"
-                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-mono focus:outline-none focus:border-secondary transition-colors"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                placeholder="e.g. LOOMSDAY"
+                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-medium focus:outline-none focus:border-secondary transition-colors"
               />
             </div>
           </div>
@@ -437,6 +441,24 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
                 />
               </div>
             </div>
+          </div>
+
+          {/* Row 3: URL Slug Identifier */}
+          <div>
+            <label className="block text-xs font-medium text-primary mb-1 flex items-center justify-between">
+              <span>URL Identifier (Slug)</span>
+              <span className="text-[10px] text-on-surface-variant">Auto-generated from title</span>
+            </label>
+            <input
+              type="text"
+              value={slug}
+              onChange={(e) => {
+                const val = e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                setSlug(val);
+              }}
+              placeholder="e.g. the-french-flax-linen-sheet-set"
+              className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary font-mono focus:outline-none focus:border-secondary transition-colors"
+            />
           </div>
 
           {/* Pricing Savings Pill */}

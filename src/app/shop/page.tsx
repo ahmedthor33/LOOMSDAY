@@ -97,11 +97,24 @@ export default function ShopPage() {
 
   const [filters, setFilters] = useState<FilterState>({
     category: "all",
+    brand: "all",
     size: "",
     color: "",
     material: "",
     maxPrice: 100000,
   });
+
+  const availableBrands = useMemo(() => {
+    const brandsSet = new Set<string>();
+    allProducts.forEach((p) => {
+      if (p.brand && p.brand.trim()) {
+        brandsSet.add(p.brand.trim());
+      } else {
+        brandsSet.add("LOOMSDAY");
+      }
+    });
+    return Array.from(brandsSet);
+  }, [allProducts]);
 
   const [sortOption, setSortOption] = useState<
     "featured" | "best_selling" | "price_asc" | "price_desc" | "rating"
@@ -117,6 +130,11 @@ export default function ShopPage() {
         const pCat = normalizeCategory(product.category);
         const fCat = normalizeCategory(filters.category);
         if (pCat !== fCat) return false;
+      }
+      // Brand filter
+      if (filters.brand && filters.brand !== "all") {
+        const pBrand = (product.brand || "LOOMSDAY").toLowerCase().trim();
+        if (pBrand !== filters.brand.toLowerCase().trim()) return false;
       }
       // Size filter
       if (
@@ -155,6 +173,7 @@ export default function ShopPage() {
 
   const activeChips = [];
   if (filters.category !== "all") activeChips.push({ label: filters.category, key: "category" });
+  if (filters.brand && filters.brand !== "all") activeChips.push({ label: `Brand: ${filters.brand}`, key: "brand" });
   if (filters.size) activeChips.push({ label: `Size: ${filters.size}`, key: "size" });
   if (filters.color) activeChips.push({ label: `Color: ${filters.color}`, key: "color" });
   if (filters.material) activeChips.push({ label: filters.material, key: "material" });
@@ -163,6 +182,7 @@ export default function ShopPage() {
   const clearAllFilters = () => {
     setFilters({
       category: "all",
+      brand: "all",
       size: "",
       color: "",
       material: "",
@@ -172,6 +192,7 @@ export default function ShopPage() {
 
   const removeChip = (key: string) => {
     if (key === "category") setFilters((f) => ({ ...f, category: "all" }));
+    if (key === "brand") setFilters((f) => ({ ...f, brand: "all" }));
     if (key === "size") setFilters((f) => ({ ...f, size: "" }));
     if (key === "color") setFilters((f) => ({ ...f, color: "" }));
     if (key === "material") setFilters((f) => ({ ...f, material: "" }));
@@ -433,6 +454,7 @@ export default function ShopPage() {
             filters={filters}
             onFilterChange={setFilters}
             onClearFilters={clearAllFilters}
+            availableBrands={availableBrands}
             isOpenMobile={isMobileFiltersOpen}
             onCloseMobile={() => setIsMobileFiltersOpen(false)}
           />

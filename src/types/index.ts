@@ -32,6 +32,7 @@ export interface Product {
   rating: number;
   reviewCount: number;
   material: string;
+  brand?: string;
   threadCountOrGsm?: string;
   origin?: string;
   isBestSeller?: boolean;
@@ -175,6 +176,10 @@ export interface StorefrontCms {
     secondaryCtaText: string;
     secondaryCtaLink: string;
     imageUrl: string;
+    videoUrl?: string;
+    videoPosterUrl?: string;
+    activeMedia?: "slider" | "image" | "video";
+    slideIntervalSeconds?: number;
   };
   shopHero?: CategoryHeroBanner;
   bedsheetHero?: CategoryHeroBanner;
