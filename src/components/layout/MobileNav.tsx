@@ -19,7 +19,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
     { name: "Home", href: "/" },
     { name: "All Bedding", href: "/shop" },
     { name: "Bedsheet Sets", href: "/shop/bedsheets" },
-    { name: "Pillows & Shams", href: "/shop/pillows" },
+    { name: "Pillows & cushions Covers", href: "/shop/pillows" },
     { name: "Duvets & Inserts", href: "/shop/duvets" },
     { name: "Saved Sanctuary", href: "/wishlist" },
     { name: "My Concierge Account", href: "/account" },

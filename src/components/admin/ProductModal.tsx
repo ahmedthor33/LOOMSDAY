@@ -244,7 +244,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     const finalSlug = cleanSlug || `prod-${Date.now()}`;
     const categoryLabels: Record<string, string> = {
       bedsheets: "Bedsheets",
-      pillows: "Pillows & Covers",
+      pillows: "Pillows & cushions Covers",
       duvets: "Duvets & Inserts",
     };
 
@@ -390,7 +390,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
                 className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary transition-colors"
               >
                 <option value="bedsheets">Bedsheets</option>
-                <option value="pillows">Pillows &amp; Covers</option>
+                <option value="pillows">Pillows &amp; cushions Covers</option>
                 <option value="duvets">Duvets &amp; Inserts</option>
               </select>
             </div>

@@ -33,7 +33,7 @@ export function Header() {
 
   const navLinks = [
     { name: "Bedsheets", href: "/shop/bedsheets" },
-    { name: "Pillows & Covers", href: "/shop/pillows" },
+    { name: "Pillows & cushions Covers", href: "/shop/pillows" },
     { name: "Duvets", href: "/shop/duvets" },
     { name: "All Collections", href: "/shop" },
   ];

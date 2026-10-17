@@ -400,7 +400,7 @@ export default function HomePage() {
               </div>
             </Link>
 
-            {/* Card 2: Pillows & Covers */}
+            {/* Card 2: Pillows & cushions Covers */}
             <Link
               href="/shop/pillows"
               className="group relative flex flex-col bg-surface-container overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 md:-translate-y-4 rounded"
@@ -419,7 +419,7 @@ export default function HomePage() {
                   <span className="font-label-eyebrow text-label-eyebrow uppercase tracking-widest text-secondary">
                     LAYER 02
                   </span>
-                  <h3 className="font-headline-md text-headline-md text-primary">Pillows &amp; Covers</h3>
+                  <h3 className="font-headline-md text-headline-md text-primary">Pillows &amp; cushions Covers</h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
                     Cloud-loft Down Pillows and pure linen envelope shams that elevate cervical relaxation.
                   </p>

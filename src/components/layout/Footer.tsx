@@ -124,7 +124,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/shop/pillows" className="hover:text-primary transition-colors">
-                  Pillows &amp; Shams
+                  Pillows &amp; cushions Covers
                 </Link>
               </li>
               <li>

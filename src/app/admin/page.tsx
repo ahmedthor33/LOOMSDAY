@@ -1308,7 +1308,11 @@ function AdminContent() {
                         : "bg-surface-container hover:bg-surface-variant text-on-surface-variant"
                     }`}
                   >
-                    {cat === "all" ? "All Collections" : cat}
+                    {cat === "all"
+                      ? "All Collections"
+                      : cat === "pillows"
+                      ? "Pillows & cushions Covers"
+                      : cat}
                   </button>
                 ))}
               </div>
@@ -1416,7 +1420,9 @@ function AdminContent() {
                             </span>
                           </td>
                           <td className="py-3 px-4 capitalize text-on-surface-variant">
-                            {prod.categoryLabel || prod.category}
+                            {prod.category === "pillows"
+                              ? "Pillows & cushions Covers"
+                              : prod.categoryLabel || prod.category}
                           </td>
                           <td className="py-3 px-4">
                             <p className="text-primary font-medium">{prod.material}</p>
@@ -1952,8 +1958,8 @@ function AdminContent() {
             {/* TAB 2: PILLOWS PAGE HERO BANNER CUSTOMIZER */}
             {cmsSubTab === "pillows" && (
               <CategoryBannerStudio
-                title="Pillows &amp; Covers Hero Banner Studio"
-                categoryName="Pillows &amp; Covers"
+                title="Pillows &amp; cushions Covers Hero Banner Studio"
+                categoryName="Pillows &amp; cushions Covers"
                 categoryPath="/shop/pillows"
                 icon="airline_seat_individual_suite"
                 banner={cms.pillowHero || DEFAULT_PILLOW_HERO}

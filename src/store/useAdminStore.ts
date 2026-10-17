@@ -197,13 +197,13 @@ export const DEFAULT_BEDSHEET_HERO: CategoryHeroBanner = {
 export const DEFAULT_PILLOW_HERO: CategoryHeroBanner = {
   enabled: true,
   eyebrow: "LAYER 02 : CERVICAL ELEVATION",
-  headline: "Sanctuary Pillows & Linen Shams",
+  headline: "Sanctuary Pillows & cushions Covers",
   subheadline:
     "Cloud-loft Bavarian goose down, natural Talalay latex contour cores, and enzyme-washed French linen envelope pillowcases crafted for restorative rest.",
   badge: "Normandy Flax & Pure Down",
   imageUrl:
     "https://lh3.googleusercontent.com/aida-public/AB6AXuAZln3uLX8fzZHDzCdaDgClEvINVhmgMFiG4LsS37402s-SGkXCoE-TIQUWYQ1VX43haCPKu1WNH7BQaD8dnuGl_BXE7OZhLfJ8XcDReVMe9ij43mIRCzskGIHasidrAkhdA9-DJbD0cUNCDiX3kmjrd5ayu3p-M_XEE7KUfQHaP4S7q3kc4IDU28mLbYpUATW3foxTcK2jNND0uSjpwPbtrqE39A80lzluICl4QyPAiAmbRiBPNq_Bjg",
-  ctaText: "Explore Pillows & Shams",
+  ctaText: "Explore Pillows & cushions Covers",
   ctaLink: "#products-grid",
 };
 

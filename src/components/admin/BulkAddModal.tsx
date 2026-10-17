@@ -51,7 +51,7 @@ export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalPro
 
       let catStr = (parts[2] || defaultCategory).toLowerCase();
       let category: "bedsheets" | "pillows" | "duvets" = defaultCategory;
-      if (catStr.includes("pillow") || catStr.includes("sham")) category = "pillows";
+      if (catStr.includes("pillow") || catStr.includes("sham") || catStr.includes("cushion")) category = "pillows";
       else if (catStr.includes("duvet") || catStr.includes("insert")) category = "duvets";
       else if (catStr.includes("bed") || catStr.includes("sheet")) category = "bedsheets";
 
@@ -94,7 +94,7 @@ export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalPro
           category === "bedsheets"
             ? "Bedsheets"
             : category === "pillows"
-            ? "Pillows & Covers"
+            ? "Pillows & cushions Covers"
             : "Duvets & Inserts",
         basePrice,
         retailPrice: Math.round(basePrice * 1.25),
@@ -225,7 +225,7 @@ All-Season Cloudfiber Duvet, 26000, duvets, Hypoallergenic Microfiber`;
                 className="py-1.5 px-3 rounded-lg border border-surface-variant bg-surface text-primary text-xs focus:outline-none"
               >
                 <option value="bedsheets">Bedsheets</option>
-                <option value="pillows">Pillows &amp; Covers</option>
+                <option value="pillows">Pillows &amp; cushions Covers</option>
                 <option value="duvets">Duvets &amp; Inserts</option>
               </select>
             </div>

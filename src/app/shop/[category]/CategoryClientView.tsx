@@ -22,7 +22,7 @@ const CATEGORY_META: Record<string, { title: string; subtitle: string; descripti
     description: "Deep pocket fitted sheets and generously turned flat sheets woven from slow-harvested Normandy flax and crisp Aegean percale cotton.",
   },
   pillows: {
-    title: "Sanctuary Pillows & Linen Shams",
+    title: "Sanctuary Pillows & cushions Covers",
     subtitle: "LAYER 02 : CERVICAL ELEVATION",
     description: "Cloud-loft Bavarian goose down, natural Talalay latex contour cores, and enzyme-washed French linen envelope pillowcases.",
   },
@@ -37,7 +37,7 @@ export const normalizeCategory = (cat?: string): string => {
   if (!cat) return "";
   const c = cat.toLowerCase().trim();
   if (c.includes("bed") || c.includes("sheet")) return "bedsheets";
-  if (c.includes("pillow") || c.includes("sham")) return "pillows";
+  if (c.includes("pillow") || c.includes("sham") || c.includes("cushion")) return "pillows";
   if (c.includes("duvet") || c.includes("insert") || c.includes("cover")) return "duvets";
   return c;
 };
@@ -162,8 +162,12 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
       const p = activeCms?.pillowHero || DEFAULT_PILLOW_HERO;
       return {
         ...p,
-        breadcrumbLabel: "Pillows & Covers",
-        defaultCtaText: "Explore Pillows & Covers",
+        headline:
+          !p.headline || p.headline === "Sanctuary Pillows & Linen Shams"
+            ? "Sanctuary Pillows & cushions Covers"
+            : p.headline,
+        breadcrumbLabel: "Pillows & cushions Covers",
+        defaultCtaText: "Explore Pillows & cushions Covers",
       };
     }
     if (activeSlug === "duvets") {
@@ -430,7 +434,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
                 : "bg-surface-container hover:bg-surface-variant text-on-surface"
             }`}
           >
-            Pillows &amp; Covers
+            Pillows &amp; cushions Covers
           </Link>
           <Link
             href="/shop/duvets"

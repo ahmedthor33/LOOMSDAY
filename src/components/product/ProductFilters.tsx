@@ -45,7 +45,7 @@ export function ProductFilters({
   const categories = [
     { label: "All Bedding", value: "all", count: 12 },
     { label: "Bedsheet Sets", value: "bedsheets", count: 5 },
-    { label: "Pillows & Covers", value: "pillows", count: 4 },
+    { label: "Pillows & cushions Covers", value: "pillows", count: 4 },
     { label: "Duvets & Inserts", value: "duvets", count: 3 },
   ];
 

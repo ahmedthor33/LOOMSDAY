@@ -332,7 +332,7 @@ export default function ShopPage() {
             href="/shop/pillows"
             className="px-4 py-2 rounded-full text-xs font-label-md uppercase tracking-wider bg-surface-container hover:bg-surface-variant text-on-surface transition-colors shrink-0"
           >
-            Pillows &amp; Covers
+            Pillows &amp; cushions Covers
           </Link>
           <Link
             href="/shop/duvets"
