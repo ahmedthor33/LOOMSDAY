@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Product } from "@/types";
+import { Product, ProductImage } from "@/types";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -24,7 +24,8 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
   const [basePrice, setBasePrice] = useState<number | string>("");
   const [material, setMaterial] = useState("100% French Flax Linen");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [images, setImages] = useState<ProductImage[]>([]);
+  const [directUrlInput, setDirectUrlInput] = useState("");
   const [isBestSeller, setIsBestSeller] = useState(false);
   const [isNewArrival, setIsNewArrival] = useState(false);
 
@@ -40,6 +41,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     setFormError(null);
     setImageError(null);
     setIsProcessingImage(false);
+    setDirectUrlInput("");
 
     if (productToEdit) {
       setName(productToEdit.name);
@@ -56,7 +58,23 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       setBasePrice(productToEdit.basePrice);
       setMaterial(productToEdit.material);
       setDescription(productToEdit.description);
-      setImageUrl(productToEdit.images[0]?.url || "");
+      const initialImages = Array.isArray(productToEdit.images) && productToEdit.images.length > 0
+        ? productToEdit.images.map((img, idx) => ({
+            ...img,
+            sortOrder: img.sortOrder ?? idx,
+            isPrimary: img.isPrimary ?? (idx === 0),
+          }))
+        : [
+            {
+              id: `img-${Date.now()}-1`,
+              productId: productToEdit.id,
+              url: "/images/hero-bedding.jpg",
+              altText: productToEdit.name,
+              sortOrder: 0,
+              isPrimary: true,
+            },
+          ];
+      setImages(initialImages);
       setIsBestSeller(Boolean(productToEdit.isBestSeller));
       setIsNewArrival(Boolean(productToEdit.isNewArrival));
     } else {
@@ -71,7 +89,16 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       setBasePrice("");
       setMaterial("100% French Flax Linen");
       setDescription("Woven from slow-harvested 100% certified organic European flax. Stone-washed for immediate softness and effortless drape.");
-      setImageUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ");
+      setImages([
+        {
+          id: `img-${Date.now()}-1`,
+          productId: "",
+          url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
+          altText: "Stone-Washed Normandy Flax",
+          sortOrder: 0,
+          isPrimary: true,
+        },
+      ]);
       setIsBestSeller(false);
       setIsNewArrival(true);
     }
@@ -102,10 +129,60 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     }
   };
 
-  // Image compressor helper: creates ultra-compact 640px / 70% quality JPEG (<35KB) with 4s failsafe
-  const processImageFile = (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      setImageError("Please choose a valid image file (PNG, JPG, WEBP, AVIF).");
+  // Image compressor helper: creates high-res optimized Data URL
+  const processSingleImageFile = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (!file.type.startsWith("image/")) {
+        return reject(new Error("File is not an image"));
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        const img = new window.Image();
+        img.onload = () => {
+          try {
+            const maxDimension = 2048;
+            let { width, height } = img;
+            if (width > maxDimension || height > maxDimension) {
+              if (width > height) {
+                height = Math.round((height * maxDimension) / width);
+                width = maxDimension;
+              } else {
+                width = Math.round((width * maxDimension) / height);
+                height = maxDimension;
+              }
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return resolve(dataUrl);
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const optimized = canvas.toDataURL("image/jpeg", 0.90);
+            resolve(optimized);
+          } catch {
+            resolve(dataUrl);
+          }
+        };
+        img.onerror = () => reject(new Error("Failed to decode image file"));
+        img.src = dataUrl;
+      };
+      reader.onerror = () => reject(new Error("Failed to read image file"));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const processImageFiles = async (files: FileList | File[]) => {
+    const fileList = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (fileList.length === 0) {
+      setImageError("Please choose valid image files (PNG, JPG, WEBP, AVIF).");
       return;
     }
 
@@ -113,72 +190,31 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     setFormError(null);
     setIsProcessingImage(true);
 
-    // 4-second safety timeout so form is NEVER stuck if image decoding stalls
-    const timeoutId = setTimeout(() => {
-      setIsProcessingImage(false);
-      setImageError("Image processing timed out. Reverted to previous photo.");
-    }, 4000);
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target?.result as string;
-      const img = new window.Image();
-      img.onload = () => {
-        clearTimeout(timeoutId);
-        try {
-          // Preserve 2K High Resolution (up to 2048px)
-          const maxDimension = 2048;
-          let { width, height } = img;
-          if (width > maxDimension || height > maxDimension) {
-            if (width > height) {
-              height = Math.round((height * maxDimension) / width);
-              width = maxDimension;
-            } else {
-              width = Math.round((width * maxDimension) / height);
-              height = maxDimension;
-            }
-          }
-
-          const canvas = document.createElement("canvas");
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          if (!ctx) {
-            setImageUrl(dataUrl);
-            return;
-          }
-
-          // Use high quality image smoothing
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = "high";
-
-          // Fill white background to avoid black background on transparent PNGs
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, width, height);
-          ctx.drawImage(img, 0, 0, width, height);
-
-          // Save at pristine 90% JPEG quality
-          const optimized = canvas.toDataURL("image/jpeg", 0.90);
-          setImageUrl(optimized);
-        } catch {
-          setImageUrl("/images/hero-bedding.jpg");
-        } finally {
-          setIsProcessingImage(false);
+    try {
+      const urls = await Promise.all(fileList.map((f) => processSingleImageFile(f)));
+      setImages((prev) => {
+        const next = [...prev];
+        urls.forEach((url, idx) => {
+          next.push({
+            id: `img-${Date.now()}-${next.length + idx + 1}`,
+            productId: productToEdit?.id || "",
+            url,
+            altText: `${name || "Linen piece"} view ${next.length + idx + 1}`,
+            sortOrder: next.length + idx,
+            isPrimary: next.length === 0 && idx === 0,
+          });
+        });
+        if (!next.some((img) => img.isPrimary) && next.length > 0) {
+          next[0].isPrimary = true;
         }
-      };
-      img.onerror = () => {
-        clearTimeout(timeoutId);
-        setImageError("Failed to decode image file. Please use a standard JPG or PNG.");
-        setIsProcessingImage(false);
-      };
-      img.src = dataUrl;
-    };
-    reader.onerror = () => {
-      clearTimeout(timeoutId);
-      setImageError("Failed to read image file.");
+        return next;
+      });
+    } catch (err: any) {
+      console.warn("Image upload error:", err);
+      setImageError("Failed to process one or more images. Please use standard JPG or PNG.");
+    } finally {
       setIsProcessingImage(false);
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -198,16 +234,66 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     e.stopPropagation();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      processImageFile(e.dataTransfer.files[0]);
+      processImageFiles(e.dataTransfer.files);
     }
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      processImageFile(e.target.files[0]);
-      // Reset input value so re-uploading same file triggers change
+      processImageFiles(e.target.files);
       e.target.value = "";
     }
+  };
+
+  const handleAddDirectUrl = () => {
+    if (!directUrlInput.trim()) return;
+    setImages((prev) => {
+      const next = [
+        ...prev,
+        {
+          id: `img-${Date.now()}-${prev.length + 1}`,
+          productId: productToEdit?.id || "",
+          url: directUrlInput.trim(),
+          altText: `${name || "Linen piece"} angle ${prev.length + 1}`,
+          sortOrder: prev.length,
+          isPrimary: prev.length === 0,
+        },
+      ];
+      if (!next.some((img) => img.isPrimary) && next.length > 0) {
+        next[0].isPrimary = true;
+      }
+      return next;
+    });
+    setDirectUrlInput("");
+  };
+
+  const handleSetPrimary = (index: number) => {
+    setImages((prev) =>
+      prev.map((img, idx) => ({
+        ...img,
+        isPrimary: idx === index,
+      }))
+    );
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => {
+      const next = prev.filter((_, idx) => idx !== index);
+      if (next.length > 0 && !next.some((img) => img.isPrimary)) {
+        next[0].isPrimary = true;
+      }
+      return next;
+    });
+  };
+
+  const handleMoveImage = (fromIdx: number, toIdx: number) => {
+    if (toIdx < 0 || toIdx >= images.length) return;
+    setImages((prev) => {
+      const next = [...prev];
+      const [moved] = next.splice(fromIdx, 1);
+      next.splice(toIdx, 0, moved);
+      return next;
+    });
   };
 
   if (!isOpen) return null;
@@ -223,6 +309,10 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     }
     if (isProcessingImage) {
       setFormError("Product photography is currently optimizing. Please wait a moment.");
+      return;
+    }
+    if (images.length === 0) {
+      setFormError("Please upload or provide at least one product photo.");
       return;
     }
 
@@ -248,6 +338,18 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       duvets: "Duvets & Inserts",
     };
 
+    const normalizedImages: ProductImage[] = images.map((img, idx) => ({
+      ...img,
+      id: img.id || `img-${Date.now()}-${idx + 1}`,
+      productId: productToEdit?.id || `prod-${Date.now()}`,
+      sortOrder: idx,
+      isPrimary: img.isPrimary ?? (idx === 0),
+    }));
+
+    if (!normalizedImages.some((img) => img.isPrimary) && normalizedImages.length > 0) {
+      normalizedImages[0].isPrimary = true;
+    }
+
     const finalProduct: Product = {
       id: productToEdit?.id || `prod-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name: name.trim(),
@@ -271,16 +373,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
         { name: "Soft Sand", hex: "#E8DFD0" },
         { name: "Muted Sage", hex: "#C2C9BC" },
       ],
-      images: [
-        {
-          id: productToEdit?.images?.[0]?.id || `img-${Date.now()}-1`,
-          productId: productToEdit?.id || `prod-${Date.now()}`,
-          url: imageUrl || "/images/hero-bedding.jpg",
-          altText: `${name} styled in luxury bedroom setting`,
-          sortOrder: 0,
-          isPrimary: true,
-        },
-      ],
+      images: normalizedImages,
       variants: (selectedSizes.length > 0 ? selectedSizes : ["Single", "Double", "Queen", "King"]).map((sz, idx) => ({
         id: `var-${Date.now()}-${idx + 1}`,
         productId: productToEdit?.id || `prod-${Date.now()}`,
@@ -557,27 +650,30 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
             />
           </div>
 
-          {/* Row 5: Drag & Drop Product Photography */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
+          {/* Row 5: Multi-Image Product Photography Gallery */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
               <label className="text-xs font-medium text-primary flex items-center gap-1.5">
-                <span>Product Photography Asset *</span>
+                <span className="material-symbols-outlined text-sm text-secondary">photo_library</span>
+                <span>Product Photography Assets ({images.length} {images.length === 1 ? "photo" : "photos"}) *</span>
                 <span className="text-[10px] text-on-surface-variant font-normal">
-                  (Drag &amp; drop or browse)
+                  (Upload room views, drape angles, texture closeups)
                 </span>
               </label>
               <button
                 type="button"
                 onClick={() => setShowUrlFallback(!showUrlFallback)}
-                className="text-[11px] text-secondary hover:text-primary transition-colors underline"
+                className="text-[11px] text-secondary hover:text-primary transition-colors underline flex items-center gap-1"
               >
-                {showUrlFallback ? "Hide URL input" : "Or enter direct Image URL"}
+                <span className="material-symbols-outlined text-[13px]">add_link</span>
+                <span>{showUrlFallback ? "Hide URL input" : "Add by Image URL"}</span>
               </button>
             </div>
 
             <input
               ref={fileInputRef}
               type="file"
+              multiple
               accept="image/png,image/jpeg,image/webp,image/avif,image/gif"
               className="hidden"
               onChange={handleFileInputChange}
@@ -589,80 +685,124 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`relative border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 group ${
+              className={`relative border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-200 group ${
                 isDragging
                   ? "border-secondary bg-secondary/10 ring-4 ring-secondary/20"
-                  : imageUrl
-                  ? "border-surface-variant/80 bg-surface-container-low hover:border-secondary"
                   : "border-surface-variant hover:border-secondary bg-surface-container-lowest hover:bg-surface-container-low"
               }`}
             >
               {isProcessingImage ? (
-                <div className="py-6 flex flex-col items-center justify-center gap-2">
-                  <div className="w-8 h-8 rounded-full border-2 border-secondary border-t-transparent animate-spin" />
-                  <p className="text-xs text-primary font-medium">Optimizing luxury photography...</p>
-                </div>
-              ) : imageUrl ? (
-                <div className="flex flex-col sm:flex-row items-center gap-4 text-left">
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-container-highest border border-surface-variant shrink-0 shadow-sm">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imageUrl}
-                      alt="Product preview"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 space-y-1 text-center sm:text-left">
-                    <div className="flex items-center gap-2 justify-center sm:justify-start">
-                      <span className="w-2 h-2 rounded-full bg-emerald-600 inline-block" />
-                      <span className="text-xs font-medium text-primary">Image loaded &amp; ready</span>
-                    </div>
-                    <p className="text-[11px] text-on-surface-variant">
-                      Drop another image here or click to choose a new file.
-                    </p>
-                    <div className="pt-2 flex items-center gap-2 justify-center sm:justify-start">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          fileInputRef.current?.click();
-                        }}
-                        className="px-3 py-1 rounded bg-surface hover:bg-surface-container text-xs text-primary font-medium border border-surface-variant shadow-xs transition-colors"
-                      >
-                        Change Photo
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setImageUrl("");
-                        }}
-                        className="px-3 py-1 rounded bg-error/10 hover:bg-error/20 text-xs text-error font-medium transition-colors"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
+                <div className="py-4 flex flex-col items-center justify-center gap-2">
+                  <div className="w-7 h-7 rounded-full border-2 border-secondary border-t-transparent animate-spin" />
+                  <p className="text-xs text-primary font-medium">Optimizing &amp; converting photos...</p>
                 </div>
               ) : (
-                <div className="py-4 flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
-                    <span className="material-symbols-outlined text-2xl">cloud_upload</span>
+                <div className="py-2 flex flex-col items-center justify-center gap-1.5">
+                  <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+                    <span className="material-symbols-outlined text-xl">add_photo_alternate</span>
                   </div>
                   <div>
                     <p className="text-xs font-medium text-primary">
-                      Drag and drop high-resolution product photo here
+                      Drag &amp; drop photos here or <span className="text-secondary font-semibold underline">browse multiple files</span>
                     </p>
-                    <p className="text-[11px] text-on-surface-variant mt-0.5">
-                      or <span className="text-secondary font-semibold underline">browse from your computer</span>
+                    <p className="text-[10px] text-on-surface-variant mt-0.5">
+                      Select multiple images at once (PNG, JPG, WEBP). First photo is your storefront cover.
                     </p>
                   </div>
-                  <span className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">
-                    PNG, JPG, WEBP, AVIF • Auto-optimized for instant performance
-                  </span>
                 </div>
               )}
             </div>
+
+            {/* Direct Image URL input */}
+            {showUrlFallback && (
+              <div className="p-3 rounded-xl bg-surface-container-low border border-surface-variant/50 space-y-2">
+                <label className="block text-[11px] font-medium text-on-surface-variant">
+                  Add Photo by Direct URL
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={directUrlInput}
+                    onChange={(e) => setDirectUrlInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddDirectUrl();
+                      }
+                    }}
+                    placeholder="https://... (paste direct image link)"
+                    className="flex-1 px-3 py-1.5 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddDirectUrl}
+                    className="px-3 py-1.5 rounded bg-primary text-on-primary text-xs font-medium hover:bg-neutral-800 transition-colors shadow-xs"
+                  >
+                    Add Photo
+                  </button>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-on-surface-variant">
+                  <span>Quick presets:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImages((prev) => [
+                        ...prev,
+                        {
+                          id: `img-${Date.now()}-normandy`,
+                          productId: productToEdit?.id || "",
+                          url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4-I1K4vbNsICIYjZwoz76sC8eark0SaLCinQ02L5WbuHtIK9LKjZHfbdct-MVjWJSFfhuGfB7cdqZigy00l7f5qJANIQ7KWF5_og5iivfRMvVDcdTsEP7fPkt5RehCVzYUPKR7JagrOTXZlR3QyYU4L2H5WQSLA0MRUHM4ZB0sniWUsXZGquPIyFldicPjdfkWIyhoGllR5wOP4SOGxscuAPOLf7YSSpnJNZp3kRWAy-JthZi_vhtBQ",
+                          altText: "Normandy Flax",
+                          sortOrder: prev.length,
+                          isPrimary: prev.length === 0,
+                        },
+                      ]);
+                    }}
+                    className="underline hover:text-primary"
+                  >
+                    + Normandy Flax
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImages((prev) => [
+                        ...prev,
+                        {
+                          id: `img-${Date.now()}-pumice`,
+                          productId: productToEdit?.id || "",
+                          url: "https://lh3.googleusercontent.com/aida-public/AB6AXuBUZzpp8szKlCaNHPJemnC7kx29DdEaV7E3I1TFOfneVOOybqWHexi6-MoM23vQoMPe-EnSSE2tUyGvgGr3ZTPpE86VvolITvNzUwRts0j1NCnviBoNlO5_6V-s6-RXuAB6NH9REQV0N-tMe6dClU48x6HFueH2sf_aGFB8ibRlDUBD9_BgcAkh1KkDa1a4b1KRICZQhiy1Da8CrR9z0C0iGTVN7zluXFgR4S8CVkA8M_avPXvxdVssvw",
+                          altText: "Volcanic Linen",
+                          sortOrder: prev.length,
+                          isPrimary: prev.length === 0,
+                        },
+                      ]);
+                    }}
+                    className="underline hover:text-primary"
+                  >
+                    + Volcanic Linen
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImages((prev) => [
+                        ...prev,
+                        {
+                          id: `img-${Date.now()}-down`,
+                          productId: productToEdit?.id || "",
+                          url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCtOoYRRk0vGHuHkhoXB0ih8gsU0xTM_GGMq5APfzivgWXTvPdiG1uI5jfW5mWymwl1GqLYK1sXDsPR60PueZgV_M9jJ6mR4_ORPyDSiIL6iowMgRPg0-4jAEit5AXiKX7v-AEly6B792PSm3XJMHU-6RS572no-rMjGSSppdgxpLhDfgv4UU7c6EJ6R15wlZW6Qn1QOO6xcHPjvGne-45X8aJ-DoUpGwVFICvJVHXa8qcD5tp2I1-uMg",
+                          altText: "Duvet Insert",
+                          sortOrder: prev.length,
+                          isPrimary: prev.length === 0,
+                        },
+                      ]);
+                    }}
+                    className="underline hover:text-primary"
+                  >
+                    + Duvet Loft
+                  </button>
+                </div>
+              </div>
+            )}
 
             {imageError && (
               <p className="text-xs text-error mt-1 flex items-center gap-1">
@@ -671,27 +811,108 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
               </p>
             )}
 
-            {/* URL Fallback Accordion */}
-            {showUrlFallback && (
-              <div className="mt-2 p-3 rounded-lg bg-surface-container-low border border-surface-variant/50 space-y-2">
-                <label className="block text-[11px] font-medium text-on-surface-variant">
-                  Direct Image URL
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="url"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="https://... or /images/hero-bedding.jpg"
-                    className="flex-1 px-3 py-1.5 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary font-mono"
-                  />
+            {/* Uploaded Photos Grid */}
+            {images.length > 0 && (
+              <div className="space-y-2 pt-1">
+                <div className="flex items-center justify-between text-[11px] text-on-surface-variant">
+                  <span>Photo Gallery Ordering (First image is Cover)</span>
                   <button
                     type="button"
-                    onClick={() => setImageUrl("/images/hero-bedding.jpg")}
-                    className="px-3 py-1.5 rounded bg-surface hover:bg-surface-container text-[11px] text-secondary font-medium transition-colors border border-surface-variant shrink-0"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-secondary hover:underline font-medium flex items-center gap-1"
                   >
-                    Use 8K Hero
+                    <span className="material-symbols-outlined text-[14px]">add</span>
+                    <span>Add more photos</span>
                   </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {images.map((img, idx) => {
+                    const isCover = img.isPrimary || idx === 0;
+                    return (
+                      <div
+                        key={img.id || idx}
+                        className={`relative rounded-xl overflow-hidden border transition-all duration-200 group bg-surface-container-low flex flex-col ${
+                          isCover
+                            ? "border-secondary ring-2 ring-secondary/30 shadow-sm"
+                            : "border-surface-variant hover:border-primary"
+                        }`}
+                      >
+                        {/* Thumbnail View */}
+                        <div className="relative aspect-square w-full bg-surface-container-highest overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={img.url}
+                            alt={img.altText || `Product photo ${idx + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          />
+
+                          {/* Cover badge */}
+                          {isCover && (
+                            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-secondary text-primary text-[10px] font-bold tracking-wider uppercase shadow-md flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[12px]">star</span>
+                              <span>Cover</span>
+                            </span>
+                          )}
+
+                          {/* Index badge */}
+                          <span className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-xs text-white text-[10px] font-mono">
+                            #{idx + 1}
+                          </span>
+
+                          {/* Delete button */}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(idx)}
+                            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/70 hover:bg-red-600 text-white flex items-center justify-center transition-colors shadow-sm opacity-90 group-hover:opacity-100"
+                            title="Remove photo"
+                          >
+                            <span className="material-symbols-outlined text-[14px]">delete</span>
+                          </button>
+                        </div>
+
+                        {/* Card Controls */}
+                        <div className="p-2 flex items-center justify-between gap-1 bg-surface border-t border-surface-variant/40">
+                          {!isCover ? (
+                            <button
+                              type="button"
+                              onClick={() => handleSetPrimary(idx)}
+                              className="text-[10px] font-medium text-secondary hover:text-primary transition-colors flex items-center gap-0.5"
+                            >
+                              <span className="material-symbols-outlined text-[12px]">star_border</span>
+                              <span>Make Cover</span>
+                            </button>
+                          ) : (
+                            <span className="text-[10px] font-medium text-secondary flex items-center gap-0.5">
+                              <span className="material-symbols-outlined text-[12px]">check</span>
+                              <span>Primary</span>
+                            </span>
+                          )}
+
+                          <div className="flex items-center gap-0.5">
+                            <button
+                              type="button"
+                              disabled={idx === 0}
+                              onClick={() => handleMoveImage(idx, idx - 1)}
+                              className="p-1 rounded hover:bg-surface-container disabled:opacity-30 disabled:pointer-events-none text-on-surface-variant"
+                              title="Move photo left"
+                            >
+                              <span className="material-symbols-outlined text-[14px]">chevron_left</span>
+                            </button>
+                            <button
+                              type="button"
+                              disabled={idx === images.length - 1}
+                              onClick={() => handleMoveImage(idx, idx + 1)}
+                              className="p-1 rounded hover:bg-surface-container disabled:opacity-30 disabled:pointer-events-none text-on-surface-variant"
+                              title="Move photo right"
+                            >
+                              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

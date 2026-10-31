@@ -580,6 +580,7 @@ function AdminContent() {
   const [isBulkPriceModalOpen, setIsBulkPriceModalOpen] = useState(false);
   const [bulkPriceValue, setBulkPriceValue] = useState<string>("");
   const [bulkPriceMode, setBulkPriceMode] = useState<"fixed" | "discount_percent" | "increase_percent">("fixed");
+  const [previewGalleryProduct, setPreviewGalleryProduct] = useState<{ product: Product; activeIdx: number } | null>(null);
 
   // CMS Sub-Tab state: default to bedsheets so the user has immediate access
   const [cmsSubTab, setCmsSubTab] = useState<
@@ -1730,26 +1731,107 @@ function AdminContent() {
                             />
                           </td>
                           <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <div className="relative w-12 h-12 rounded overflow-hidden bg-surface-container-highest shrink-0 border border-surface-variant">
+                            <div className="flex items-start gap-3">
+                              {/* Primary image with multi-photo count badge */}
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setPreviewGalleryProduct({
+                                    product: prod,
+                                    activeIdx: 0,
+                                  });
+                                }}
+                                className="relative w-14 h-14 rounded-lg overflow-hidden bg-surface-container-highest shrink-0 border border-surface-variant group/thumb cursor-pointer shadow-xs hover:border-secondary transition-all"
+                                title="Click to view all photos"
+                              >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                   src={prod.images[0]?.url || "/images/hero-bedding.jpg"}
                                   alt={prod.name}
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform"
                                 />
+                                {prod.images.length > 1 && (
+                                  <span className="absolute bottom-1 right-1 bg-black/75 backdrop-blur-xs text-white text-[9px] font-mono px-1 py-0.2 rounded font-bold">
+                                    +{prod.images.length - 1}
+                                  </span>
+                                )}
                               </div>
-                              <div>
-                                <Link
-                                  href={`/product/${encodeURIComponent(prod.slug || prod.id)}`}
-                                  target="_blank"
-                                  className="font-medium text-primary hover:text-secondary hover:underline transition-colors block"
-                                >
-                                  {prod.name}
-                                </Link>
-                                <span className="text-[11px] text-on-surface-variant font-mono">
-                                  /{prod.slug}
-                                </span>
+
+                              {/* Title, slug, and multi-image mini strip */}
+                              <div className="space-y-1 min-w-0">
+                                <div>
+                                  <Link
+                                    href={`/product/${encodeURIComponent(prod.slug || prod.id)}`}
+                                    target="_blank"
+                                    className="font-medium text-primary hover:text-secondary hover:underline transition-colors block truncate max-w-xs md:max-w-md"
+                                  >
+                                    {prod.name}
+                                  </Link>
+                                  <span className="text-[11px] text-on-surface-variant font-mono">
+                                    /{prod.slug}
+                                  </span>
+                                </div>
+
+                                {/* Mini Thumbnails Reel */}
+                                <div className="flex items-center gap-1.5 pt-0.5">
+                                  {prod.images.slice(0, 4).map((img, imgIdx) => (
+                                    <button
+                                      key={img.id || imgIdx}
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setPreviewGalleryProduct({
+                                          product: prod,
+                                          activeIdx: imgIdx,
+                                        });
+                                      }}
+                                      className={`relative w-6 h-6 rounded overflow-hidden border transition-all hover:scale-110 shadow-2xs ${
+                                        imgIdx === 0
+                                          ? "border-secondary ring-1 ring-secondary/40"
+                                          : "border-surface-variant hover:border-primary"
+                                      }`}
+                                      title={`View photo ${imgIdx + 1}${imgIdx === 0 ? " (Cover)" : ""}`}
+                                    >
+                                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                                      <img
+                                        src={img.url}
+                                        alt={img.altText || `View ${imgIdx + 1}`}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </button>
+                                  ))}
+
+                                  {prod.images.length > 4 && (
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setPreviewGalleryProduct({
+                                          product: prod,
+                                          activeIdx: 4,
+                                        });
+                                      }}
+                                      className="w-6 h-6 rounded bg-surface-container border border-surface-variant text-[9px] font-bold font-mono text-on-surface-variant hover:text-primary hover:border-secondary transition-colors flex items-center justify-center"
+                                      title={`View all ${prod.images.length} photos`}
+                                    >
+                                      +{prod.images.length - 4}
+                                    </button>
+                                  )}
+
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductToEdit(prod);
+                                      setIsProductModalOpen(true);
+                                    }}
+                                    className="text-[10px] text-secondary hover:text-primary transition-colors flex items-center gap-0.5 ml-1 font-medium hover:underline"
+                                    title="Upload more photos for this product"
+                                  >
+                                    <span className="material-symbols-outlined text-[13px]">add_photo_alternate</span>
+                                    <span>{prod.images.length <= 1 ? "Add photos" : `${prod.images.length} photos`}</span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </td>
@@ -3565,6 +3647,135 @@ function AdminContent() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Product Photography Preview Lightbox */}
+      {previewGalleryProduct && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setPreviewGalleryProduct(null)}
+        >
+          <div
+            className="w-full max-w-3xl rounded-2xl bg-surface-container-lowest border border-surface-variant overflow-hidden shadow-2xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-4 px-5 border-b border-surface-variant/40 flex items-center justify-between bg-surface-container-low">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-headline-sm text-base text-primary font-medium">
+                    {previewGalleryProduct.product.name}
+                  </h3>
+                  <span className="text-[10px] font-mono uppercase bg-secondary/15 text-secondary px-2 py-0.5 rounded-full font-semibold">
+                    {previewGalleryProduct.product.images.length} photos
+                  </span>
+                </div>
+                <p className="text-[11px] text-on-surface-variant font-mono">
+                  /{previewGalleryProduct.product.slug} • Photo {previewGalleryProduct.activeIdx + 1} of {previewGalleryProduct.product.images.length}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const prod = previewGalleryProduct.product;
+                    setPreviewGalleryProduct(null);
+                    setProductToEdit(prod);
+                    setIsProductModalOpen(true);
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-medium hover:bg-neutral-800 transition-colors flex items-center gap-1.5"
+                >
+                  <span className="material-symbols-outlined text-sm">edit</span>
+                  <span>Manage Photos</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewGalleryProduct(null)}
+                  className="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors"
+                >
+                  <span className="material-symbols-outlined text-base">close</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Main Image Display */}
+            <div className="relative w-full aspect-16/10 bg-neutral-950 flex items-center justify-center overflow-hidden group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={previewGalleryProduct.product.images[previewGalleryProduct.activeIdx]?.url || "/images/hero-bedding.jpg"}
+                alt={previewGalleryProduct.product.name}
+                className="max-h-full max-w-full object-contain"
+              />
+
+              {/* Prev / Next buttons if multiple */}
+              {previewGalleryProduct.product.images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const total = previewGalleryProduct.product.images.length;
+                      setPreviewGalleryProduct((prev) =>
+                        prev
+                          ? { ...prev, activeIdx: (prev.activeIdx - 1 + total) % total }
+                          : null
+                      );
+                    }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-xs transition-all shadow-md"
+                    title="Previous photo"
+                  >
+                    <span className="material-symbols-outlined text-xl">chevron_left</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const total = previewGalleryProduct.product.images.length;
+                      setPreviewGalleryProduct((prev) =>
+                        prev
+                          ? { ...prev, activeIdx: (prev.activeIdx + 1) % total }
+                          : null
+                      );
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-xs transition-all shadow-md"
+                    title="Next photo"
+                  >
+                    <span className="material-symbols-outlined text-xl">chevron_right</span>
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Thumbnail Carousel strip */}
+            <div className="p-3 bg-surface-container-low border-t border-surface-variant/40 flex items-center gap-2 overflow-x-auto">
+              {previewGalleryProduct.product.images.map((img, i) => (
+                <button
+                  key={img.id || i}
+                  type="button"
+                  onClick={() =>
+                    setPreviewGalleryProduct((prev) => (prev ? { ...prev, activeIdx: i } : null))
+                  }
+                  className={`relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
+                    previewGalleryProduct.activeIdx === i
+                      ? "border-secondary ring-2 ring-secondary/40 scale-105"
+                      : "border-surface-variant/70 opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={img.url}
+                    alt={`Thumbnail ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {i === 0 && (
+                    <span className="absolute top-0.5 left-0.5 bg-secondary text-primary text-[8px] font-bold px-1 rounded-xs">
+                      Cover
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
