@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Product, ProductImage } from "@/types";
+import { useAdminStore, DEFAULT_CATEGORIES } from "@/store/useAdminStore";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -14,11 +15,17 @@ interface ProductModalProps {
 export const STANDARD_BEDDING_SIZES = ["Single", "Double", "Queen", "King"];
 
 export function ProductModal({ isOpen, onClose, productToEdit, onSave }: ProductModalProps) {
+  const { categories, addCategory } = useAdminStore();
+  const currentCategories = Array.isArray(categories) && categories.length > 0 ? categories : DEFAULT_CATEGORIES;
+
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [brand, setBrand] = useState("LOOMSDAY");
   const [tagline, setTagline] = useState("");
-  const [category, setCategory] = useState<"bedsheets" | "pillows" | "duvets">("bedsheets");
+  const [category, setCategory] = useState<string>("bedsheets");
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryError, setNewCategoryError] = useState<string | null>(null);
   const [selectedSizes, setSelectedSizes] = useState<string[]>(["Single", "Double", "Queen", "King"]);
   const [retailPrice, setRetailPrice] = useState<number | string>("");
   const [basePrice, setBasePrice] = useState<number | string>("");
@@ -42,6 +49,9 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
     setImageError(null);
     setIsProcessingImage(false);
     setDirectUrlInput("");
+    setIsAddingCategory(false);
+    setNewCategoryName("");
+    setNewCategoryError(null);
 
     if (productToEdit) {
       setName(productToEdit.name);
@@ -337,6 +347,10 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       pillows: "Pillows & cushions Covers",
       duvets: "Duvets & Inserts",
     };
+    const matchedCategory = currentCategories.find(
+      (c) => c.slug === category || c.id === category
+    );
+    const finalCategoryLabel = matchedCategory?.name || categoryLabels[category] || category;
 
     const normalizedImages: ProductImage[] = images.map((img, idx) => ({
       ...img,
@@ -358,7 +372,7 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
       tagline: tagline.trim() || "Stone-Washed Normandy Flax • Impossibly Soft",
       description: description.trim() || "Woven from slow-harvested 100% certified organic European flax. Stone-washed for immediate softness and effortless drape.",
       category,
-      categoryLabel: categoryLabels[category] || "Bedsheets",
+      categoryLabel: finalCategoryLabel,
       basePrice: finalBasePrice,
       retailPrice: finalRetailPrice,
       rating: productToEdit?.rating || 5.0,
@@ -476,16 +490,113 @@ export function ProductModal({ isOpen, onClose, productToEdit, onSave }: Product
           {/* Row 2: Category, Retail Price (PKR), Actual Selling Price (PKR) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-primary mb-1">Category *</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as any)}
-                className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary transition-colors"
-              >
-                <option value="bedsheets">Bedsheets</option>
-                <option value="pillows">Pillows &amp; cushions Covers</option>
-                <option value="duvets">Duvets &amp; Inserts</option>
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-medium text-primary">Category *</label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAddingCategory(!isAddingCategory);
+                    setNewCategoryError(null);
+                  }}
+                  className="text-[11px] text-secondary hover:text-primary transition-colors underline flex items-center gap-0.5"
+                >
+                  <span className="material-symbols-outlined text-[13px]">
+                    {isAddingCategory ? "close" : "add"}
+                  </span>
+                  <span>{isAddingCategory ? "Cancel" : "+ New Category"}</span>
+                </button>
+              </div>
+
+              {isAddingCategory ? (
+                <div className="p-2.5 rounded-lg bg-surface-container-low border border-secondary/40 space-y-2 mb-2 animate-in fade-in duration-150">
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      autoFocus
+                      placeholder="e.g. Throws &amp; Blankets"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                      className="flex-1 px-2.5 py-1.5 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          const nameClean = newCategoryName.trim();
+                          if (!nameClean) {
+                            setNewCategoryError("Please enter a category name");
+                            return;
+                          }
+                          const slugClean = nameClean
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, "-")
+                            .replace(/(^-|-$)+/g, "");
+                          const res = addCategory({
+                            id: `cat-${slugClean}-${Date.now().toString(36)}`,
+                            name: nameClean,
+                            slug: slugClean,
+                            subtitle: `COLLECTION : ${nameClean.toUpperCase()}`,
+                            displayInNav: true,
+                            isDefault: false,
+                          });
+                          if (!res.success) {
+                            setNewCategoryError(res.error || "Category already exists");
+                            return;
+                          }
+                          setCategory(slugClean);
+                          setNewCategoryName("");
+                          setIsAddingCategory(false);
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nameClean = newCategoryName.trim();
+                        if (!nameClean) {
+                          setNewCategoryError("Please enter a category name");
+                          return;
+                        }
+                        const slugClean = nameClean
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, "-")
+                          .replace(/(^-|-$)+/g, "");
+                        const res = addCategory({
+                          id: `cat-${slugClean}-${Date.now().toString(36)}`,
+                          name: nameClean,
+                          slug: slugClean,
+                          subtitle: `COLLECTION : ${nameClean.toUpperCase()}`,
+                          displayInNav: true,
+                          isDefault: false,
+                        });
+                        if (!res.success) {
+                          setNewCategoryError(res.error || "Category already exists");
+                          return;
+                        }
+                        setCategory(slugClean);
+                        setNewCategoryName("");
+                        setIsAddingCategory(false);
+                      }}
+                      className="px-3 py-1.5 rounded bg-primary text-on-primary text-xs font-medium hover:bg-neutral-800 transition-colors shrink-0"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  {newCategoryError && (
+                    <p className="text-[10px] text-error">{newCategoryError}</p>
+                  )}
+                </div>
+              ) : (
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-3 py-2 text-xs rounded border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary transition-colors"
+                >
+                  {currentCategories.map((cat) => (
+                    <option key={cat.id || cat.slug} value={cat.slug}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
 
             <div>

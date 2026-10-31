@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAdminStore } from "@/store/useAdminStore";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -12,15 +13,23 @@ interface MobileNavProps {
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
   const pathname = usePathname();
+  const { categories } = useAdminStore();
 
   if (!isOpen) return null;
+
+  const visibleCategories = (Array.isArray(categories) && categories.length > 0 ? categories : [
+    { name: "Bedsheet Sets", slug: "bedsheets", displayInNav: true },
+    { name: "Pillows & cushions Covers", slug: "pillows", displayInNav: true },
+    { name: "Duvets & Inserts", slug: "duvets", displayInNav: true },
+  ]).filter((c) => c.displayInNav !== false);
 
   const links = [
     { name: "Home", href: "/" },
     { name: "All Bedding", href: "/shop" },
-    { name: "Bedsheet Sets", href: "/shop/bedsheets" },
-    { name: "Pillows & cushions Covers", href: "/shop/pillows" },
-    { name: "Duvets & Inserts", href: "/shop/duvets" },
+    ...visibleCategories.map((c) => ({
+      name: c.name,
+      href: `/shop/${c.slug}`,
+    })),
     { name: "Saved Sanctuary", href: "/wishlist" },
     { name: "My Concierge Account", href: "/account" },
   ];

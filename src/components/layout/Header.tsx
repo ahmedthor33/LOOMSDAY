@@ -16,7 +16,7 @@ export function Header() {
   const { totalItemsCount, openDrawer } = useCartStore();
   const { count: wishlistCount } = useWishlistStore();
   const { user, profile, signOut } = useAuth();
-  const { cms } = useAdminStore();
+  const { cms, categories } = useAdminStore();
   
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -31,10 +31,17 @@ export function Header() {
   const savedCount = wishlistCount();
   const isOwner = user && isSuperAdminEmail(user.email);
 
+  const visibleCategories = (Array.isArray(categories) && categories.length > 0 ? categories : [
+    { name: "Bedsheets", slug: "bedsheets", displayInNav: true },
+    { name: "Pillows & cushions Covers", slug: "pillows", displayInNav: true },
+    { name: "Duvets", slug: "duvets", displayInNav: true },
+  ]).filter((c) => c.displayInNav !== false);
+
   const navLinks = [
-    { name: "Bedsheets", href: "/shop/bedsheets" },
-    { name: "Pillows & cushions Covers", href: "/shop/pillows" },
-    { name: "Duvets", href: "/shop/duvets" },
+    ...visibleCategories.map((c) => ({
+      name: c.name,
+      href: `/shop/${c.slug}`,
+    })),
     { name: "All Collections", href: "/shop" },
   ];
 

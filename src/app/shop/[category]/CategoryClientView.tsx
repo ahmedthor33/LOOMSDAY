@@ -36,9 +36,9 @@ const CATEGORY_META: Record<string, { title: string; subtitle: string; descripti
 export const normalizeCategory = (cat?: string): string => {
   if (!cat) return "";
   const c = cat.toLowerCase().trim();
-  if (c.includes("bed") || c.includes("sheet")) return "bedsheets";
-  if (c.includes("pillow") || c.includes("sham") || c.includes("cushion")) return "pillows";
-  if (c.includes("duvet") || c.includes("insert") || c.includes("cover")) return "duvets";
+  if (c === "bedsheets" || c.includes("sheet")) return "bedsheets";
+  if (c === "pillows" || c.includes("pillow") || c.includes("cushion")) return "pillows";
+  if (c === "duvets" || c.includes("duvet") || c.includes("insert")) return "duvets";
   return c;
 };
 
@@ -73,7 +73,7 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
     }
   }, [category]);
 
-  const { products, cms } = useAdminStore();
+  const { products, cms, categories } = useAdminStore();
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
   const [localCms, setLocalCms] = useState<StorefrontCms | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -178,6 +178,26 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
         defaultCtaText: "Explore Duvets & Inserts",
       };
     }
+    const customCat = (categories || []).find(
+      (c) => c.slug === activeSlug || c.id === activeSlug
+    );
+    if (customCat) {
+      return {
+        enabled: true,
+        eyebrow: customCat.subtitle || `COLLECTION : ${customCat.name.toUpperCase()}`,
+        headline: customCat.name,
+        subheadline:
+          customCat.description ||
+          "Handcrafted luxury linens and bedding pieces tailored for quiet sanctuary.",
+        badge: "Curated Atelier Pieces",
+        imageUrl: customCat.imageUrl || "/images/hero-bedding.jpg",
+        ctaText: `Explore ${customCat.name}`,
+        ctaLink: "#products-grid",
+        breadcrumbLabel: customCat.name,
+        defaultCtaText: `Explore ${customCat.name}`,
+      };
+    }
+
     const catName = activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1);
     const meta = CATEGORY_META[activeSlug];
     return {
@@ -192,13 +212,24 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
       breadcrumbLabel: catName,
       defaultCtaText: `Explore ${catName}`,
     };
-  }, [activeSlug, activeCms]);
+  }, [activeSlug, activeCms, categories]);
 
-  const meta = CATEGORY_META[activeSlug] || {
-    title: `${activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1)} Collection`,
-    subtitle: "ATELIER ARCHIVE",
-    description: "Handcrafted luxury linens and bedding pieces tailored for quiet sanctuary.",
-  };
+  const matchedCat = (categories || []).find(
+    (c) => c.slug === activeSlug || c.id === activeSlug
+  );
+  const meta = matchedCat
+    ? {
+        title: matchedCat.name,
+        subtitle: matchedCat.subtitle || `COLLECTION : ${matchedCat.name.toUpperCase()}`,
+        description:
+          matchedCat.description ||
+          "Handcrafted luxury linens and bedding pieces tailored for quiet sanctuary.",
+      }
+    : CATEGORY_META[activeSlug] || {
+        title: `${activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1)} Collection`,
+        subtitle: "ATELIER ARCHIVE",
+        description: "Handcrafted luxury linens and bedding pieces tailored for quiet sanctuary.",
+      };
 
   const [filters, setFilters] = useState<FilterState>({
     category: activeSlug,
@@ -216,11 +247,15 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
   const [colDensity, setColDensity] = useState<3 | 4>(3);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-  // Products belonging strictly to this dedicated category
+  // Products belonging to this dedicated category
   const categoryProducts = useMemo(() => {
     return allProducts.filter((product) => {
       const pCat = normalizeCategory(product.category);
-      return pCat === activeSlug;
+      return (
+        pCat === activeSlug ||
+        product.category === activeSlug ||
+        product.categoryLabel?.toLowerCase() === activeSlug.toLowerCase()
+      );
     });
   }, [allProducts, activeSlug]);
 

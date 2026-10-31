@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Product } from "@/types";
+import { useAdminStore, DEFAULT_CATEGORIES } from "@/store/useAdminStore";
 
 interface BulkAddModalProps {
   isOpen: boolean;
@@ -16,8 +17,11 @@ const CATEGORY_IMAGES: Record<string, string> = {
 };
 
 export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalProps) {
+  const { categories } = useAdminStore();
+  const currentCategories = Array.isArray(categories) && categories.length > 0 ? categories : DEFAULT_CATEGORIES;
+
   const [textInput, setTextInput] = useState("");
-  const [defaultCategory, setDefaultCategory] = useState<"bedsheets" | "pillows" | "duvets">("bedsheets");
+  const [defaultCategory, setDefaultCategory] = useState<string>("bedsheets");
   const [defaultBrand, setDefaultBrand] = useState("LOOMSDAY");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -49,11 +53,20 @@ export function BulkAddModal({ isOpen, onClose, onAddProducts }: BulkAddModalPro
       const rawPrice = parts[1] ? parts[1].replace(/[^0-9.]/g, "") : "";
       const basePrice = Number(rawPrice) > 0 ? Number(rawPrice) : 24500;
 
-      let catStr = (parts[2] || defaultCategory).toLowerCase();
-      let category: "bedsheets" | "pillows" | "duvets" = defaultCategory;
-      if (catStr.includes("pillow") || catStr.includes("sham") || catStr.includes("cushion")) category = "pillows";
-      else if (catStr.includes("duvet") || catStr.includes("insert")) category = "duvets";
-      else if (catStr.includes("bed") || catStr.includes("sheet")) category = "bedsheets";
+      let catStr = (parts[2] || defaultCategory).toLowerCase().trim();
+      const matchedCat = currentCategories.find(
+        (c) =>
+          c.slug.toLowerCase() === catStr ||
+          c.id.toLowerCase() === catStr ||
+          c.name.toLowerCase() === catStr
+      );
+      let category = matchedCat ? matchedCat.slug : defaultCategory;
+      if (!matchedCat) {
+        if (catStr.includes("pillow") || catStr.includes("sham") || catStr.includes("cushion")) category = "pillows";
+        else if (catStr.includes("duvet") || catStr.includes("insert")) category = "duvets";
+        else if (catStr.includes("bed") || catStr.includes("sheet")) category = "bedsheets";
+      }
+      const categoryLabel = matchedCat ? matchedCat.name : category;
 
       const material = parts[3] || "100% French Flax Linen";
       const brand = parts[4] || defaultBrand || "LOOMSDAY";
@@ -221,12 +234,14 @@ All-Season Cloudfiber Duvet, 26000, duvets, Hypoallergenic Microfiber`;
               </div>
               <select
                 value={defaultCategory}
-                onChange={(e) => setDefaultCategory(e.target.value as any)}
+                onChange={(e) => setDefaultCategory(e.target.value)}
                 className="py-1.5 px-3 rounded-lg border border-surface-variant bg-surface text-primary text-xs focus:outline-none"
               >
-                <option value="bedsheets">Bedsheets</option>
-                <option value="pillows">Pillows &amp; cushions Covers</option>
-                <option value="duvets">Duvets &amp; Inserts</option>
+                {currentCategories.map((c) => (
+                  <option key={c.id || c.slug} value={c.slug}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
             </div>
 

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig, CategoryHeroBanner } from "@/types";
+import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig, CategoryHeroBanner, CustomCategory } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
 import {
@@ -86,6 +86,13 @@ interface AdminState {
   updateCoupon: (id: string, updates: Partial<AdminCoupon>) => void;
   deleteCoupon: (id: string) => void;
   toggleCoupon: (id: string) => void;
+
+  // Categories Management
+  categories: CustomCategory[];
+  addCategory: (category: CustomCategory) => { success: boolean; error?: string };
+  updateCategory: (id: string, updates: Partial<CustomCategory>) => void;
+  deleteCategory: (id: string) => { success: boolean; error?: string };
+  resetCategories: () => void;
 
   // Shipping & Logistics
   shippingSettings: ShippingSettings;
@@ -330,6 +337,42 @@ export const INITIAL_PAYMENT_METHODS: PaymentMethodConfig[] = [
   },
 ];
 
+export const DEFAULT_CATEGORIES: CustomCategory[] = [
+  {
+    id: "bedsheets",
+    name: "Bedsheets",
+    slug: "bedsheets",
+    subtitle: "LAYER 01 : FOUNDATIONAL SOFTNESS",
+    description: "Deep pocket fitted sheets and generously turned flat sheets woven from slow-harvested Normandy flax and crisp Aegean percale cotton.",
+    icon: "bed",
+    isDefault: true,
+    displayInNav: true,
+    sortOrder: 1,
+  },
+  {
+    id: "pillows",
+    name: "Pillows & cushions Covers",
+    slug: "pillows",
+    subtitle: "LAYER 02 : CERVICAL ELEVATION",
+    description: "Cloud-loft Bavarian goose down, natural Talalay latex contour cores, and enzyme-washed French linen envelope pillowcases.",
+    icon: "filter_vintage",
+    isDefault: true,
+    displayInNav: true,
+    sortOrder: 2,
+  },
+  {
+    id: "duvets",
+    name: "Duvets & Inserts",
+    slug: "duvets",
+    subtitle: "LAYER 03 : RESTFUL EMBRACE",
+    description: "750 fill-power European white goose down inserts with true 3D baffle-box construction paired with horn-buttoned linen duvet covers.",
+    icon: "single_bed",
+    isDefault: true,
+    displayInNav: true,
+    sortOrder: 3,
+  },
+];
+
 export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
@@ -340,6 +383,7 @@ export const useAdminStore = create<AdminState>()(
       cms: INITIAL_CMS,
       transactions: [],
       paymentMethods: INITIAL_PAYMENT_METHODS,
+      categories: DEFAULT_CATEGORIES,
 
       // Product Management
       addProduct: (product) => {
@@ -688,6 +732,86 @@ export const useAdminStore = create<AdminState>()(
         }));
       },
 
+      // Categories Management
+      addCategory: (category) => {
+        const current = Array.isArray(get().categories) ? get().categories : DEFAULT_CATEGORIES;
+        const rawSlug = (category.slug || category.name || `cat-${Date.now()}`)
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "");
+        const slug = rawSlug || `cat-${Date.now()}`;
+
+        if (current.some((c) => c.slug === slug || c.id === category.id)) {
+          return { success: false, error: `A category with slug "${slug}" already exists.` };
+        }
+
+        const newCat: CustomCategory = {
+          id: category.id || `cat-${slug}-${Date.now().toString(36)}`,
+          name: category.name.trim(),
+          slug,
+          description: category.description?.trim() || "",
+          subtitle: category.subtitle?.trim() || `COLLECTION : ${category.name.toUpperCase()}`,
+          icon: category.icon || "category",
+          imageUrl: category.imageUrl || "/images/hero-bedding.jpg",
+          displayInNav: category.displayInNav !== false,
+          isDefault: false,
+          sortOrder: current.length + 1,
+        };
+
+        set({ categories: [...current, newCat] });
+        notifyStoreUpdated();
+        return { success: true };
+      },
+
+      updateCategory: (id, updates) => {
+        set((state) => {
+          const current = Array.isArray(state.categories) ? state.categories : DEFAULT_CATEGORIES;
+          return {
+            categories: current.map((c) =>
+              c.id === id || c.slug === id ? { ...c, ...updates } : c
+            ),
+          };
+        });
+        notifyStoreUpdated();
+      },
+
+      deleteCategory: (id) => {
+        const currentCats = Array.isArray(get().categories) ? get().categories : DEFAULT_CATEGORIES;
+        const target = currentCats.find((c) => c.id === id || c.slug === id);
+        if (!target) return { success: false, error: "Category not found." };
+        if (target.isDefault) {
+          return {
+            success: false,
+            error: "Default system categories (Bedsheets, Pillows, Duvets) cannot be deleted.",
+          };
+        }
+
+        const prods = Array.isArray(get().products) ? get().products : [];
+        const assignedCount = prods.filter(
+          (p) => p.category === target.slug || p.category === target.id
+        ).length;
+        if (assignedCount > 0) {
+          return {
+            success: false,
+            error: `Cannot delete "${target.name}" because ${assignedCount} ${
+              assignedCount === 1 ? "product is" : "products are"
+            } assigned to it. Please reassign those products first.`,
+          };
+        }
+
+        set({
+          categories: currentCats.filter((c) => c.id !== target.id && c.slug !== target.slug),
+        });
+        notifyStoreUpdated();
+        return { success: true };
+      },
+
+      resetCategories: () => {
+        set({ categories: DEFAULT_CATEGORIES });
+        notifyStoreUpdated();
+      },
+
       // Shipping
       updateShippingSettings: (settings) => {
         set((state) => ({
@@ -932,6 +1056,18 @@ export const useAdminStore = create<AdminState>()(
               }
             });
             state.products = Array.from(existingMap.values());
+          }
+
+          // Hydrate categories
+          if (!Array.isArray(state.categories) || state.categories.length === 0) {
+            state.categories = DEFAULT_CATEGORIES;
+          } else {
+            const existingSlugs = new Set(state.categories.map((c) => c.slug));
+            DEFAULT_CATEGORIES.forEach((dc) => {
+              if (!existingSlugs.has(dc.slug)) {
+                state.categories.push(dc);
+              }
+            });
           }
         }
       },

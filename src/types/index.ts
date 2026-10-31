@@ -19,13 +19,26 @@ export interface ProductImage {
   isPrimary?: boolean;
 }
 
+export interface CustomCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  subtitle?: string;
+  icon?: string;
+  imageUrl?: string;
+  displayInNav?: boolean;
+  isDefault?: boolean;
+  sortOrder?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
   slug: string;
   tagline: string;
   description: string;
-  category: 'bedsheets' | 'pillows' | 'duvets';
+  category: 'bedsheets' | 'pillows' | 'duvets' | string;
   categoryLabel: string;
   basePrice: number; // Actual Selling Price (PKR)
   retailPrice?: number; // Retail / Struck-through Price (PKR)

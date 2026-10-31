@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { formatCurrency } from "@/lib/utils";
+import { useAdminStore } from "@/store/useAdminStore";
 
 export interface FilterState {
   category: string;
@@ -29,6 +30,8 @@ export function ProductFilters({
   onCloseMobile,
   availableBrands = [],
 }: ProductFiltersProps) {
+  const { categories: storeCategories, products } = useAdminStore();
+
   const [openSections, setOpenSections] = useState({
     category: true,
     brand: true,
@@ -42,11 +45,24 @@ export function ProductFilters({
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
+  const currentCategories = Array.isArray(storeCategories) && storeCategories.length > 0 ? storeCategories : [
+    { name: "Bedsheet Sets", slug: "bedsheets", id: "bedsheets" },
+    { name: "Pillows & cushions Covers", slug: "pillows", id: "pillows" },
+    { name: "Duvets & Inserts", slug: "duvets", id: "duvets" },
+  ];
+
   const categories = [
-    { label: "All Bedding", value: "all", count: 12 },
-    { label: "Bedsheet Sets", value: "bedsheets", count: 5 },
-    { label: "Pillows & cushions Covers", value: "pillows", count: 4 },
-    { label: "Duvets & Inserts", value: "duvets", count: 3 },
+    { label: "All Bedding", value: "all", count: products.length },
+    ...currentCategories.map((c) => ({
+      label: c.name,
+      value: c.slug,
+      count: products.filter(
+        (p) =>
+          p.category === c.slug ||
+          p.category === c.id ||
+          p.categoryLabel?.toLowerCase() === c.slug.toLowerCase()
+      ).length,
+    })),
   ];
 
   const sizes = ["Single", "Double", "Queen", "King"];

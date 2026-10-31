@@ -12,6 +12,7 @@ import { DragDropVideoUpload } from "@/components/admin/DragDropVideoUpload";
 import { PaymentMethodModal } from "@/components/admin/PaymentMethodModal";
 import { ImportCatalogModal } from "@/components/admin/ImportCatalogModal";
 import { BulkAddModal } from "@/components/admin/BulkAddModal";
+import { CategoryModal } from "@/components/admin/CategoryModal";
 import { exportCatalogToJson } from "@/lib/catalog-service";
 import {
   useAdminStore,
@@ -548,6 +549,7 @@ function AdminContent() {
     syncWithSupabase,
     importCatalog,
     loadFactoryCatalog,
+    categories,
   } = useAdminStore();
 
   const { showToast } = useToast();
@@ -572,6 +574,7 @@ function AdminContent() {
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isSyncingCloud, setIsSyncingCloud] = useState(false);
 
   // Product Multi-Selection state
@@ -686,7 +689,9 @@ function AdminContent() {
       p.material.toLowerCase().includes(productSearch.toLowerCase()) ||
       (p.origin ? p.origin.toLowerCase().includes(productSearch.toLowerCase()) : false);
     const matchesCategory =
-      productCategoryFilter === "all" || p.category === productCategoryFilter;
+      productCategoryFilter === "all" ||
+      p.category === productCategoryFilter ||
+      p.categoryLabel?.toLowerCase() === productCategoryFilter.toLowerCase();
     return matchesSearch && matchesCategory;
   });
 
@@ -1325,6 +1330,16 @@ function AdminContent() {
 
                 <button
                   type="button"
+                  onClick={() => setIsCategoryModalOpen(true)}
+                  className="px-3.5 py-2.5 rounded-lg border border-surface-variant hover:border-secondary text-primary text-xs font-label-md uppercase tracking-wider transition-colors flex items-center gap-1.5 bg-surface-container-low shadow-xs"
+                  title="Manage boutique product categories, silhouettes, and navigation links"
+                >
+                  <span className="material-symbols-outlined text-sm text-secondary">category</span>
+                  <span>Categories ({categories?.length || 3})</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => setIsBulkModalOpen(true)}
                   className="px-3.5 py-2.5 rounded-lg border border-primary text-primary hover:bg-primary/5 text-xs font-label-md uppercase tracking-wider transition-colors flex items-center gap-1.5 bg-surface-container-low"
                   title="Quickly add dozens of products by pasting names and prices"
@@ -1383,25 +1398,47 @@ function AdminContent() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                <div className="flex items-center gap-2 overflow-x-auto">
-                  {["all", "bedsheets", "pillows", "duvets"].map((cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setProductCategoryFilter(cat)}
-                      className={`px-3 py-1.5 rounded text-xs font-label-md uppercase tracking-wider transition-colors ${
-                        productCategoryFilter === cat
-                          ? "bg-primary text-on-primary"
-                          : "bg-surface-container hover:bg-surface-variant text-on-surface-variant"
-                      }`}
-                    >
-                      {cat === "all"
-                        ? "All Collections"
-                        : cat === "pillows"
-                        ? "Pillows & cushions Covers"
-                        : cat}
-                    </button>
-                  ))}
+                <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-1 sm:pb-0">
+                  <button
+                    type="button"
+                    onClick={() => setProductCategoryFilter("all")}
+                    className={`px-3 py-1.5 rounded text-xs font-label-md uppercase tracking-wider transition-colors shrink-0 ${
+                      productCategoryFilter === "all"
+                        ? "bg-primary text-on-primary"
+                        : "bg-surface-container hover:bg-surface-variant text-on-surface-variant"
+                    }`}
+                  >
+                    All Collections ({products.length})
+                  </button>
+                  {(categories || []).map((cat) => {
+                    const count = products.filter(
+                      (p) => p.category === cat.slug || p.category === cat.id
+                    ).length;
+                    return (
+                      <button
+                        key={cat.id || cat.slug}
+                        type="button"
+                        onClick={() => setProductCategoryFilter(cat.slug)}
+                        className={`px-3 py-1.5 rounded text-xs font-label-md uppercase tracking-wider transition-colors flex items-center gap-1.5 shrink-0 ${
+                          productCategoryFilter === cat.slug
+                            ? "bg-primary text-on-primary"
+                            : "bg-surface-container hover:bg-surface-variant text-on-surface-variant"
+                        }`}
+                      >
+                        <span>{cat.name}</span>
+                        <span className="text-[10px] opacity-75 font-mono">({count})</span>
+                      </button>
+                    );
+                  })}
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoryModalOpen(true)}
+                    className="px-2 py-1.5 rounded text-xs text-secondary hover:text-primary transition-colors flex items-center gap-0.5 shrink-0"
+                    title="Add or edit categories"
+                  >
+                    <span className="material-symbols-outlined text-sm">add_circle</span>
+                    <span className="text-[11px] underline">Manage</span>
+                  </button>
                 </div>
 
                 <div className="h-4 w-px bg-surface-variant/50 hidden sm:block mx-1" />
@@ -1491,40 +1528,36 @@ function AdminContent() {
                       <span>Set Category</span>
                       <span className="material-symbols-outlined text-xs">expand_more</span>
                     </button>
-                    <div className="absolute right-0 top-full mt-1 hidden group-hover:block group-focus-within:block z-30 w-48 rounded-lg bg-surface-container-lowest border border-surface-variant/50 shadow-xl py-1 text-primary">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          bulkUpdateProducts(selectedProductIds, { category: "bedsheets", categoryLabel: "Bedsheets" });
-                          showToast(`Moved ${selectedProductIds.length} items to Bedsheets`);
-                        }}
-                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
-                      >
-                        <span className="material-symbols-outlined text-sm">bed</span>
-                        <span>Bedsheets</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          bulkUpdateProducts(selectedProductIds, { category: "pillows", categoryLabel: "Pillows & cushions Covers" });
-                          showToast(`Moved ${selectedProductIds.length} items to Pillows & Cushions`);
-                        }}
-                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
-                      >
-                        <span className="material-symbols-outlined text-sm">filter_vintage</span>
-                        <span>Pillows & Cushions</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          bulkUpdateProducts(selectedProductIds, { category: "duvets", categoryLabel: "Duvets" });
-                          showToast(`Moved ${selectedProductIds.length} items to Duvets`);
-                        }}
-                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
-                      >
-                        <span className="material-symbols-outlined text-sm">single_bed</span>
-                        <span>Duvets</span>
-                      </button>
+                    <div className="absolute right-0 top-full mt-1 hidden group-hover:block group-focus-within:block z-30 w-52 max-h-64 overflow-y-auto rounded-lg bg-surface-container-lowest border border-surface-variant/50 shadow-xl py-1 text-primary">
+                      {(categories || []).map((cat) => (
+                        <button
+                          key={cat.id || cat.slug}
+                          type="button"
+                          onClick={() => {
+                            bulkUpdateProducts(selectedProductIds, {
+                              category: cat.slug,
+                              categoryLabel: cat.name,
+                            });
+                            showToast(`Moved ${selectedProductIds.length} items to ${cat.name}`);
+                          }}
+                          className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
+                        >
+                          <span className="material-symbols-outlined text-sm text-secondary">
+                            {cat.icon || "category"}
+                          </span>
+                          <span className="truncate">{cat.name}</span>
+                        </button>
+                      ))}
+                      <div className="border-t border-surface-variant/40 mt-1 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setIsCategoryModalOpen(true)}
+                          className="w-full text-left px-3 py-1.5 text-[11px] text-secondary hover:underline flex items-center gap-1"
+                        >
+                          <span className="material-symbols-outlined text-xs">add</span>
+                          <span>Create new category...</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -3534,6 +3567,12 @@ function AdminContent() {
             showToast(`Added ${newProducts.length} new products to your boutique catalog!`);
           }
         }}
+      />
+
+      {/* Category Management Modal */}
+      <CategoryModal
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
       />
 
       {/* Bulk Price Adjustment Modal */}
