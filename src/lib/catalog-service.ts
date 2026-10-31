@@ -121,16 +121,25 @@ export async function fetchSupabaseProducts(): Promise<Product[] | null> {
       };
     });
 
-    // Ensure all master catalog products from PRODUCTS are included even if Supabase has fewer items
-    const existingSlugs = new Set(mapped.map((m) => m.slug));
-    const existingIds = new Set(mapped.map((m) => m.id));
-    for (const bp of PRODUCTS) {
-      if (!existingSlugs.has(bp.slug) && !existingIds.has(bp.id)) {
-        mapped.push(bp);
-      }
-    }
+    // Filter out any products marked as deleted by the owner
+    const deletedSet = (typeof window !== "undefined")
+      ? (() => {
+          try {
+            const raw = localStorage.getItem("loomsday_deleted_product_ids");
+            if (raw) {
+              const arr = JSON.parse(raw);
+              if (Array.isArray(arr)) {
+                return new Set(arr.map((id: string) => String(id).toLowerCase().trim()));
+              }
+            }
+          } catch {}
+          return new Set<string>();
+        })()
+      : new Set<string>();
 
-    return mapped;
+    return mapped.filter(
+      (p) => !deletedSet.has(p.id?.toLowerCase()) && !deletedSet.has(p.slug?.toLowerCase())
+    );
   } catch (err) {
     console.warn("[LOOMSDAY Catalog] Unexpected error fetching Supabase catalog:", err);
     return null;

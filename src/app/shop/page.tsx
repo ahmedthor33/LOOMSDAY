@@ -63,14 +63,14 @@ export default function ShopPage() {
       try {
         const cloudProds = await fetchSupabaseProducts();
         if (cloudProds && cloudProds.length > 0 && !isCancelled) {
-          const mergedMap = new Map<string, Product>();
-          cloudProds.forEach((p) => mergedMap.set(p.slug || p.id, p));
-          PRODUCTS.forEach((p) => {
-            if (!mergedMap.has(p.slug || p.id)) {
-              mergedMap.set(p.slug || p.id, p);
-            }
-          });
-          setLocalProducts(Array.from(mergedMap.values()));
+          const deleted = typeof window !== "undefined"
+            ? (JSON.parse(localStorage.getItem("loomsday_deleted_product_ids") || "[]") as string[])
+            : [];
+          const delSet = new Set(deleted.map((id) => String(id).toLowerCase().trim()));
+          const validProds = cloudProds.filter(
+            (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+          );
+          setLocalProducts(validProds);
         }
       } catch {}
     };
@@ -86,13 +86,22 @@ export default function ShopPage() {
   }, []);
 
   const allProducts = useMemo(() => {
+    const deleted = typeof window !== "undefined"
+      ? (JSON.parse(localStorage.getItem("loomsday_deleted_product_ids") || "[]") as string[])
+      : [];
+    const delSet = new Set(deleted.map((id) => String(id).toLowerCase().trim()));
+    const filterValid = (arr: Product[]) =>
+      arr.filter(
+        (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+      );
+
     if (Array.isArray(products) && products.length > 0) {
-      return products;
+      return filterValid(products);
     }
     if (Array.isArray(localProducts) && localProducts.length > 0) {
-      return localProducts;
+      return filterValid(localProducts);
     }
-    return PRODUCTS.length > 0 ? PRODUCTS : [];
+    return filterValid(PRODUCTS);
   }, [products, localProducts]);
 
   const [filters, setFilters] = useState<FilterState>({

@@ -115,14 +115,14 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
       try {
         const cloudProds = await fetchSupabaseProducts();
         if (cloudProds && cloudProds.length > 0 && !isCancelled) {
-          const mergedMap = new Map<string, Product>();
-          cloudProds.forEach((p) => mergedMap.set(p.slug || p.id, p));
-          PRODUCTS.forEach((p) => {
-            if (!mergedMap.has(p.slug || p.id)) {
-              mergedMap.set(p.slug || p.id, p);
-            }
-          });
-          setLocalProducts(Array.from(mergedMap.values()));
+          const deleted = typeof window !== "undefined"
+            ? (JSON.parse(localStorage.getItem("loomsday_deleted_product_ids") || "[]") as string[])
+            : [];
+          const delSet = new Set(deleted.map((id) => String(id).toLowerCase().trim()));
+          const validProds = cloudProds.filter(
+            (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+          );
+          setLocalProducts(validProds);
         }
       } catch {}
     };
@@ -138,9 +138,18 @@ export function CategoryClientView({ category }: CategoryClientViewProps) {
   }, []);
 
   const allProducts = useMemo(() => {
-    if (products && products.length > 0) return products;
-    if (localProducts.length > 0) return localProducts;
-    return PRODUCTS.length > 0 ? PRODUCTS : [];
+    const deleted = typeof window !== "undefined"
+      ? (JSON.parse(localStorage.getItem("loomsday_deleted_product_ids") || "[]") as string[])
+      : [];
+    const delSet = new Set(deleted.map((id) => String(id).toLowerCase().trim()));
+    const filterValid = (arr: Product[]) =>
+      arr.filter(
+        (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+      );
+
+    if (products && products.length > 0) return filterValid(products);
+    if (localProducts.length > 0) return filterValid(localProducts);
+    return filterValid(PRODUCTS);
   }, [products, localProducts]);
 
   const activeCms = localCms || cms;

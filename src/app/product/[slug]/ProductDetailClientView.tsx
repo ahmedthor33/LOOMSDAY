@@ -97,13 +97,22 @@ export function ProductDetailClientView({ slug }: ProductDetailClientViewProps) 
 
   // Authoritative user products: Zustand store first, then localStorage
   const allProducts = useMemo(() => {
+    const deleted = typeof window !== "undefined"
+      ? (JSON.parse(localStorage.getItem("loomsday_deleted_product_ids") || "[]") as string[])
+      : [];
+    const delSet = new Set(deleted.map((id) => String(id).toLowerCase().trim()));
+    const filterValid = (arr: Product[]) =>
+      arr.filter(
+        (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+      );
+
     if (Array.isArray(products) && products.length > 0) {
-      return products;
+      return filterValid(products);
     }
     if (Array.isArray(localProducts) && localProducts.length > 0) {
-      return localProducts;
+      return filterValid(localProducts);
     }
-    return PRODUCTS.length > 0 ? PRODUCTS : [];
+    return filterValid(PRODUCTS);
   }, [products, localProducts]);
 
   // Strict matching by slug, ID, or slugified title (NO substring bleeding!)

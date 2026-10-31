@@ -60,8 +60,59 @@ function notifyStoreUpdated() {
   }
 }
 
+export function getDeletedProductIds(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = localStorage.getItem("loomsday_deleted_product_ids");
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        return new Set(arr.map((id) => String(id).toLowerCase().trim()));
+      }
+    }
+  } catch {}
+  return new Set();
+}
+
+export function recordDeletedProductIds(ids: string[]): void {
+  if (typeof window === "undefined" || !ids || !ids.length) return;
+  try {
+    const current = getDeletedProductIds();
+    ids.forEach((id) => {
+      if (id) current.add(String(id).toLowerCase().trim());
+    });
+    localStorage.setItem(
+      "loomsday_deleted_product_ids",
+      JSON.stringify(Array.from(current))
+    );
+  } catch {}
+}
+
+export function unmarkDeletedProductId(idOrSlug: string): void {
+  if (typeof window === "undefined" || !idOrSlug) return;
+  try {
+    const current = getDeletedProductIds();
+    const clean = String(idOrSlug).toLowerCase().trim();
+    current.delete(clean);
+    localStorage.setItem(
+      "loomsday_deleted_product_ids",
+      JSON.stringify(Array.from(current))
+    );
+  } catch {}
+}
+
+export function isProductMarkedDeleted(p?: { id?: string; slug?: string } | null): boolean {
+  if (!p) return false;
+  const deleted = getDeletedProductIds();
+  if (p.id && deleted.has(String(p.id).toLowerCase().trim())) return true;
+  if (p.slug && deleted.has(String(p.slug).toLowerCase().trim())) return true;
+  return false;
+}
+
 interface AdminState {
   // Catalog & Inventory
+  catalogInitialized: boolean;
+  deletedProductIds: string[];
   products: Product[];
   addProduct: (product: Product) => void;
   updateProduct: (id: string, updates: Partial<Product>) => void;
@@ -376,6 +427,8 @@ export const DEFAULT_CATEGORIES: CustomCategory[] = [
 export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
+      catalogInitialized: true,
+      deletedProductIds: [],
       products: PRODUCTS,
       orders: [],
       coupons: INITIAL_COUPONS,
@@ -387,6 +440,8 @@ export const useAdminStore = create<AdminState>()(
 
       // Product Management
       addProduct: (product) => {
+        unmarkDeletedProductId(product.id);
+        if (product.slug) unmarkDeletedProductId(product.slug);
         set((state) => {
           const currentList = Array.isArray(state.products) ? state.products : [];
 
@@ -512,28 +567,61 @@ export const useAdminStore = create<AdminState>()(
       },
 
       deleteProduct: (id) => {
+        const current = Array.isArray(get().products) ? get().products : [];
+        const target = current.find((p) => p.id === id || p.slug === id);
+        const toDelete = [id];
+        if (target?.slug) toDelete.push(target.slug);
+        if (target?.id) toDelete.push(target.id);
+
+        recordDeletedProductIds(toDelete);
+
         deleteProductFromSupabase(id).catch((err) =>
           console.warn("[LOOMSDAY Store] Auto cloud delete error:", err)
         );
-        set((state) => ({
-          products: (Array.isArray(state.products) ? state.products : []).filter(
-            (p) => p.id !== id && p.slug !== id
-          ),
-        }));
+        if (target?.slug && target.slug !== id) {
+          deleteProductFromSupabase(target.slug).catch(() => {});
+        }
+
+        set((state) => {
+          const delSet = new Set(toDelete.map((x) => x.toLowerCase()));
+          const remaining = (Array.isArray(state.products) ? state.products : []).filter(
+            (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+          );
+          return {
+            products: remaining,
+            deletedProductIds: Array.from(new Set([...(state.deletedProductIds || []), ...toDelete])),
+          };
+        });
         notifyStoreUpdated();
       },
 
       deleteProducts: (ids) => {
         if (!ids || ids.length === 0) return;
-        const idSet = new Set(ids);
-        deleteProductsFromSupabase(ids).catch((err) =>
+        const current = Array.isArray(get().products) ? get().products : [];
+        const toDelete = [...ids];
+        current.forEach((p) => {
+          if (ids.includes(p.id) || ids.includes(p.slug)) {
+            if (p.id) toDelete.push(p.id);
+            if (p.slug) toDelete.push(p.slug);
+          }
+        });
+
+        recordDeletedProductIds(toDelete);
+
+        deleteProductsFromSupabase(toDelete).catch((err) =>
           console.warn("[LOOMSDAY Store] Auto cloud bulk delete error:", err)
         );
-        set((state) => ({
-          products: (Array.isArray(state.products) ? state.products : []).filter(
-            (p) => !idSet.has(p.id) && !idSet.has(p.slug)
-          ),
-        }));
+
+        set((state) => {
+          const delSet = new Set(toDelete.map((x) => x.toLowerCase()));
+          const remaining = (Array.isArray(state.products) ? state.products : []).filter(
+            (p) => !delSet.has(p.id?.toLowerCase()) && !delSet.has(p.slug?.toLowerCase())
+          );
+          return {
+            products: remaining,
+            deletedProductIds: Array.from(new Set([...(state.deletedProductIds || []), ...toDelete])),
+          };
+        });
         notifyStoreUpdated();
       },
 
@@ -568,10 +656,20 @@ export const useAdminStore = create<AdminState>()(
       },
 
       clearDemoProducts: () => {
+        const current = Array.isArray(get().products) ? get().products : [];
+        const demoProducts = current.filter(isDemoProduct);
+        const toDelete: string[] = [];
+        demoProducts.forEach((p) => {
+          if (p.id) toDelete.push(p.id);
+          if (p.slug) toDelete.push(p.slug);
+        });
+        recordDeletedProductIds(toDelete);
+
         set((state) => ({
           products: (Array.isArray(state.products) ? state.products : []).filter(
             (p) => !isDemoProduct(p)
           ),
+          deletedProductIds: Array.from(new Set([...(state.deletedProductIds || []), ...toDelete])),
         }));
         notifyStoreUpdated();
       },
@@ -608,15 +706,29 @@ export const useAdminStore = create<AdminState>()(
       },
 
       clearAllTestData: () => {
+        const current = Array.isArray(get().products) ? get().products : [];
+        const toDelete: string[] = [];
+        current.forEach((p) => {
+          if (p.id) toDelete.push(p.id);
+          if (p.slug) toDelete.push(p.slug);
+        });
+        recordDeletedProductIds(toDelete);
+
         set({
+          catalogInitialized: true,
           products: [],
           orders: [],
           transactions: [],
+          deletedProductIds: Array.from(new Set([...(get().deletedProductIds || []), ...toDelete])),
         });
         notifyStoreUpdated();
       },
 
       loadDemoCatalog: () => {
+        DEMO_PRODUCTS.forEach((dp) => {
+          unmarkDeletedProductId(dp.id);
+          if (dp.slug) unmarkDeletedProductId(dp.slug);
+        });
         set({
           products: DEMO_PRODUCTS,
         });
@@ -624,6 +736,10 @@ export const useAdminStore = create<AdminState>()(
       },
 
       loadFactoryCatalog: () => {
+        PRODUCTS.forEach((p) => {
+          unmarkDeletedProductId(p.id);
+          if (p.slug) unmarkDeletedProductId(p.slug);
+        });
         set({
           products: PRODUCTS,
         });
@@ -1046,19 +1162,27 @@ export const useAdminStore = create<AdminState>()(
       })),
       onRehydrateStorage: () => (state) => {
         if (state) {
-          if (!Array.isArray(state.products) || state.products.length === 0) {
-            state.products = PRODUCTS;
-          } else if (state.products.length < PRODUCTS.length) {
-            const existingMap = new Map(state.products.map((p) => [p.slug || p.id, p]));
-            PRODUCTS.forEach((p) => {
-              if (!existingMap.has(p.slug || p.id)) {
-                existingMap.set(p.slug || p.id, p);
-              }
-            });
-            state.products = Array.from(existingMap.values());
+          const deletedSet = getDeletedProductIds();
+          (state.deletedProductIds || []).forEach((id) => deletedSet.add(id.toLowerCase()));
+
+          // 1. Strictly filter out any deleted products from rehydrated state
+          if (Array.isArray(state.products)) {
+            state.products = state.products.filter(
+              (p) => !deletedSet.has(p.id?.toLowerCase()) && !deletedSet.has(p.slug?.toLowerCase())
+            );
           }
 
-          // Hydrate categories
+          // 2. Only seed initial PRODUCTS if catalog has never been initialized on this client
+          if (!state.catalogInitialized) {
+            state.catalogInitialized = true;
+            if (!Array.isArray(state.products) || state.products.length === 0) {
+              state.products = PRODUCTS.filter(
+                (p) => !deletedSet.has(p.id?.toLowerCase()) && !deletedSet.has(p.slug?.toLowerCase())
+              );
+            }
+          }
+
+          // 3. Hydrate categories
           if (!Array.isArray(state.categories) || state.categories.length === 0) {
             state.categories = DEFAULT_CATEGORIES;
           } else {
