@@ -5,19 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency, FREE_SHIPPING_THRESHOLD, MONOGRAM_THRESHOLD } from "@/lib/utils";
-import { CROSS_SELL_ITEMS } from "@/lib/products-data";
-import { useAdminStore, isProductMarkedDeleted } from "@/store/useAdminStore";
 import { trackInitiateCheckout } from "@/lib/meta-pixel";
 
 export function CartDrawer() {
-  const { products: storeProducts, deletedProductIds } = useAdminStore();
   const {
     items,
     isDrawerOpen,
     closeDrawer,
     removeItem,
     updateQuantity,
-    addItem,
     subtotal,
     totalItemsCount,
   } = useCartStore();
@@ -31,35 +27,6 @@ export function CartDrawer() {
   const monogramProgress = Math.min(100, Math.round((currentSubtotal / MONOGRAM_THRESHOLD) * 100));
   const isFreeShipping = currentSubtotal >= FREE_SHIPPING_THRESHOLD;
   const awayFromFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - currentSubtotal);
-
-  const activeCrossSells = CROSS_SELL_ITEMS.filter((cs) => {
-    if (isProductMarkedDeleted(cs)) return false;
-    if (
-      deletedProductIds?.some(
-        (d) => d.toLowerCase() === cs.id?.toLowerCase() || d.toLowerCase() === cs.slug?.toLowerCase()
-      )
-    ) {
-      return false;
-    }
-    if (storeProducts && storeProducts.length > 0) {
-      const exists = storeProducts.some((p) => p.slug === cs.slug || p.id === cs.id);
-      if (!exists) return false;
-    }
-    return true;
-  }).map((cs) => {
-    const live = (storeProducts || []).find((p) => p.slug === cs.slug || p.id === cs.id);
-    return {
-      id: live?.id || cs.id,
-      name: live?.name || cs.name,
-      slug: live?.slug || cs.slug,
-      price: live ? live.basePrice : cs.price,
-      imageUrl: live?.images?.[0]?.url || cs.imageUrl,
-      tagline: live?.tagline || cs.tagline,
-      size: live?.availableSizes?.[0] || cs.size || "100ml",
-      colorName: live?.availableColors?.[0]?.name || cs.colorName || "Amber Glass",
-      colorHex: live?.availableColors?.[0]?.hex || cs.colorHex || "#C59B27",
-    };
-  });
 
   return (
     <div className="fixed inset-0 z-50 transition-opacity duration-300">
@@ -202,57 +169,6 @@ export function CartDrawer() {
             </div>
           )}
 
-          {/* Mini Cart In-Drawer Frequently Paired Cross-Sell */}
-          {items.length > 0 && activeCrossSells.length > 0 && (
-            <div className="p-4 rounded-lg bg-surface-container-low space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="font-label-eyebrow text-label-eyebrow uppercase text-secondary tracking-widest">
-                  Frequently Paired
-                </span>
-                <span className="font-label-sm text-[11px] text-on-surface-variant">Quick Add</span>
-              </div>
-
-              {activeCrossSells.map((cs) => (
-                <div
-                  key={cs.id}
-                  className="flex items-center justify-between gap-3 p-2.5 rounded bg-surface-container-lowest"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded bg-surface-container overflow-hidden flex-shrink-0 relative">
-                      <Image src={cs.imageUrl} alt={cs.name} fill className="object-cover" sizes="48px" />
-                    </div>
-                    <div>
-                      <p className="font-headline-sm text-[13px] text-primary truncate max-w-[180px]">{cs.name}</p>
-                      <p className="font-body-sm text-[12px] text-secondary font-medium">
-                        {formatCurrency(cs.price)}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      addItem({
-                        id: `cs-${cs.id}`,
-                        productId: cs.id,
-                        variantId: `var-${cs.id}`,
-                        productName: cs.name,
-                        productSlug: cs.slug,
-                        imageUrl: cs.imageUrl,
-                        price: cs.price,
-                        size: cs.size || "Standard",
-                        colorName: cs.colorName || "Natural",
-                        colorHex: cs.colorHex || "#ECEBE4",
-                        inStock: true,
-                      });
-                    }}
-                    className="px-3 py-1.5 rounded-sm bg-surface-variant hover:bg-primary hover:text-on-primary text-on-surface font-label-sm text-[11px] uppercase tracking-wider transition-colors"
-                  >
-                    + Add
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Drawer Bottom Bar */}
