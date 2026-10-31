@@ -1182,6 +1182,23 @@ export const useAdminStore = create<AdminState>()(
             }
           }
 
+          // 2b. Ensure Natural Lavender Linen Mist is accessible in catalog if not explicitly deleted
+          if (Array.isArray(state.products)) {
+            const hasLavender = state.products.some(
+              (p) => p.slug === "natural-lavender-linen-mist" || p.id === "prod-natural-lavender-mist"
+            );
+            if (
+              !hasLavender &&
+              !deletedSet.has("natural-lavender-linen-mist") &&
+              !deletedSet.has("prod-natural-lavender-mist")
+            ) {
+              const lavenderItem = PRODUCTS.find((p) => p.slug === "natural-lavender-linen-mist");
+              if (lavenderItem) {
+                state.products.push(lavenderItem);
+              }
+            }
+          }
+
           // 3. Hydrate categories
           if (!Array.isArray(state.categories) || state.categories.length === 0) {
             state.categories = DEFAULT_CATEGORIES;

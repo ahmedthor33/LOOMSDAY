@@ -4617,6 +4617,54 @@ export const PRODUCTS: Product[] = [
         "sku": "5-PC-KI-IVR"
       }
     ]
+  },
+  {
+    id: "prod-natural-lavender-mist",
+    name: "Natural Lavender Linen Mist",
+    slug: "natural-lavender-linen-mist",
+    tagline: "Organic French Provence Elixir • Calming Botanical Pillow & Linen Spray",
+    description: "Crafted from slow-distilled organic French Provence lavender and soothing floral hydrosol. Gently mist over your pillows, bedsheets, and duvets before sleep to envelop your sanctuary in a calming, restorative aromatic mist.",
+    category: "pillows",
+    categoryLabel: "Sanctuary Mists & Accessories",
+    basePrice: 2800,
+    retailPrice: 3500,
+    rating: 5,
+    reviewCount: 24,
+    material: "100% Organic Lavender Botanical Distillate",
+    brand: "LOOMSDAY",
+    origin: "Provence, France",
+    isBestSeller: true,
+    isNewArrival: false,
+    availableSizes: ["100ml"],
+    availableColors: [
+      {
+        name: "Amber Glass",
+        hex: "#C59B27"
+      }
+    ],
+    images: [
+      {
+        id: "img-lavender-mist-1",
+        productId: "prod-natural-lavender-mist",
+        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCaRnZ1PQF0OEyclGJ_WHgJWj8cg3MUBgmS4Diq9w0pa0HF570lEkiyhnH0n0Nz73gGLDsxqQsgFKgIQQNHn4wzxk1k0hcKLKROLBr001AFYkzAam6bFlkCYavKTjwABr_ThAAHxF38Cp-8WM97GayFtGdlh6FWzyF2raquroccsF9Ce5diGGuhwWpDhUcH8ExrgsZzMzIGhRHXbmL-FxBsUKFIBTohjeaYEHo6Cy15pVCpV1kbK_PKyw",
+        altText: "Natural Lavender Linen Mist 100ml in amber apothecary bottle",
+        sortOrder: 0,
+        isPrimary: true
+      }
+    ],
+    variants: [
+      {
+        id: "var-lavender-mist-1",
+        productId: "prod-natural-lavender-mist",
+        size: "100ml",
+        colorName: "Amber Glass",
+        colorHex: "#C59B27",
+        price: 2800,
+        retailPrice: 3500,
+        stock: 50,
+        sku: "LOOM-LAV-MIST-100"
+      }
+    ]
   }
 ];
 
@@ -4637,7 +4685,7 @@ export const CROSS_SELL_ITEMS: CrossSellItem[] = [
     id: "cs-1",
     name: "Natural Lavender Linen Mist",
     slug: "natural-lavender-linen-mist",
-    price: 28,
+    price: 2800,
     imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCaRnZ1PQF0OEyclGJ_WHgJWj8cg3MUBgmS4Diq9w0pa0HF570lEkiyhnH0n0Nz73gGLDsxqQsgFKgIQQNHn4wzxk1k0hcKLKROLBr001AFYkzAam6bFlkCYavKTjwABr_ThAAHxF38Cp-8WM97GayFtGdlh6FWzyF2raquroccsF9Ce5diGGuhwWpDhUcH8ExrgsZzMzIGhRHXbmL-FxBsUKFIBTohjeaYEHo6Cy15pVCpV1kbK_PKyw",
     tagline: "Organic French Provence Elixir",
     size: "100ml",
@@ -4648,7 +4696,7 @@ export const CROSS_SELL_ITEMS: CrossSellItem[] = [
     id: "cs-2",
     name: "Pure Silk Sleep Eye Mask",
     slug: "pure-silk-sleep-eye-mask",
-    price: 35,
+    price: 3500,
     imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_q35MAgcDrpiVaZ-YkI2s70wMrVlcBKzmKS0N4rmTjpF9OS2j9ggL0cxz3CgeagnDKPOPoXtfYlkt2ce6ZT2Emq0kMt9iQm5uxT9_HQar4aZOu4mJb0PxCad0mIdFl0mNuhB7P8XYTujbG8d3Hw6EBHZE6uzR_ewrwbm_HzZyRTPmUud0VWlZNIZLa0XBSqh4Kf-qN74DyeuLjlEkTSOyLg_E1-S_UWIszzG4eCBJoq6L0aOerqclJA",
     tagline: "22-Momme Mulberry Silk",
     size: "One Size",
