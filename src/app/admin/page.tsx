@@ -510,6 +510,8 @@ function AdminContent() {
     addProduct,
     updateProduct,
     deleteProduct,
+    deleteProducts,
+    bulkUpdateProducts,
     clearDemoProducts,
     updateVariantStock,
     restockProduct,
@@ -571,6 +573,13 @@ function AdminContent() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [isSyncingCloud, setIsSyncingCloud] = useState(false);
+
+  // Product Multi-Selection state
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const [lastSelectedProductId, setLastSelectedProductId] = useState<string | null>(null);
+  const [isBulkPriceModalOpen, setIsBulkPriceModalOpen] = useState(false);
+  const [bulkPriceValue, setBulkPriceValue] = useState<string>("");
+  const [bulkPriceMode, setBulkPriceMode] = useState<"fixed" | "discount_percent" | "increase_percent">("fixed");
 
   // CMS Sub-Tab state: default to bedsheets so the user has immediate access
   const [cmsSubTab, setCmsSubTab] = useState<
@@ -679,6 +688,82 @@ function AdminContent() {
       productCategoryFilter === "all" || p.category === productCategoryFilter;
     return matchesSearch && matchesCategory;
   });
+
+  // Product Multi-Selection Helpers
+  const isAllFilteredSelected =
+    filteredProducts.length > 0 &&
+    filteredProducts.every((p) => selectedProductIds.includes(p.id));
+  const isSomeFilteredSelected =
+    filteredProducts.some((p) => selectedProductIds.includes(p.id)) && !isAllFilteredSelected;
+
+  const handleToggleSelectAll = () => {
+    if (isAllFilteredSelected) {
+      const filteredIdSet = new Set(filteredProducts.map((p) => p.id));
+      setSelectedProductIds((prev) => prev.filter((id) => !filteredIdSet.has(id)));
+    } else {
+      const newSelected = new Set(selectedProductIds);
+      filteredProducts.forEach((p) => newSelected.add(p.id));
+      setSelectedProductIds(Array.from(newSelected));
+    }
+  };
+
+  const handleCheckboxClick = (productId: string, e: React.MouseEvent<HTMLInputElement>) => {
+    const isShift = (e.nativeEvent as MouseEvent).shiftKey;
+    if (isShift && lastSelectedProductId && lastSelectedProductId !== productId) {
+      const prevIdx = filteredProducts.findIndex((p) => p.id === lastSelectedProductId);
+      const currIdx = filteredProducts.findIndex((p) => p.id === productId);
+      if (prevIdx !== -1 && currIdx !== -1) {
+        const start = Math.min(prevIdx, currIdx);
+        const end = Math.max(prevIdx, currIdx);
+        const rangeIds = filteredProducts.slice(start, end + 1).map((p) => p.id);
+        setSelectedProductIds((prev) => {
+          const set = new Set(prev);
+          rangeIds.forEach((id) => set.add(id));
+          return Array.from(set);
+        });
+        setLastSelectedProductId(productId);
+        return;
+      }
+    }
+
+    setLastSelectedProductId(productId);
+    setSelectedProductIds((prev) =>
+      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+    );
+  };
+
+  const handleRowClick = (productId: string, e: React.MouseEvent) => {
+    setLastSelectedProductId(productId);
+    setSelectedProductIds((prev) =>
+      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+    );
+  };
+
+  const handleApplyBulkPrice = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseFloat(bulkPriceValue);
+    if (isNaN(val) || val <= 0) {
+      showToast("Please enter a valid numeric value.", "error");
+      return;
+    }
+
+    const selectedProductsList = products.filter((p) => selectedProductIds.includes(p.id));
+    selectedProductsList.forEach((prod) => {
+      let newPrice = prod.basePrice;
+      if (bulkPriceMode === "fixed") {
+        newPrice = Math.max(1, Math.round(val));
+      } else if (bulkPriceMode === "discount_percent") {
+        newPrice = Math.max(1, Math.round(prod.basePrice * (1 - val / 100)));
+      } else if (bulkPriceMode === "increase_percent") {
+        newPrice = Math.max(1, Math.round(prod.basePrice * (1 + val / 100)));
+      }
+      updateProduct(prod.id, { basePrice: newPrice });
+    });
+
+    setIsBulkPriceModalOpen(false);
+    setBulkPriceValue("");
+    showToast(`Updated pricing for ${selectedProductIds.length} products.`);
+  };
 
   // Filtered Orders
   const filteredOrders = orders.filter((o) => {
@@ -1296,27 +1381,245 @@ function AdminContent() {
                 />
               </div>
 
-              <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
-                {["all", "bedsheets", "pillows", "duvets"].map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setProductCategoryFilter(cat)}
-                    className={`px-3 py-1.5 rounded text-xs font-label-md uppercase tracking-wider transition-colors ${
-                      productCategoryFilter === cat
-                        ? "bg-primary text-on-primary"
-                        : "bg-surface-container hover:bg-surface-variant text-on-surface-variant"
-                    }`}
-                  >
-                    {cat === "all"
-                      ? "All Collections"
-                      : cat === "pillows"
-                      ? "Pillows & cushions Covers"
-                      : cat}
-                  </button>
-                ))}
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <div className="flex items-center gap-2 overflow-x-auto">
+                  {["all", "bedsheets", "pillows", "duvets"].map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setProductCategoryFilter(cat)}
+                      className={`px-3 py-1.5 rounded text-xs font-label-md uppercase tracking-wider transition-colors ${
+                        productCategoryFilter === cat
+                          ? "bg-primary text-on-primary"
+                          : "bg-surface-container hover:bg-surface-variant text-on-surface-variant"
+                      }`}
+                    >
+                      {cat === "all"
+                        ? "All Collections"
+                        : cat === "pillows"
+                        ? "Pillows & cushions Covers"
+                        : cat}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="h-4 w-px bg-surface-variant/50 hidden sm:block mx-1" />
+
+                <button
+                  type="button"
+                  onClick={handleToggleSelectAll}
+                  className={`px-3 py-1.5 rounded text-xs font-label-md uppercase tracking-wider transition-colors border flex items-center gap-1.5 ${
+                    isAllFilteredSelected
+                      ? "border-primary bg-primary/10 text-primary font-medium"
+                      : "border-surface-variant hover:border-primary text-on-surface-variant hover:text-primary bg-surface"
+                  }`}
+                  title="Select or deselect all visible products"
+                >
+                  <span className="material-symbols-outlined text-sm">
+                    {isAllFilteredSelected
+                      ? "check_box"
+                      : isSomeFilteredSelected
+                      ? "indeterminate_check_box"
+                      : "check_box_outline_blank"}
+                  </span>
+                  <span>
+                    {isAllFilteredSelected
+                      ? "Deselect Visible"
+                      : `Select Visible (${filteredProducts.length})`}
+                  </span>
+                </button>
               </div>
             </div>
+
+            {/* Bulk Actions Floating Toolbar */}
+            {selectedProductIds.length > 0 && (
+              <div className="p-3.5 px-4 rounded-xl bg-neutral-900 text-neutral-100 border border-neutral-700/70 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-3 animate-in fade-in duration-200">
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center min-w-6 h-6 px-1.5 rounded-full bg-secondary text-primary font-mono text-xs font-bold">
+                      {selectedProductIds.length}
+                    </span>
+                    <span className="font-medium text-xs text-white">
+                      {selectedProductIds.length === 1 ? "Product Selected" : "Products Selected"}
+                    </span>
+                  </div>
+
+                  <div className="h-4 w-px bg-neutral-700 hidden sm:block" />
+
+                  <div className="flex flex-wrap items-center gap-2.5 text-xs">
+                    {selectedProductIds.length < filteredProducts.length && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const allFiltered = new Set([...selectedProductIds, ...filteredProducts.map((p) => p.id)]);
+                          setSelectedProductIds(Array.from(allFiltered));
+                        }}
+                        className="text-neutral-300 hover:text-white underline underline-offset-4 decoration-neutral-500 hover:decoration-white transition-colors"
+                      >
+                        Select visible ({filteredProducts.length})
+                      </button>
+                    )}
+                    {selectedProductIds.length < products.length && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedProductIds(products.map((p) => p.id))}
+                        className="text-neutral-300 hover:text-white underline underline-offset-4 decoration-neutral-500 hover:decoration-white transition-colors"
+                      >
+                        Select all catalog ({products.length})
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProductIds([])}
+                      className="px-2 py-0.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-colors flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-xs">close</span>
+                      <span>Clear</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Category Dropdown */}
+                  <div className="relative group">
+                    <button
+                      type="button"
+                      className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium border border-neutral-700 transition-colors flex items-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-sm text-secondary">category</span>
+                      <span>Set Category</span>
+                      <span className="material-symbols-outlined text-xs">expand_more</span>
+                    </button>
+                    <div className="absolute right-0 top-full mt-1 hidden group-hover:block group-focus-within:block z-30 w-48 rounded-lg bg-surface-container-lowest border border-surface-variant/50 shadow-xl py-1 text-primary">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          bulkUpdateProducts(selectedProductIds, { category: "bedsheets", categoryLabel: "Bedsheets" });
+                          showToast(`Moved ${selectedProductIds.length} items to Bedsheets`);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
+                      >
+                        <span className="material-symbols-outlined text-sm">bed</span>
+                        <span>Bedsheets</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          bulkUpdateProducts(selectedProductIds, { category: "pillows", categoryLabel: "Pillows & cushions Covers" });
+                          showToast(`Moved ${selectedProductIds.length} items to Pillows & Cushions`);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
+                      >
+                        <span className="material-symbols-outlined text-sm">filter_vintage</span>
+                        <span>Pillows & Cushions</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          bulkUpdateProducts(selectedProductIds, { category: "duvets", categoryLabel: "Duvets" });
+                          showToast(`Moved ${selectedProductIds.length} items to Duvets`);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
+                      >
+                        <span className="material-symbols-outlined text-sm">single_bed</span>
+                        <span>Duvets</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Badges Dropdown */}
+                  <div className="relative group">
+                    <button
+                      type="button"
+                      className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium border border-neutral-700 transition-colors flex items-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-sm text-secondary">label</span>
+                      <span>Set Badge</span>
+                      <span className="material-symbols-outlined text-xs">expand_more</span>
+                    </button>
+                    <div className="absolute right-0 top-full mt-1 hidden group-hover:block group-focus-within:block z-30 w-44 rounded-lg bg-surface-container-lowest border border-surface-variant/50 shadow-xl py-1 text-primary">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          bulkUpdateProducts(selectedProductIds, { isBestSeller: true });
+                          showToast(`Marked ${selectedProductIds.length} items as Bestseller`);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
+                      >
+                        <span className="material-symbols-outlined text-sm text-amber-600">star</span>
+                        <span>Mark Bestseller</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          bulkUpdateProducts(selectedProductIds, { isNewArrival: true });
+                          showToast(`Marked ${selectedProductIds.length} items as New Arrival`);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-primary"
+                      >
+                        <span className="material-symbols-outlined text-sm text-blue-600">new_releases</span>
+                        <span>Mark New Arrival</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          bulkUpdateProducts(selectedProductIds, { isBestSeller: false, isNewArrival: false });
+                          showToast(`Cleared badges on ${selectedProductIds.length} items`);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-surface-container-low transition-colors flex items-center gap-2 text-neutral-500"
+                      >
+                        <span className="material-symbols-outlined text-sm">clear_all</span>
+                        <span>Clear Badges</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Adjust Price */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBulkPriceValue("");
+                      setIsBulkPriceModalOpen(true);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium border border-neutral-700 transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-sm text-secondary">payments</span>
+                    <span>Adjust Price</span>
+                  </button>
+
+                  {/* Export Selected */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const selectedList = products.filter((p) => selectedProductIds.includes(p.id));
+                      exportCatalogToJson(selectedList);
+                      showToast(`Exported ${selectedList.length} selected products as JSON.`);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium border border-neutral-700 transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-sm">download</span>
+                    <span>Export Selected</span>
+                  </button>
+
+                  {/* Bulk Delete */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const count = selectedProductIds.length;
+                      if (confirm(`Are you sure you want to permanently delete all ${count} selected products from catalog and cloud?`)) {
+                        deleteProducts(selectedProductIds);
+                        setSelectedProductIds([]);
+                        showToast(`Permanently deleted ${count} products.`);
+                      }
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-red-600/90 hover:bg-red-600 text-white text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                  >
+                    <span className="material-symbols-outlined text-sm">delete_forever</span>
+                    <span>Delete ({selectedProductIds.length})</span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Products Table */}
             <div className="rounded-xl bg-surface-container-lowest border border-surface-variant/40 overflow-hidden shadow-sm">
@@ -1324,6 +1627,19 @@ function AdminContent() {
                 <table className="w-full text-left text-xs">
                   <thead>
                     <tr className="border-b border-surface-variant/40 text-[11px] uppercase tracking-wider text-on-surface-variant font-label-eyebrow bg-surface-container-low">
+                      <th className="py-3 px-3 w-10 text-center">
+                        <input
+                          type="checkbox"
+                          checked={isAllFilteredSelected}
+                          ref={(el) => {
+                            if (el) el.indeterminate = isSomeFilteredSelected;
+                          }}
+                          onChange={handleToggleSelectAll}
+                          aria-label="Select or deselect all visible products"
+                          className="rounded accent-secondary w-4 h-4 cursor-pointer align-middle"
+                          title={isAllFilteredSelected ? "Deselect all" : "Select all visible"}
+                        />
+                      </th>
                       <th className="py-3 px-4">Item & Silhouette</th>
                       <th className="py-3 px-4">Brand</th>
                       <th className="py-3 px-4">Category</th>
@@ -1337,7 +1653,7 @@ function AdminContent() {
                   <tbody className="divide-y divide-surface-variant/20">
                     {filteredProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={8} className="py-12 text-center text-on-surface-variant">
+                        <td colSpan={9} className="py-12 text-center text-on-surface-variant">
                           <div className="flex flex-col items-center justify-center gap-3">
                             <span className="material-symbols-outlined text-4xl text-neutral-300">inventory_2</span>
                             <h4 className="font-headline-sm text-base text-primary font-medium">Boutique Catalog is Clean</h4>
@@ -1388,8 +1704,31 @@ function AdminContent() {
                     ) : (
                       filteredProducts.map((prod) => {
                       const totalStock = (prod.variants || []).reduce((s, v) => s + v.stock, 0);
+                      const isSelected = selectedProductIds.includes(prod.id);
                       return (
-                        <tr key={prod.id} className="hover:bg-surface-container-low transition-colors">
+                        <tr
+                          key={prod.id}
+                          onClick={(e) => {
+                            const target = e.target as HTMLElement;
+                            if (target.closest("button") || target.closest("a") || target.closest("input")) return;
+                            handleRowClick(prod.id, e);
+                          }}
+                          className={`transition-colors cursor-pointer select-none ${
+                            isSelected
+                              ? "bg-secondary/10 hover:bg-secondary/15 border-l-4 border-l-secondary"
+                              : "hover:bg-surface-container-low"
+                          }`}
+                        >
+                          <td className="py-3 px-3 text-center w-10" onClick={(e) => e.stopPropagation()}>
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => {}}
+                              onClick={(e) => handleCheckboxClick(prod.id, e)}
+                              aria-label={`Select ${prod.name}`}
+                              className="rounded accent-secondary w-4 h-4 cursor-pointer align-middle"
+                            />
+                          </td>
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
                               <div className="relative w-12 h-12 rounded overflow-hidden bg-surface-container-highest shrink-0 border border-surface-variant">
@@ -1477,6 +1816,7 @@ function AdminContent() {
                                 onClick={() => {
                                   if (confirm(`Remove "${prod.name}" from catalog?`)) {
                                     deleteProduct(prod.id);
+                                    setSelectedProductIds((prev) => prev.filter((id) => id !== prod.id));
                                     showToast(`Deleted ${prod.name}`);
                                   }
                                 }}
@@ -3113,6 +3453,121 @@ function AdminContent() {
           }
         }}
       />
+
+      {/* Bulk Price Adjustment Modal */}
+      {isBulkPriceModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="w-full max-w-md rounded-2xl bg-surface-container-lowest border border-surface-variant p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-surface-variant/40 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-secondary text-xl">payments</span>
+                <h3 className="font-headline-sm text-base text-primary font-medium">
+                  Adjust Prices ({selectedProductIds.length} Selected)
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsBulkPriceModalOpen(false)}
+                className="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors"
+              >
+                <span className="material-symbols-outlined text-base">close</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleApplyBulkPrice} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs font-label-md uppercase tracking-wider text-on-surface-variant">
+                  Adjustment Mode
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setBulkPriceMode("fixed")}
+                    className={`px-2.5 py-2 rounded-lg text-xs font-medium border text-center transition-colors ${
+                      bulkPriceMode === "fixed"
+                        ? "border-primary bg-primary text-on-primary"
+                        : "border-surface-variant bg-surface hover:bg-surface-variant/50 text-primary"
+                    }`}
+                  >
+                    Set Fixed
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBulkPriceMode("discount_percent")}
+                    className={`px-2.5 py-2 rounded-lg text-xs font-medium border text-center transition-colors ${
+                      bulkPriceMode === "discount_percent"
+                        ? "border-primary bg-primary text-on-primary"
+                        : "border-surface-variant bg-surface hover:bg-surface-variant/50 text-primary"
+                    }`}
+                  >
+                    % Discount
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBulkPriceMode("increase_percent")}
+                    className={`px-2.5 py-2 rounded-lg text-xs font-medium border text-center transition-colors ${
+                      bulkPriceMode === "increase_percent"
+                        ? "border-primary bg-primary text-on-primary"
+                        : "border-surface-variant bg-surface hover:bg-surface-variant/50 text-primary"
+                    }`}
+                  >
+                    % Increase
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-primary">
+                  {bulkPriceMode === "fixed"
+                    ? "New Base Price (PKR)"
+                    : bulkPriceMode === "discount_percent"
+                    ? "Discount Percentage (%)"
+                    : "Increase Percentage (%)"}
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    min="1"
+                    step="any"
+                    required
+                    autoFocus
+                    placeholder={bulkPriceMode === "fixed" ? "e.g. 2800" : "e.g. 15"}
+                    value={bulkPriceValue}
+                    onChange={(e) => setBulkPriceValue(e.target.value)}
+                    className="w-full px-3 py-2 text-sm rounded-lg border border-surface-variant bg-surface text-primary focus:outline-none focus:border-secondary"
+                  />
+                  <span className="absolute right-3 top-2.5 text-xs text-on-surface-variant font-mono">
+                    {bulkPriceMode === "fixed" ? "PKR" : "%"}
+                  </span>
+                </div>
+                <p className="text-[11px] text-on-surface-variant">
+                  {bulkPriceMode === "fixed"
+                    ? "Sets all selected products and their sizes to this exact price."
+                    : bulkPriceMode === "discount_percent"
+                    ? "Reduces current base price of each selected product by this percentage."
+                    : "Increases current base price of each selected product by this percentage."}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-surface-variant/40">
+                <button
+                  type="button"
+                  onClick={() => setIsBulkPriceModalOpen(false)}
+                  className="px-4 py-2 rounded-lg border border-surface-variant text-xs font-medium text-on-surface-variant hover:text-primary transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-medium hover:bg-neutral-800 transition-colors shadow-sm"
+                >
+                  Apply to {selectedProductIds.length} Products
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

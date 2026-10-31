@@ -3,7 +3,13 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { Product, Order, AdminCoupon, ShippingSettings, StorefrontCms, AdminTransaction, PaymentMethodConfig, CategoryHeroBanner } from "@/types";
 import { PRODUCTS } from "@/lib/products-data";
 import { DEMO_PRODUCTS } from "@/lib/demo-products-data";
-import { fetchSupabaseProducts, sanitizeCatalogProducts, pushProductsToSupabase, deleteProductFromSupabase } from "@/lib/catalog-service";
+import {
+  fetchSupabaseProducts,
+  sanitizeCatalogProducts,
+  pushProductsToSupabase,
+  deleteProductFromSupabase,
+  deleteProductsFromSupabase,
+} from "@/lib/catalog-service";
 import {
   idbGet,
   idbSet,
@@ -60,6 +66,8 @@ interface AdminState {
   addProduct: (product: Product) => void;
   updateProduct: (id: string, updates: Partial<Product>) => void;
   deleteProduct: (id: string) => void;
+  deleteProducts: (ids: string[]) => void;
+  bulkUpdateProducts: (ids: string[], updates: Partial<Product>) => void;
   clearDemoProducts: () => void;
   updateVariantStock: (productId: string, variantId: string, stock: number) => void;
   restockProduct: (productId: string, amount: number) => void;
@@ -468,6 +476,50 @@ export const useAdminStore = create<AdminState>()(
             (p) => p.id !== id && p.slug !== id
           ),
         }));
+        notifyStoreUpdated();
+      },
+
+      deleteProducts: (ids) => {
+        if (!ids || ids.length === 0) return;
+        const idSet = new Set(ids);
+        deleteProductsFromSupabase(ids).catch((err) =>
+          console.warn("[LOOMSDAY Store] Auto cloud bulk delete error:", err)
+        );
+        set((state) => ({
+          products: (Array.isArray(state.products) ? state.products : []).filter(
+            (p) => !idSet.has(p.id) && !idSet.has(p.slug)
+          ),
+        }));
+        notifyStoreUpdated();
+      },
+
+      bulkUpdateProducts: (ids, updates) => {
+        if (!ids || ids.length === 0) return;
+        const idSet = new Set(ids);
+        const updatedItems: Product[] = [];
+        set((state) => {
+          const currentList = Array.isArray(state.products) ? state.products : [];
+          return {
+            products: currentList.map((p) => {
+              if (!idSet.has(p.id) && !idSet.has(p.slug)) return p;
+              const updated = { ...p, ...updates };
+              if (updates.basePrice !== undefined) {
+                updated.variants = (updated.variants || []).map((v) => ({
+                  ...v,
+                  price: updated.basePrice,
+                  retailPrice: updated.retailPrice,
+                }));
+              }
+              updatedItems.push(updated);
+              return updated;
+            }),
+          };
+        });
+        if (updatedItems.length > 0) {
+          pushProductsToSupabase(updatedItems).catch((err) =>
+            console.warn("[LOOMSDAY Store] Auto cloud push error:", err)
+          );
+        }
         notifyStoreUpdated();
       },
 

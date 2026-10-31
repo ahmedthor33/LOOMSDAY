@@ -275,6 +275,31 @@ export async function deleteProductFromSupabase(idOrSlug: string): Promise<boole
 }
 
 /**
+ * Bulk deletes multiple products from Supabase
+ */
+export async function deleteProductsFromSupabase(idsOrSlugs: string[]): Promise<boolean> {
+  if (!isSupabaseConfigured || !idsOrSlugs.length) return false;
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return false;
+
+  try {
+    const uuids = idsOrSlugs.filter(isValidUUID);
+    const slugs = idsOrSlugs.filter((id) => !isValidUUID(id));
+
+    if (uuids.length > 0) {
+      await supabase.from("products").delete().in("id", uuids);
+    }
+    if (slugs.length > 0) {
+      await supabase.from("products").delete().in("slug", slugs);
+    }
+    return true;
+  } catch (e) {
+    console.warn("[LOOMSDAY Catalog] Supabase bulk delete error:", e);
+    return false;
+  }
+}
+
+/**
  * Validates and normalizes raw JSON products for catalog import
  */
 export function sanitizeCatalogProducts(rawProducts: any[]): Product[] {
