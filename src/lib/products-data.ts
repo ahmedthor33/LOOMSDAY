@@ -4619,50 +4619,50 @@ export const PRODUCTS: Product[] = [
     ]
   },
   {
-    id: "prod-natural-lavender-mist",
-    name: "Natural Lavender Linen Mist",
-    slug: "natural-lavender-linen-mist",
-    tagline: "Organic French Provence Elixir • Calming Botanical Pillow & Linen Spray",
-    description: "Crafted from slow-distilled organic French Provence lavender and soothing floral hydrosol. Gently mist over your pillows, bedsheets, and duvets before sleep to envelop your sanctuary in a calming, restorative aromatic mist.",
-    category: "pillows",
-    categoryLabel: "Sanctuary Mists & Accessories",
-    basePrice: 2800,
-    retailPrice: 3500,
-    rating: 5,
-    reviewCount: 24,
-    material: "100% Organic Lavender Botanical Distillate",
-    brand: "LOOMSDAY",
-    origin: "Provence, France",
-    isBestSeller: true,
-    isNewArrival: false,
-    availableSizes: ["100ml"],
-    availableColors: [
+    "id": "prod-natural-lavender-mist",
+    "name": "Natural Lavender Linen Mist",
+    "slug": "natural-lavender-linen-mist",
+    "tagline": "Organic French Provence Elixir • Calming Botanical Pillow & Linen Spray",
+    "description": "Crafted from slow-distilled organic French Provence lavender and soothing floral hydrosol. Gently mist over your pillows, bedsheets, and duvets before sleep to envelop your sanctuary in a calming, restorative aromatic mist.",
+    "category": "pillows",
+    "categoryLabel": "Sanctuary Mists & Accessories",
+    "basePrice": 2800,
+    "retailPrice": 3500,
+    "rating": 5,
+    "reviewCount": 24,
+    "material": "100% Organic Lavender Botanical Distillate",
+    "brand": "LOOMSDAY",
+    "origin": "Provence, France",
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "availableSizes": ["100ml"],
+    "availableColors": [
       {
-        name: "Amber Glass",
-        hex: "#C59B27"
+        "name": "Amber Glass",
+        "hex": "#C59B27"
       }
     ],
-    images: [
+    "images": [
       {
-        id: "img-lavender-mist-1",
-        productId: "prod-natural-lavender-mist",
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCaRnZ1PQF0OEyclGJ_WHgJWj8cg3MUBgmS4Diq9w0pa0HF570lEkiyhnH0n0Nz73gGLDsxqQsgFKgIQQNHn4wzxk1k0hcKLKROLBr001AFYkzAam6bFlkCYavKTjwABr_ThAAHxF38Cp-8WM97GayFtGdlh6FWzyF2raquroccsF9Ce5diGGuhwWpDhUcH8ExrgsZzMzIGhRHXbmL-FxBsUKFIBTohjeaYEHo6Cy15pVCpV1kbK_PKyw",
-        altText: "Natural Lavender Linen Mist 100ml in amber apothecary bottle",
-        sortOrder: 0,
-        isPrimary: true
+        "id": "img-lavender-mist-1",
+        "productId": "prod-natural-lavender-mist",
+        "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuCaRnZ1PQF0OEyclGJ_WHgJWj8cg3MUBgmS4Diq9w0pa0HF570lEkiyhnH0n0Nz73gGLDsxqQsgFKgIQQNHn4wzxk1k0hcKLKROLBr001AFYkzAam6bFlkCYavKTjwABr_ThAAHxF38Cp-8WM97GayFtGdlh6FWzyF2raquroccsF9Ce5diGGuhwWpDhUcH8ExrgsZzMzIGhRHXbmL-FxBsUKFIBTohjeaYEHo6Cy15pVCpV1kbK_PKyw",
+        "altText": "Natural Lavender Linen Mist 100ml in amber apothecary bottle",
+        "sortOrder": 0,
+        "isPrimary": true
       }
     ],
-    variants: [
+    "variants": [
       {
-        id: "var-lavender-mist-1",
-        productId: "prod-natural-lavender-mist",
-        size: "100ml",
-        colorName: "Amber Glass",
-        colorHex: "#C59B27",
-        price: 2800,
-        retailPrice: 3500,
-        stock: 50,
-        sku: "LOOM-LAV-MIST-100"
+        "id": "var-lavender-mist-1",
+        "productId": "prod-natural-lavender-mist",
+        "size": "100ml",
+        "colorName": "Amber Glass",
+        "colorHex": "#C59B27",
+        "price": 2800,
+        "retailPrice": 3500,
+        "stock": 50,
+        "sku": "LOOM-LAV-MIST-100"
       }
     ]
   }

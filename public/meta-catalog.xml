@@ -1138,5 +1138,19 @@
       <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Bedding</g:google_product_category>
       <g:product_type>Bedsheets</g:product_type>
     </item>
+    <item>
+      <g:id>prod-natural-lavender-mist</g:id>
+      <g:title>Natural Lavender Linen Mist</g:title>
+      <g:description>Crafted from slow-distilled organic French Provence lavender and soothing floral hydrosol. Gently mist over your pillows, bedsheets, and duvets before sleep to envelop your sanctuary in a calming, restorative aromatic mist.</g:description>
+      <g:link>https://loomsday.store/product/natural-lavender-linen-mist</g:link>
+      <g:image_link>https://lh3.googleusercontent.com/aida-public/AB6AXuCaRnZ1PQF0OEyclGJ_WHgJWj8cg3MUBgmS4Diq9w0pa0HF570lEkiyhnH0n0Nz73gGLDsxqQsgFKgIQQNHn4wzxk1k0hcKLKROLBr001AFYkzAam6bFlkCYavKTjwABr_ThAAHxF38Cp-8WM97GayFtGdlh6FWzyF2raquroccsF9Ce5diGGuhwWpDhUcH8ExrgsZzMzIGhRHXbmL-FxBsUKFIBTohjeaYEHo6Cy15pVCpV1kbK_PKyw</g:image_link>
+      <g:brand>LOOMSDAY</g:brand>
+      <g:condition>new</g:condition>
+      <g:availability>in stock</g:availability>
+      <g:price>2800.00 PKR</g:price>
+      <g:item_group_id>prod-natural-lavender-mist</g:item_group_id>
+      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Bedding</g:google_product_category>
+      <g:product_type>Sanctuary Mists &amp; Accessories</g:product_type>
+    </item>
   </channel>
 </rss>
